@@ -1,0 +1,107 @@
+@use '@angular/material' as mat;
+@use 'variables/palette';
+
+@include mat.core();
+
+@font-face {
+  font-family: 'MainFont';
+  src: url('../assets/fonts/Proxima\ Nova\ Font.otf');
+  font-size: 16px
+}
+
+$frontend-primary: mat.define-palette(palette.$myPalette, 500);
+$frontend-accent: mat.define-palette(palette.$myPalette, A400);
+$frontend-warn: mat.define-palette(mat.$red-palette);
+$my-typography: mat.define-typography-config();
+
+$frontend-theme: mat.define-light-theme((color: (primary: $frontend-primary,
+        accent: $frontend-accent,
+        warn: $frontend-warn,
+      ),
+      typography: $my-typography,
+    ));
+
+@include mat.all-component-themes($frontend-theme);
+
+//TODO czy definiowanie dark i light mode(niżej) nie będzie kolidowało z tym że w materialu robię define-light-theme
+//i czy robić toggle na theme: https://stackoverflow.com/questions/56300132/how-to-override-css-prefers-color-scheme-setting
+
+:root {
+  --screen-s: 768px;
+  --screen-m: 1064px;
+  --screen-l: 1200px;
+  --screen-xl: 1368px;
+
+  --gap-s: 4px;
+  --gap-m: 8px;
+  --gap-l: 16px;
+  --gap-xl: 24px;
+
+  --font-s: 14px;
+  --font-m: 16px;
+  --font-l: 24px;
+  --font-xl: 36px;
+
+  --lineHeight-s: 16px;
+  --lineHeight-m: 20px;
+  --lineHeight-l: 24px;
+  --lineHeight-xl: 40px;
+
+  --color-error: #ff6961;
+  --color-success: #77dd77;
+  --color-whitish: #ddd;
+  --color-blackish: #222;
+
+  --background-color-light: #f0f2f4;
+  --background-color-dark: #0f0d0b;
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+html,
+body {
+  height: 100%;
+  min-height: 100vh;
+  scroll-behavior: smooth;
+}
+
+body {
+  overflow-y: scroll;
+  overflow-x: hidden;
+
+  // @media (prefers-color-scheme: dark) {
+  //   background-color: var(--background-color-dark);
+  //   color: var(--color-whitish);
+  // }
+
+  // @media (prefers-color-scheme: light) {
+  //   background-color: var(--background-color-light);
+  //   color: var(--color-blackish);
+  // }
+
+  background-color: var(--background-color-light);
+  color: var(--color-blackish);
+
+  font-family: 'MainFont', "Open Sans", Roboto, "Helvetica Neue", sans-serif;
+  font-size: var(--font-m); //TODO czy 16px to nie za dużo?
+  font-weight: 400;
+}
+
+.mat-mdc-snack-bar-container {
+  &.error-snackbar {
+    --mdc-snackbar-container-color: var(--color-error);
+    --mat-mdc-snack-bar-button-color: #fff;
+    --mdc-snackbar-supporting-text-color: #fff;
+  }
+
+  &.success-snackbar {
+    --mdc-snackbar-container-color: var(--color-success);
+    --mat-mdc-snack-bar-button-color: #fff;
+    --mdc-snackbar-supporting-text-color: #fff;
+  }
+}
