@@ -1,0 +1,95 @@
+<div class="inline">
+  <my-input
+    label="Imię"
+    controlName="firstName"
+    [ppErrorMessage]="{
+    required: 'Imię jest wymagane'
+  }"
+  />
+
+  <my-input
+    label="E-mail"
+    placeholder="Wprowadź adres e-mail"
+    controlName="email"
+    [ppErrorMessage]="{
+    required: 'Wprowadź adres e-mail',
+    pattern: 'Adres e-mail jest nieprawidłowy'
+  }"
+  />
+</div>
+
+<div class="inline">
+  <my-input
+    label="Hasło"
+    placeholder="8 - 30 znaków, w tym cyfra"
+    controlName="password"
+    [type]="passwordVisibility.password ? 'text' : 'password'"
+    [suffixTemplate]="suffixPassword"
+    [ppErrorMessage]="{
+    required: 'Wprowadź hasło',
+    pattern: 'Hasło powinno zawierać od 8 do 30 znaków, w tym jedna cyfra'
+  }"
+  />
+
+  <my-input
+    label="Powtórz hasło"
+    placeholder="Wprowadź hasło"
+    controlName="confirmedPassword"
+    [type]="passwordVisibility.confirmedPassword ? 'text' : 'password'"
+    [suffixTemplate]="suffixConfirmedPassword"
+    [ppErrorMessage]="{
+    required: 'Wprowadź hasło',
+    mustMatch: 'Hasła nie są identyczne'
+  }"
+  />
+</div>
+
+<div class="inline">
+  <my-input
+    label="Wzrost"
+    placeholder="Wprowadź wzrost"
+    controlName="height"
+    type="number"
+    [suffixTemplate]="cm"
+    [ppErrorMessage]="{
+    required: 'Wprowadź wzrost'
+  }"
+  />
+
+  <my-input
+    label="Waga"
+    placeholder="Wprowadź wagę"
+    controlName="weight"
+    type="number"
+    [suffixTemplate]="kg"
+    [ppErrorMessage]="{
+    required: 'Wprowadź wagę'
+  }"
+  />
+</div>
+
+<ng-template #kg>kg</ng-template>
+
+<ng-template #cm>cm</ng-template>
+
+<ng-template #suffixPassword>
+  <mat-icon
+    matSuffix
+    class="cursor-pointer"
+    (click)="togglePasswordVisibility('password')"
+  >
+    {{ passwordVisibility.password ? 'visibility_off' : 'visibility' }}
+  </mat-icon>
+</ng-template>
+
+<ng-template #suffixConfirmedPassword>
+  <mat-icon
+    class="cursor-pointer"
+    (click)="togglePasswordVisibility('confirmedPassword')"
+  >
+    {{ passwordVisibility.confirmedPassword ? 'visibility_off' : 'visibility' }}
+  </mat-icon>
+</ng-template>
+
+
+<!-- TODO dodać async validator na email przy rejestracji -->

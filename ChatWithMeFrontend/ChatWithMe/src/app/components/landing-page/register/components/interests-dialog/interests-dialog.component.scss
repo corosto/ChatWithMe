@@ -1,0 +1,27 @@
+interests-dialog {
+  display: flex;
+  flex-direction: column;
+  padding: 14px 20px;
+
+  .center {
+    align-self: center;
+    padding-bottom: 6px;
+  }
+
+  .title {
+    font-size: 19px;
+  }
+
+  .button {
+    margin-top: 12px;
+  }
+
+  .mdc-evolution-chip-set__chips {
+    justify-content: center;
+  }
+
+  .mdc-evolution-chip--selectable .mdc-evolution-chip__graphic {
+    width: 0;
+    visibility: hidden;
+  }
+}

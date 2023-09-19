@@ -1,0 +1,37 @@
+{
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll": true,
+    "source.fixAll.eslint": true,
+    "source.sortImports": true
+  },
+  "eslint.validate": [
+    "javascript"
+  ],
+  "[scss]": {
+    "editor.suggest.insertMode": "replace"
+  },
+  "[css]": {
+    "editor.suggest.insertMode": "replace"
+  },
+  "editor.tabSize": 2,
+  "javascript.format.enable": true,
+  "html.format.wrapAttributes": "force-expand-multiline",
+  "files.autoSave": "afterDelay",
+  //
+  "editor.fontFamily": "Cascadia Code",
+  "editor.fontSize": 13,
+  //
+  // "editor.fontFamily": "Consolas",
+  // "editor.fontSize": 14,
+  //
+  // "editor.fontFamily": "Source Code Pro",
+  // "editor.fontSize": 13,
+  //
+  // "editor.fontFamily": "Inconsolata",
+  // "editor.fontSize": 15,
+  //
+  "editor.formatOnPaste": true,
+  "html.format.indentHandlebars": true,
+  "html.format.indentInnerHtml": true,
+}

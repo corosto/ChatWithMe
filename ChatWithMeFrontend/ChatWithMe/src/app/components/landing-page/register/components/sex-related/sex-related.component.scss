@@ -1,0 +1,27 @@
+sex-related {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-xl);
+
+  .title {
+    font-weight: 600;
+    padding-left: 10px;
+  }
+
+  .box {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    gap: var(--gap-s);
+  }
+
+  .mat-mdc-standard-chip:not(.mdc-evolution-chip--disabled) {
+    background-color: transparent;
+    border: 1px solid var(--mdc-chip-elevated-container-color);
+  }
+
+  .mat-mdc-standard-chip.mat-mdc-chip-selected.mat-primary,
+  .mat-mdc-standard-chip.mat-mdc-chip-highlighted.mat-primary {
+    background-color: var(--mdc-chip-elevated-container-color);
+  }
+}

@@ -1,0 +1,28 @@
+<span class="center title">Zainteresowania</span>
+<span class="center text-secondary">Pokaż co Cię interesuje</span>
+
+<mat-chip-listbox
+  #chips
+  multiple
+  [value]="data"
+  class="chips"
+>
+  <mat-chip-option
+    #chip
+    *ngFor="let item of INTERESTS"
+    [disabled]="chips.value?.length > 4 && !chip.selected"
+  >
+    {{item}}
+  </mat-chip-option>
+</mat-chip-listbox>
+
+<button
+  [disabled]="chips.value?.length <= 0"
+  mat-raised-button
+  disableRipple
+  color="primary"
+  class="button"
+  (click)="dialogRef.close(chips.value)"
+>
+  Dalej ({{chips.value?.length ?? 0}}/5)
+</button>

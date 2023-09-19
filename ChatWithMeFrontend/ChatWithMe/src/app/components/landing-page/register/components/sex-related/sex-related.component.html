@@ -1,0 +1,46 @@
+<div class="box">
+  <span class="title">Płeć</span>
+  <mat-chip-listbox formControlName="sex">
+    <mat-chip-option value="male">Mężczyzna</mat-chip-option>
+    <mat-chip-option value="female">Kobieta</mat-chip-option>
+    <mat-chip-option value="other">Inne</mat-chip-option>
+  </mat-chip-listbox>
+</div>
+
+<div class="box">
+  <span class="title">Pokaż mi</span>
+  <mat-chip-listbox formControlName="showMe">
+    <mat-chip-option value="male">Mężczyzn</mat-chip-option>
+    <mat-chip-option value="female">Kobiety</mat-chip-option>
+    <mat-chip-option value="all">Wszyscy</mat-chip-option>
+  </mat-chip-listbox>
+</div>
+
+<div class="box">
+  <add-button-with-dialog
+    formName="lookingFor"
+    title="Szukam"
+    buttonText="Czego szukasz?"
+    [component]="LookingForDialogComponent"
+  />
+</div>
+
+<div class="box">
+  <add-button-with-dialog
+    formName="sexualOrientation"
+    title="Orientacja seksualna"
+    buttonText="Dodaj orientację seksualną"
+    dialogHeight="570px"
+    [component]="SexualOrientationDialogComponent"
+  />
+</div>
+
+<div class="box">
+  <add-button-with-dialog
+    formName="interests"
+    title="Zainteresowania"
+    buttonText="Dodaj zainteresowania"
+    dialogHeight="450px"
+    [component]="InterestsDialogComponent"
+  />
+</div>

@@ -1,96 +1,93 @@
-import { Injectable } from '@angular/core';
-import { isEmpty } from 'lodash';
-import { LocalStorageService } from '@core/services/localStorage/local-storage.service';
-import { KeyStorage } from '@core/enums/key-storage.enum';
-import { Router } from '@angular/router';
-import { Observable } from 'rxjs';
-import { environment } from '@env/environment';
-import { Api } from '@core/enums/api.enum';
-import { tap } from 'rxjs/operators';
 import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
+import { TokenData, UserAuthorization } from '@components/landing-page/interfaces/authentication-interface';
+import { Api } from '@core/enums/api.enum';
+import { KeyStorage } from '@core/enums/key-storage.enum';
+import { LocalStorageService } from '@core/services/localStorage/local-storage.service';
+import { environment } from '@env/environment';
 import { addSeconds, isAfter } from 'date-fns';
-// import { TokenData, UserAuthorization } from '@components/authentication/interfaces/authentication-interface';
 import jwt_decode from 'jwt-decode';
-// import { UserCredentials } from '@components/account/interfaces/account.interface';
+import { isEmpty } from 'lodash';
+import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UserService {
 
-  // private userToken: string;
+  private userToken: string;
 
-  // constructor(
-  //   private localStorageService: LocalStorageService,
-  //   private router: Router,
-  //   private http: HttpClient,
-  // ) { }
+  constructor(
+    private localStorageService: LocalStorageService,
+    private router: Router,
+    private http: HttpClient,
+  ) { }
 
-  // setUserToken(token: string): void {
-  //   this.userToken = token;
+  setUserToken(token: string): void {
+    this.userToken = token;
+  }
 
-  //   // this.localStorageService.setItem<string>(KeyStorage.USER_TOKEN, token);
-  // }
+  getUserToken(): string {
+    return this.userToken;
+  }
 
-  // getUserToken(): string {
-  //   return this.userToken;
-  // }
+  isAuthenticated(): boolean {
+    return !isEmpty(this.user());
+  }
 
-  // isAuthenticated(): boolean {
-  //   return !isEmpty(this.user());
-  // }
+  userAuthorization(): TokenData {
+    return this.user();
+  }
 
-  // userAuthorization(): TokenData {
-  //   return this.user();
-  // }
+  logout(): void {
+    this.clearAll();
+  }
 
-  // logout(): void {
-  //   this.clearAll();
-  // }
+  isTokenExpired(): boolean {
+    const { expires_at } = this.user();
 
-  // isTokenExpired(): boolean {
-  //   const { expires_at } = this.user();
+    return isAfter(new Date(), new Date(expires_at));
+  }
 
-  //   return isAfter(new Date(), new Date(expires_at));
-  // }
+  refreshToken(): Observable<UserAuthorization> {
 
-  // refreshToken(): Observable<UserAuthorization> {
+    if (isEmpty(this.user()))
+      this.clearAll();
 
-  //   if (isEmpty(this.localStorageService.getItem<TokenData>(KeyStorage.USER)))
-  //     this.clearAll();
+    const userData = {
+      grantType: 'refresh_token',
+      refreshToken: this.user().refreshToken,
+    };
 
-  //   const userData = {
-  //     grantType: 'refresh_token',
-  //     refreshToken: this.localStorageService.getItem<TokenData>(KeyStorage.USER).refreshToken,
-  //   };
+    return this.http.post<UserAuthorization>(`${environment.httpBackend}${Api.LOGIN}`, userData)
+      .pipe(
+        tap((token) => {
+          const myToken = token;
+          this.setUserStorage(myToken);
+          this.setUserToken(myToken.accessToken);
+        }),
+      );
+  }
 
-  //   return this.http.post<UserAuthorization>(`${environment.httpBackend}${Api.LOGIN}`, userData)
-  //     .pipe(
-  //       tap((token) => {
-  //         const myToken = token;
-  //         this.setUserStorage(myToken);
-  //         this.setUserToken(myToken.accessToken);
-  //       }),
-  //     );
-  // }
+  private user(): TokenData {
+    return this.localStorageService.getItem<TokenData>(KeyStorage.USER);
+  }
 
-  // private user(): TokenData {
-  //   return this.localStorageService.getItem<TokenData>(KeyStorage.USER);
-  // }
+  private clearAll(): void {
+    this.localStorageService.clear();
+    void this.router.navigate(['/']);
+  }
 
-  // private clearAll(): void {
-  //   this.localStorageService.clear();
-  //   void this.router.navigate(['/']);
-  // }
+  private setUserStorage(token: UserAuthorization) {
+    const decodedToken: TokenData = jwt_decode(token.accessToken);
 
-  // private setUserStorage(token: UserAuthorization) {
-  //   const decodedToken: TokenData = jwt_decode(token.accessToken);
+    const { email, exp, firstName, id } = decodedToken;
+    const refreshToken = token.refreshToken;
 
-  //   const { email, exp, firstName, id, iss, lastName, role } = decodedToken;
-  //   const refreshToken = token.refreshToken;
-
-  //   this.localStorageService.setItem<TokenData>(KeyStorage.USER, {
-  //     refreshToken, email, firstName, id, iss, lastName, role, expires_at: addSeconds(new Date(), exp).toISOString()
-  //   });
-  // }
+    this.localStorageService.setItem<TokenData>(KeyStorage.USER, {
+      refreshToken, email, firstName, id, expires_at: addSeconds(new Date(), exp).toISOString()
+    });
+  }
 }

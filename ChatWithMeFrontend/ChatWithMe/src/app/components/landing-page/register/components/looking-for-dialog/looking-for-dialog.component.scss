@@ -1,0 +1,32 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-xl);
+  padding: 30px;
+}
+
+.button {
+  border-radius: var(--border-max);
+  width: 100%;
+}
+
+.options {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+
+  .option {
+    width: 120px;
+    height: 135px;
+    padding: 14px;
+    border: solid 1px var(--color-main);
+    border-radius: var(--border-normal);
+    text-align: center;
+  }
+
+  .chosen {
+    background-color: var(--color-main);
+    color: var(--color-whitish);
+  }
+}

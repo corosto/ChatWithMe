@@ -1,0 +1,15 @@
+.box {
+  display: flex;
+  flex-direction: column;
+  width: fit-content;
+  gap: var(--gap-s);
+}
+
+.title {
+  font-weight: 600;
+  padding-left: 10px;
+}
+
+.button {
+  border-radius: var(--border-max);
+}

@@ -14,13 +14,14 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "ES2022",
+    "target": "es2020",
     "module": "es2020",
     "strictNullChecks": false,
     "resolveJsonModule": true,
     "lib": [
-      "ES2022",
-      "dom"
+      "es2021",
+      "dom",
+      "ES2021.String"
     ],
     "strictPropertyInitialization": false,
     "paths": {

@@ -1,0 +1,55 @@
+<div
+  class="box"
+  [ngClass]="{'cursor-pointer': (filesCounter < 6)}"
+  (click)="(filesCounter < 6) && fileInput.click()"
+>
+  <div class="title">
+    <span>Zdjęcia profilowe</span>
+    <span class="text-secondary">Kliknij aby dodać zdjęcia</span>
+  </div>
+  <div class="container">
+    <input
+      class="file-input"
+      type="file"
+      accept="image/*"
+      multiple
+      #fileInput
+      (change)="onFileSelected($event)"
+    >
+
+    <div
+      *ngFor="let itemIndex of [0,1,2,3,4,5]"
+      class="imageContainer"
+    >
+      <ng-container *ngIf="previews$ | async as preview">
+        <img
+          *ngIf="preview[itemIndex]"
+          [src]="preview[itemIndex]"
+          class="image"
+        />
+        <mat-icon
+          *ngIf="preview[itemIndex] && itemIndex !== 0"
+          class="absolute leftButton"
+          (click)="$event.stopPropagation(); move(itemIndex, -1)"
+        >
+          arrow_back
+        </mat-icon>
+        <mat-icon
+          *ngIf="preview[itemIndex]"
+          class="absolute removeButton"
+          (click)="$event.stopPropagation(); deleteImage(itemIndex)"
+        >
+          delete
+        </mat-icon>
+        <mat-icon
+          *ngIf="preview[itemIndex] && itemIndex+1 !== filesCounter"
+          class="absolute rightButton"
+          (click)="$event.stopPropagation(); move(itemIndex, 1)"
+        >
+          arrow_forward
+        </mat-icon>
+      </ng-container>
+    </div>
+  </div>
+  <span class="text-secondary footer">Dodaj co najmniej dwa zdjęcia, aby przejść dalej</span>
+</div>

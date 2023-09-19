@@ -1,0 +1,10 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-s);
+}
+
+.inline {
+  display: flex;
+  gap: var(--gap-m);
+}

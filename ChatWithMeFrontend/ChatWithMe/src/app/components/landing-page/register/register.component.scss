@@ -1,0 +1,23 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-s);
+
+  margin-inline: 18%;
+  padding-top: 40px;
+}
+
+.box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 22px;
+}
+
+.divider {
+  border: solid var(--color-main);
+  align-self: center;
+  border-width: 1px 0 0 0;
+  padding-bottom: 30px;
+  width: 80%;
+}

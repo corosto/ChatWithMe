@@ -1,0 +1,24 @@
+<span class="center title">Wybierz swoją orientację</span>
+<span class="center text-secondary">Maksymalnie 3</span>
+
+<mat-selection-list #options>
+  <mat-list-option
+    #option
+    *ngFor="let orientation of SEXUAL_ORIENTATIONS_OPTIONS"
+    disableRipple
+    [(selected)]="orientation.isChecked"
+    [disabled]="options.selectedOptions.selected.length > 2 && !option.selected"
+  >
+    {{ orientation.text }}
+  </mat-list-option>
+</mat-selection-list>
+
+<button
+  [disabled]="options.selectedOptions.selected.length <= 0"
+  mat-raised-button
+  disableRipple
+  color="primary"
+  (click)="close()"
+>
+  Dalej
+</button>

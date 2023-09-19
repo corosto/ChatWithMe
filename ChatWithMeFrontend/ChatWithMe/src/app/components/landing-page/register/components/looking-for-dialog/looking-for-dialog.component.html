@@ -1,0 +1,26 @@
+<div class="container">
+  <div class="options">
+    <div
+      *ngFor="let option of LOOKING_FOR_OPTIONS"
+      class="option cursor-pointer"
+      [ngClass]="option.value === chosenOption ? 'chosen' : ''"
+      (click)="setOption(option.value)"
+    >
+      <img
+        width="34px"
+        src='assets/images/{{option.icon}}.svg'
+      >
+      {{ option.text }}
+    </div>
+  </div>
+  <button
+    [disabled]="!chosenOption"
+    mat-raised-button
+    disableRipple
+    color="primary"
+    class="button"
+    (click)="dialogRef.close(chosenOption)"
+  >
+    Dalej
+  </button>
+</div>

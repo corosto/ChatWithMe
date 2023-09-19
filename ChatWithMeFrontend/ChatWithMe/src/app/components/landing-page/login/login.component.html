@@ -1,0 +1,75 @@
+<div class="left flex">
+  <img
+    class="img"
+    src='../assets/images/logo.svg'
+  >
+</div>
+
+<div class="divider big"></div>
+
+<div class="right flex">
+  <form
+    [formGroup]="form"
+    (ngSubmit)="login()"
+    class="form"
+    autocomplete="off"
+  >
+    <h1>Logowanie</h1>
+
+    <my-input
+      label="E-mail"
+      placeholder="Wprowadź adres e-mail"
+      controlName="email"
+      [ppErrorMessage]="{
+        required: 'Wprowadź adres e-mail',
+        pattern: 'Adres e-mail jest nieprawidłowy'
+      }"
+    >
+    </my-input>
+
+    <my-input
+      label="Hasło"
+      placeholder="8-30 znaków, w tym cyfra"
+      controlName="password"
+      [type]="passwordVisible ? 'text' : 'password'"
+      [suffixTemplate]="suffixPassword"
+      [ppErrorMessage]="{
+        required: 'Wprowadź hasło',
+        pattern: 'Hasło powinno zawierać od 8 do 30 znaków, w tym jedna cyfra'
+      }"
+    >
+    </my-input>
+
+    <button
+      [disabled]="!form.valid"
+      mat-raised-button
+      color="primary"
+      class="button"
+    >
+      Zaloguj się
+    </button>
+
+    <div class="divider small"></div>
+
+    <span>
+      Nie masz konta?
+      <a
+        class="link"
+        [routerLink]="REGISTER_LINK"
+      >
+        Stworz je
+      </a>
+    </span>
+  </form>
+</div>
+
+
+<ng-template #suffixPassword>
+  <mat-icon
+    matSuffix
+    class="cursor-pointer"
+    (click)="this.passwordVisible = !this.passwordVisible"
+  >
+    {{ passwordVisible ? 'visibility_off' : 'visibility' }}
+  </mat-icon>
+</ng-template>
