@@ -3,11 +3,13 @@ import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { AuthenticationService } from '@components/landing-page/api/authentication.service';
 import { Subject, takeUntil, tap } from 'rxjs';
 import { UserService } from '@core/services/authorization/user.service';
+import { UserDataComponent } from '@components/user-data/user-data.component';
+import { MatchesComponent } from '@components/matches/matches.component';
 
 @Component({
   selector: 'pp-home',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, MatchesComponent, UserDataComponent],
   providers: [AuthenticationService],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],

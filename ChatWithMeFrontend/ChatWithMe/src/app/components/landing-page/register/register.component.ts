@@ -1,8 +1,12 @@
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
 import { Router, RouterModule } from '@angular/router';
 import { AuthenticationService } from '@components/landing-page/api/authentication.service';
 import { BasicComponent } from '@components/landing-page/register/components/basic/basic.component';
@@ -13,13 +17,14 @@ import { InputComponent } from '@shared/components/input/input.component';
 import { MyDatepickerComponent } from '@shared/components/my-datepicker/my-datepicker.component';
 import { EMAIL_PATTERN, PASSWORD_PATTERN } from '@shared/patterns/valid.pattern';
 import { mustMatch } from '@shared/utils/must-match';
-import { Subject, filter, takeUntil, tap } from 'rxjs';
+import { Subject, filter, map, takeUntil, tap } from 'rxjs';
+import { CityComponent } from './components/city/CityComponent';
 
 @Component({
   selector: 'register',
   standalone: true,
-  imports: [CommonModule, MatIconModule, MatButtonModule, InputComponent, SexRelatedComponent,
-    FormsModule, ReactiveFormsModule, RouterModule, MyDatepickerComponent, BasicComponent, ImageDropdownComponent],
+  imports: [CommonModule, MatIconModule, MatButtonModule, InputComponent, SexRelatedComponent, MatAutocompleteModule, MatFormFieldModule,
+    FormsModule, ReactiveFormsModule, RouterModule, MyDatepickerComponent, BasicComponent, ImageDropdownComponent, MatInputModule, CityComponent],
   providers: [AuthenticationService],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
@@ -37,6 +42,9 @@ export class RegisterComponent implements OnInit {
     weight: [null as string, [Validators.required]],
     birthDate: [null as string, [Validators.required]],
     sex: [null as string, [Validators.required]],
+
+    city: [null as string, [Validators.required]],
+    postalCode: [null as string, [Validators.required]],
 
     showMe: [null as string, [Validators.required]],
     lookingFor: [null as string, [Validators.required]],
@@ -58,12 +66,13 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private authenticationService: AuthenticationService,
+    protected authenticationService: AuthenticationService,
     private router: Router,
+    private http: HttpClient,
   ) { }
 
   ngOnInit(): void {
-    this.form.valueChanges.subscribe((res) => console.log(res));
+    // this.form.valueChanges.subscribe((res) => console.log(res));
   }
 
   register() {

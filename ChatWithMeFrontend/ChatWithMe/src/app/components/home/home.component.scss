@@ -1,0 +1,19 @@
+:host {
+  display: flex;
+  flex-direction: row;
+  height: 100vh;
+}
+
+.left {
+  width: 380px;
+  border-right: 1px solid rgba(121, 121, 121, 0.582);
+  background-color: #333;
+
+  @media (max-width: 1000px) {
+    display: none;
+  }
+}
+
+.right {
+  flex: 1;
+}

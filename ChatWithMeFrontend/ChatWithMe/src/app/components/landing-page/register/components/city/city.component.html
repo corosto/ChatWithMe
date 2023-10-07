@@ -1,0 +1,32 @@
+<my-input
+  controlName="postalCode"
+  label="Kod pocztowy"
+  mask="post-code"
+  placeholder="99-999"
+  [ppErrorMessage]="{
+    required: 'Wprowadź kod',
+    inputMask: 'Kod jest nieprawidłowy'
+  }"
+/>
+
+<mat-form-field
+  hideRequiredMarker
+  appearance="outline"
+>
+  <mat-label>Miasto</mat-label>
+  <input
+    type="text"
+    placeholder="Zacznij pisać"
+    matInput
+    formControlName="city"
+    [matAutocomplete]="auto"
+  >
+  <mat-autocomplete #auto="matAutocomplete">
+    <mat-option
+      *ngFor="let city of cities$ | async"
+      [value]="city"
+    >
+      {{city}}
+    </mat-option>
+  </mat-autocomplete>
+</mat-form-field>

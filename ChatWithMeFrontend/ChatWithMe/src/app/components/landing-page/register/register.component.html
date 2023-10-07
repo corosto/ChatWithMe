@@ -6,16 +6,17 @@
   <basic />
 
   <div class="box">
-    <div class="child">
-      <my-datepicker
-        label="Data urodzenia"
-        controlName="birthDate"
-      />
+    <my-datepicker
+      label="Data urodzenia"
+      controlName="birthDate"
+    />
 
-      <sex-related />
-    </div>
+    <city />
+  </div>
 
-    <image-dropdown class="child" />
+  <div class="box">
+    <sex-related />
+    <image-dropdown />
   </div>
 
   <div class="divider big"></div>
@@ -25,7 +26,7 @@
     mat-raised-button
     color="primary"
   >
-    Dalej
+    Stwórz konto
   </button>
 
   <span>
@@ -38,3 +39,8 @@
     </a>
   </span>
 </form>
+
+<button
+  type="button"
+  (click)="authenticationService.get()"
+>siema</button>

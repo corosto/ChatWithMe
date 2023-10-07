@@ -7,7 +7,7 @@ import { UserService } from '@core/services/authorization/user.service';
 import { LocalStorageService } from '@core/services/localStorage/local-storage.service';
 import { addSeconds } from 'date-fns';
 import jwt_decode from 'jwt-decode';
-import { Observable, of } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 
 @Injectable()
 export class AuthenticationService {
@@ -33,7 +33,8 @@ export class AuthenticationService {
   login(form: FormGroup): Observable<boolean> {
 
 
-    // return this.http.post<UserAuthorization>(`${environment.httpBackend}${Api.LOGIN}`, { ...userData, grantType: "password" }).pipe(
+    // return this.http.post<UserAuthorization>(`${environment.httpBackend}${Api.LOGIN}`, { ...userData, grantType: "password" })
+    // .pipe(
     //   tap((token) => {
     //     this.setUserStorage(token);
     //     this.userService.setUserToken(token.accessToken);
@@ -63,6 +64,14 @@ export class AuthenticationService {
     return of(true);
   }
 
+  //dodac google maps
+  get() {
+    const endpoint = 'http://api.geonames.org/searchJSON?country=PL&featureClass=P&adminCodes1=PL.MZ&maxRows=1000&username=corosto';
+    this.http.get<Geonames>(endpoint).pipe(
+      map((res) => res.geonames.map((result) => result.toponymName)),
+    ).subscribe((res) => console.log(res));
+  }
+
   private setUserStorage(token: UserAuthorization): void {
     const decodedToken: TokenData = jwt_decode(token.accessToken);
 
@@ -75,4 +84,11 @@ export class AuthenticationService {
       refreshToken, email, firstName, id, expires_at: addSeconds(new Date(), exp).toISOString()
     });
   }
+}
+
+export interface Geonames {
+  geonames: {
+    toponymName: string;
+  }[],
+  totalResultsCount: number,
 }

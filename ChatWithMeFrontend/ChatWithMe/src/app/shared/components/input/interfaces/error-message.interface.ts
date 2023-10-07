@@ -4,6 +4,7 @@ export interface ErrorMessage {
   mustMatch: string;
   pattern: string;
   busy: string;
+  inputMask: string;
   incorrect: string;
   maxlength: string;
   minlength: string;

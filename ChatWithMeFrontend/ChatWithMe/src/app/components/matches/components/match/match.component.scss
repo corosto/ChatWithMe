@@ -1,0 +1,62 @@
+.container {
+  width: 100%;
+  height: 100%;
+
+  box-shadow: 0 0.46875rem 2.1875rem rgba(125, 126, 128, 0.03),
+    0 0.9375rem 1.40625rem rgba(125, 126, 128, 0.03),
+    0 0.25rem 0.53125rem rgba(125, 126, 128, 0.05),
+    0 0.125rem 0.1875rem rgba(125, 126, 128, 0.03);
+  border-radius: 8px;
+
+  .image {
+    position: relative;
+    border-radius: 8px;
+    height: 85%;
+
+    background-repeat: no-repeat;
+    background-position: 50% 0;
+    background-size: 121%;
+    //TODO po kliknieciu na zdjecie(rozwinieciu info) background-size zmienia sie na 100%
+    //TODO żeby backend zwracał zdjęcie 640x800 albo w takim ratio -> 4:5
+
+
+    @media (max-width: 1000px) {
+      background-position: 50% 25%;
+      background-size: auto 184%;
+    }
+
+    &:hover {
+      .icon {
+        opacity: 1;
+        transition: .55s;
+      }
+    }
+
+    .icon {
+      opacity: 0;
+      cursor: pointer;
+      position: absolute;
+      top: 50%;
+      font-size: 34px;
+      height: 34px;
+      width: 34px;
+
+      &.right {
+        right: 0;
+      }
+    }
+
+    .blur {
+      width: 100%;
+      height: 15px;
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      transform: rotate(180deg);
+      background: linear-gradient(180deg, rgba(34, 34, 34, 1) 32%, rgba(34, 34, 34, 0.7539390756302521) 52%, rgba(34, 34, 34, 0.41220238095238093) 75%, rgba(34, 34, 34, 0) 100%);
+    }
+  }
+}
+
+// background-position: 50% 18.75%;
+// background-size: auto 147.059%;

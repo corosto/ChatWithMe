@@ -5,7 +5,7 @@ import { LocalStorageService } from '@core/services/localStorage/local-storage.s
 import { Observable } from 'rxjs';
 
 @Injectable()
-  export class AuthInterceptor implements HttpInterceptor {
+export class AuthInterceptor implements HttpInterceptor {
 
   constructor(
     private userService: UserService,
@@ -23,11 +23,13 @@ import { Observable } from 'rxjs';
     //   });
     // }
 
-    request = request.clone({
-      setHeaders: {
-        'Authorization': `bearer ${this.userService.getUserToken()}`,
-      }
-    });
+
+    if (!request.url.includes('geonames'))
+      request = request.clone({
+        setHeaders: {
+          'Authorization': `bearer ${this.userService.getUserToken()}`,
+        }
+      });
 
     return next.handle(request);
   }

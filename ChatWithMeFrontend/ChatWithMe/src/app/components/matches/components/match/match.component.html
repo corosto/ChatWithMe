@@ -1,0 +1,25 @@
+<div class="container">
+  <div
+    class="image"
+    [ngStyle]="{'background-image': 'url('+USER_MOCK.images[currentImage]+')'}"
+  >
+    <mat-icon
+      *ngIf="currentImage !== 0"
+      class="icon"
+      (click)="switchImage(-1)"
+    >chevron_left</mat-icon>
+    <mat-icon
+      *ngIf="currentImage !== USER_MOCK.images.length-1"
+      class="icon right"
+      (click)="switchImage(1)"
+    >chevron_right</mat-icon>
+    <div class="blur"></div>
+    <div class="info">
+      <span class="name">imie</span>
+      <span class="age">wiek</span>
+      <span class="distance">odległość</span>
+      <mat-icon>info</mat-icon>
+    </div>
+  </div>
+  <!-- no; superLike; yes -->
+</div>

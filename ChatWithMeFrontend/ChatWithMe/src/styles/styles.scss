@@ -24,11 +24,6 @@ $frontend-theme: mat.define-dark-theme((color: (primary: $frontend-primary,
 @include mat.all-component-themes($frontend-theme);
 
 :root {
-  --screen-s: 768px;
-  --screen-m: 1064px;
-  --screen-l: 1200px;
-  --screen-xl: 1368px;
-
   --border-max: 18px;
   --border-normal: 8px;
 
@@ -55,8 +50,8 @@ $frontend-theme: mat.define-dark-theme((color: (primary: $frontend-primary,
   --color-font-primary: #F0F2F4;
   --color-font-secondary: #B9BFC8;
   --color-main: #8a6c5f;
-
-  --background-color: #222222;
+  
+  --background-color: #222;
   // --background-color: #2e2c2b;
 }
 

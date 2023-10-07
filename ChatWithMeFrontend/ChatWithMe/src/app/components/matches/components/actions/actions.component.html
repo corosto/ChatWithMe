@@ -1,0 +1,12 @@
+<div class="actions">
+  <div
+    *ngFor="let action of ACTIONS"
+    class="action"
+  >
+    <img
+      width="30px"
+      src='assets/images/{{action.iconName}}.svg'
+    >
+    {{action.text}}
+  </div>
+</div>
