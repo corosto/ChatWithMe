@@ -52,7 +52,9 @@
     type="number"
     [suffixTemplate]="cm"
     [ppErrorMessage]="{
-    required: 'Wprowadź wzrost'
+    required: 'Wprowadź wzrost',
+    min: 'Minimalny wzrost to 110 cm',
+    max: 'Maksymalny wzrost to 240 cm'
   }"
   />
 
@@ -63,7 +65,9 @@
     type="number"
     [suffixTemplate]="kg"
     [ppErrorMessage]="{
-    required: 'Wprowadź wagę'
+    required: 'Wprowadź wagę',
+    min: 'Minimalna waga to 30 cm',
+    max: 'Maksymalna waga to 180 cm'
   }"
   />
 </div>

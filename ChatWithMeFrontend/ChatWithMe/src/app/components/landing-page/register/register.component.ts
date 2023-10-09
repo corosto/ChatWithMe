@@ -10,6 +10,7 @@ import { MatInputModule } from '@angular/material/input';
 import { Router, RouterModule } from '@angular/router';
 import { AuthenticationService } from '@components/landing-page/api/authentication.service';
 import { BasicComponent } from '@components/landing-page/register/components/basic/basic.component';
+import { CityComponent } from '@components/landing-page/register/components/city/city.component';
 import { SexRelatedComponent } from '@components/landing-page/register/components/sex-related/sex-related.component';
 import { RoutesPath } from '@core/enums/routes-path.enum';
 import { ImageDropdownComponent } from '@shared/components/image-dropdown/image-dropdown.component';
@@ -17,8 +18,7 @@ import { InputComponent } from '@shared/components/input/input.component';
 import { MyDatepickerComponent } from '@shared/components/my-datepicker/my-datepicker.component';
 import { EMAIL_PATTERN, PASSWORD_PATTERN } from '@shared/patterns/valid.pattern';
 import { mustMatch } from '@shared/utils/must-match';
-import { Subject, filter, map, takeUntil, tap } from 'rxjs';
-import { CityComponent } from './components/city/CityComponent';
+import { Subject, filter, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'register',
@@ -38,13 +38,13 @@ export class RegisterComponent implements OnInit {
     password: [null as string, [Validators.required, Validators.pattern(PASSWORD_PATTERN)]],
     confirmedPassword: [null as string, [Validators.required]],
 
-    height: [null as string, [Validators.required]],
-    weight: [null as string, [Validators.required]],
+    height: [null as string, [Validators.required, Validators.min(110), Validators.max(240)]],
+    weight: [null as string, [Validators.required, Validators.min(30), Validators.max(180)]],
     birthDate: [null as string, [Validators.required]],
     sex: [null as string, [Validators.required]],
 
-    city: [null as string, [Validators.required]],
-    postalCode: [null as string, [Validators.required]],
+    cityInput: [null as string, [Validators.required]],
+    cityChosen: [null as string, [Validators.required]],
 
     showMe: [null as string, [Validators.required]],
     lookingFor: [null as string, [Validators.required]],
@@ -72,7 +72,7 @@ export class RegisterComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // this.form.valueChanges.subscribe((res) => console.log(res));
+    this.form.valueChanges.subscribe((res) => console.log(res));
   }
 
   register() {

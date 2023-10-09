@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { TokenData, UserAuthorization } from '@components/landing-page/interfaces/authentication-interface';
@@ -7,7 +7,8 @@ import { UserService } from '@core/services/authorization/user.service';
 import { LocalStorageService } from '@core/services/localStorage/local-storage.service';
 import { addSeconds } from 'date-fns';
 import jwt_decode from 'jwt-decode';
-import { Observable, map, of } from 'rxjs';
+import { orderBy, uniqBy } from 'lodash';
+import { Observable, catchError, map, of, tap } from 'rxjs';
 
 @Injectable()
 export class AuthenticationService {
@@ -64,12 +65,29 @@ export class AuthenticationService {
     return of(true);
   }
 
-  //dodac google maps
-  get() {
-    const endpoint = 'http://api.geonames.org/searchJSON?country=PL&featureClass=P&adminCodes1=PL.MZ&maxRows=1000&username=corosto';
-    this.http.get<Geonames>(endpoint).pipe(
-      map((res) => res.geonames.map((result) => result.toponymName)),
-    ).subscribe((res) => console.log(res));
+  getCities(placeName: string): Observable<{ text: string, value: { city: string, height: number, width: number } }[]> {
+    const params = new HttpParams()
+      .set('country', 'PL')
+      .set('placename_startsWith', placeName)
+      .set('maxRows', '500')
+      .set('featureClass', 'P')
+      .set('username', 'corosto');
+
+    const endpoint = `http://api.geonames.org/postalCodeSearchJSON`;
+    return this.http.get<GeoNames>(endpoint, { params }).pipe(
+      map((res) => res.postalCodes),
+      map((res) => uniqBy(res, 'adminCode3')),
+      map((res) => orderBy(res, 'placeName', 'asc')),
+      map((res) => {
+        return res.map((result) => {
+          return {
+            text: `${result?.placeName}, ${result?.adminName2}`,
+            value: { city: result?.placeName, height: result?.lat, width: result?.lng },
+          };
+        });
+      }),
+      catchError(() => of([])),
+    );
   }
 
   private setUserStorage(token: UserAuthorization): void {
@@ -86,9 +104,18 @@ export class AuthenticationService {
   }
 }
 
-export interface Geonames {
-  geonames: {
-    toponymName: string;
-  }[],
-  totalResultsCount: number,
+interface GeoNames {
+  postalCodes: {
+    adminCode1: string,
+    adminCode2: string,
+    adminCode3: string,
+    adminName1: string,
+    adminName2: string,
+    adminName3: string,
+    countryCode: string,
+    lat: number,
+    lng: number,
+    placeName: string,
+    postalCode: string,
+  }[]
 }

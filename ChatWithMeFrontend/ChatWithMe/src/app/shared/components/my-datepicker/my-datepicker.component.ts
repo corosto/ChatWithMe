@@ -7,7 +7,7 @@ import { MatDatepickerInputEvent, MatDatepickerModule } from '@angular/material/
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FULL_MONTH_FORMAT } from '@shared/components/my-datepicker/constants/my-datepicker.const';
-import { format } from 'date-fns';
+import { format, startOfDay, subYears } from 'date-fns';
 
 @Component({
   selector: 'my-datepicker',
@@ -39,8 +39,10 @@ import { format } from 'date-fns';
   ]
 })
 export class MyDatepickerComponent {
-  @Input() controlName: string;
-  @Input() label: string;
+  @Input({ required: true }) controlName: string;
+  @Input({ required: true }) label: string;
+  @Input() min: Date = startOfDay(subYears(new Date(), 99));
+  @Input() max: Date = startOfDay(subYears(new Date(), 18));
 
   constructor(
     private formGroupDirective: FormGroupDirective,

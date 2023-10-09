@@ -1,32 +1,30 @@
-<my-input
-  controlName="postalCode"
-  label="Kod pocztowy"
-  mask="post-code"
-  placeholder="99-999"
-  [ppErrorMessage]="{
-    required: 'Wprowadź kod',
-    inputMask: 'Kod jest nieprawidłowy'
-  }"
-/>
-
 <mat-form-field
   hideRequiredMarker
   appearance="outline"
+  class="form"
 >
   <mat-label>Miasto</mat-label>
   <input
     type="text"
     placeholder="Zacznij pisać"
     matInput
-    formControlName="city"
+    formControlName="cityInput"
     [matAutocomplete]="auto"
   >
   <mat-autocomplete #auto="matAutocomplete">
     <mat-option
       *ngFor="let city of cities$ | async"
-      [value]="city"
+      (onSelectionChange)="save(city.value)"
+      [value]="city.text"
     >
-      {{city}}
+      {{city.text}}
     </mat-option>
   </mat-autocomplete>
+  <mat-hint align="end">Wybrane miasto: <strong>{{cityChosen?.value?.city || '-'}}</strong> </mat-hint>
 </mat-form-field>
+<mat-error
+  *ngIf="cityInput?.touched && (cityChosen?.errors || cityInput?.errors)"
+  class="error"
+>
+  Wybierz miasto
+</mat-error>

@@ -4,7 +4,7 @@
   gap: var(--gap-s);
 
   margin-inline: 18%;
-  padding-top: 40px;
+  padding-block: 40px;
 }
 
 .box {
@@ -12,12 +12,28 @@
   justify-content: space-between;
   align-items: center;
   padding-bottom: 22px;
+  gap: var(--gap-m);
 }
 
 .divider {
   border: solid var(--color-main);
   align-self: center;
-  border-width: 1px 0 0 0;
-  padding-bottom: 30px;
+  border-width: 0 0 1px 0;
+  margin-block: 16px;
   width: 80%;
+}
+
+.align {
+  &--header {
+    align-self: center;
+    padding-bottom: 20px;
+  }
+
+  &--button {
+    align-self: flex-end;
+  }
+
+  &--text {
+    align-self: center;
+  }
 }
