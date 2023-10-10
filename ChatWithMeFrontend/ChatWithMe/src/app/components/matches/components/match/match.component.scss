@@ -55,8 +55,67 @@
       transform: rotate(180deg);
       background: linear-gradient(180deg, rgba(34, 34, 34, 1) 32%, rgba(34, 34, 34, 0.7539390756302521) 52%, rgba(34, 34, 34, 0.41220238095238093) 75%, rgba(34, 34, 34, 0) 100%);
     }
+
+    .box {
+      display: flex;
+      padding-inline: 12px;
+      padding-top: 6px;
+      gap: 6px;
+
+      .progress {
+        flex: 1;
+        border: 2px solid #505965;
+        border-radius: 8px;
+
+        &.current {
+          border-color: white;
+        }
+      }
+    }
+
+    .info {
+      position: absolute;
+      bottom: 60px;
+      left: 20px;
+
+      .name {
+        font-family: 'Roboto';
+        font-size: 34px;
+        line-height: 42px;
+        font-weight: 700;
+        letter-spacing: 0.1px;
+      }
+      
+      .age {
+        padding-left: 10px;
+        font-size: 26px;
+        line-height: 34.125px;
+      }
+
+      .flex {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+    }
+
+    .open {
+      cursor: pointer;
+      position: absolute;
+      right: 15px;
+      bottom: 35px;
+      transition: transform .25s ease;
+
+      &:hover {
+        transform: scale(1.2);
+      }
+    }
   }
 }
 
-// background-position: 50% 18.75%;
-// background-size: auto 147.059%;
+.center {
+  display: flex;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+}

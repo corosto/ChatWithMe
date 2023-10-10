@@ -1,26 +1,51 @@
-<div class="container">
-  <div
-    class="image"
-    [ngStyle]="{'background-image': 'url('+USER_MOCK.images[currentImage]+')'}"
-  >
-    <mat-icon
-      *ngIf="currentImage !== 0"
-      class="icon"
-      (click)="switchImage(-1)"
-    >chevron_left</mat-icon>
-    <mat-icon
-      *ngIf="currentImage !== USER_MOCK.images.length-1"
-      class="icon right"
-      (click)="switchImage(1)"
-    >chevron_right</mat-icon>
-    <div class="blur"></div>
-    <div class="info">
-      <span class="name">imie</span>
-      <span class="age">wiek</span>
-      <span class="city">miasto</span>
-      <span class="distance">odległość</span>
-      <mat-icon>info</mat-icon>
+<ng-container *ngIf="{currentImage: currentImage$ | async} as val">
+  <div class="container">
+    <div
+      *ngIf="match; else loading"
+      class="image"
+      [ngStyle]="{'background-image': 'url('+match.images[val.currentImage]+')'}"
+    >
+      <div class="box">
+        <div
+          *ngFor="let item of match.images; let i=index"
+          class="progress"
+          [class.current]="val.currentImage === i"
+        ></div>
+      </div>
+      <mat-icon
+        *ngIf="val.currentImage !== 0"
+        class="icon"
+        (click)="switchImage(-1)"
+      >chevron_left</mat-icon>
+      <mat-icon
+        *ngIf="val.currentImage !== match.images.length-1"
+        class="icon right"
+        (click)="switchImage(1)"
+      >chevron_right</mat-icon>
+      <div class="blur"></div>
+      <div class="info">
+        <div>
+          <span class="name">{{match.name}}</span>
+          <span class="age">{{match.age}}</span>
+        </div>
+        <div class="flex">
+          <mat-icon class="material-icons-outlined">house</mat-icon>
+          Mieszka w:
+          <span>{{match.city}}</span>
+        </div>
+        <div class="flex">
+          <mat-icon class="material-icons-outlined">place</mat-icon>
+          <span>{{match.distance}} kilometrów stąd</span>
+        </div>
+      </div>
+      <mat-icon class="open">info</mat-icon>
     </div>
+    <!-- no; superLike; yes -->
   </div>
-  <!-- no; superLike; yes -->
-</div>
+</ng-container>
+
+<ng-template #loading>
+  <div class="center">
+    <mat-spinner></mat-spinner>
+  </div>
+</ng-template>

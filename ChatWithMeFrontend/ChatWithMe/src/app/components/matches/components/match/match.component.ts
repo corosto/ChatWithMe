@@ -1,23 +1,34 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { USER_MOCK } from './mock/mock';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { Match } from '@components/matches/components/match/mock/mock';
+import { MatchesService } from '@components/matches/service/matches.service';
+import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'match',
   standalone: true,
-  imports: [CommonModule, MatIconModule],
+  imports: [CommonModule, MatIconModule, MatProgressSpinnerModule],
   templateUrl: './match.component.html',
   styleUrls: ['./match.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MatchComponent {
+export class MatchComponent implements OnInit {
 
-  USER_MOCK = USER_MOCK;
+  @Input() match: Match;
 
-  currentImage = 0;
+  currentImage$: Observable<number> = of(0);
+
+  constructor(
+    private matchesService: MatchesService,
+  ) { }
+
+  ngOnInit(): void {
+    this.currentImage$ = this.matchesService.getImageSwipeListener();
+  }
 
   switchImage(side: number): void {
-    this.currentImage = this.currentImage + side;
+    this.matchesService.setImageSwipeListener(side);
   }
 }
