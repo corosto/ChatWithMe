@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Match, USER_MOCK1, USER_MOCK2, USER_MOCK3 } from '@components/matches/components/match/mock/mock';
+import { MOCKS, Match } from '@components/matches/components/match/mock/mock';
 import { Observable, of } from 'rxjs';
 
 @Injectable()
@@ -9,27 +9,13 @@ export class MatchesApiService {
 
   getNewMatch(): Observable<Match> {
 
-    let value;
+    const value = MOCKS[this.iteration];
 
-    switch (this.iteration) {
-      case 0:
-        value = of(USER_MOCK1);
-        break;
-
-      case 1:
-        value = of(USER_MOCK2);
-        break;
-
-      case 2:
-        value = of(USER_MOCK3);
-        break;
-    }
-
-    if (this.iteration >= 2)
+    if (this.iteration >= MOCKS.length-1)
       this.iteration = 0;
     else
       this.iteration++;
 
-    return value;
+    return of(value);
   }
 }

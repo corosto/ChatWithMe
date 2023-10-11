@@ -1,0 +1,40 @@
+:host {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+
+  position: relative;
+  top: 6px;
+
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.border {
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid;
+  border-radius: 50%;
+  width: fit-content;
+  padding: 22px;
+}
+
+.dislike {
+  border-color: #ee324d;
+}
+
+.superLike {
+  border-color: #32a9fb;
+  padding: 18px;
+}
+
+.like {
+  border-color: #56f9c4;
+}

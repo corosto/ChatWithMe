@@ -1,0 +1,13 @@
+<div
+  *ngFor="let item of actions"
+  class="border"
+  (click)="action(item.value)"
+  [class.dislike]="item.value === 'dislike'"
+  [class.superLike]="item.value === 'superLike'"
+  [class.like]="item.value === 'like'"
+>
+  <img
+    width="34px"
+    src='assets/images/{{item.icon}}-match.svg'
+  >
+</div>

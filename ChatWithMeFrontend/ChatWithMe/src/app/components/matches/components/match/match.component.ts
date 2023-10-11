@@ -3,13 +3,14 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { Match } from '@components/matches/components/match/mock/mock';
+import { MouseActionsComponent } from '@components/matches/components/mouse-actions/mouse-actions.component';
 import { MatchesService } from '@components/matches/service/matches.service';
 import { Observable, of } from 'rxjs';
 
 @Component({
   selector: 'match',
   standalone: true,
-  imports: [CommonModule, MatIconModule, MatProgressSpinnerModule],
+  imports: [CommonModule, MatIconModule, MatProgressSpinnerModule, MouseActionsComponent],
   templateUrl: './match.component.html',
   styleUrls: ['./match.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

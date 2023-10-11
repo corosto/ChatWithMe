@@ -1,16 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, HostListener, Output } from '@angular/core';
-import { ACTIONS, action } from '@components/matches/components/actions/constants/actions.const';
+import { ACTIONS, action } from '@components/matches/components/keyboard-actions/constants/actions.const';
 
 @Component({
-  selector: 'actions',
+  selector: 'keyboard-actions',
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './actions.component.html',
-  styleUrls: ['./actions.component.scss'],
+  templateUrl: './keyboard-actions.component.html',
+  styleUrls: ['./keyboard-actions.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ActionsComponent {
+export class KeyboardActionsComponent {
   @HostListener('window:keydown', ['$event']) onKeypress(event: KeyboardEvent) {
     if (window.innerWidth > 1000)
       switch (event.code) {

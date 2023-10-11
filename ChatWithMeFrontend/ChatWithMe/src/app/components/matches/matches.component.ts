@@ -1,17 +1,17 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatchesApiService } from '@components/matches/api/matches-api.service';
-import { ActionsComponent } from '@components/matches/components/actions/actions.component';
-import { action } from '@components/matches/components/actions/constants/actions.const';
+import { KeyboardActionsComponent } from '@components/matches/components/keyboard-actions/keyboard-actions.component';
+import { action } from '@components/matches/components/keyboard-actions/constants/actions.const';
 import { MatchComponent } from '@components/matches/components/match/match.component';
 import { Match } from '@components/matches/components/match/mock/mock';
 import { MatchesService } from '@components/matches/service/matches.service';
-import { Observable, filter, switchMap, tap } from 'rxjs';
+import { Observable, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'matches',
   standalone: true,
-  imports: [CommonModule, ActionsComponent, MatchComponent],
+  imports: [CommonModule, KeyboardActionsComponent, MatchComponent],
   providers: [MatchesApiService, MatchesService],
   templateUrl: './matches.component.html',
   styleUrls: ['./matches.component.scss'],
@@ -55,7 +55,6 @@ export class MatchesComponent implements OnInit {
 }
 
 //dodac akcje na klawie: gora, dol
-//dodac przyciski like/dislike/superlike
 //wiecej informacji po rozwinieciu opisu(wszystko co jest mozliwe przy rejestracji pokazac)
 //animacja like/dislike/superlike(w sensie przesuwanie sie zdjecia w bok i dopiska like/dislike)
 //to chyba bedzie koniec matcha, pozniej brac sie za menu z lewej a na koncu chat

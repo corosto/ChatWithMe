@@ -2,6 +2,7 @@ interests-dialog {
   display: flex;
   flex-direction: column;
   padding: 14px 20px;
+  position: relative;
 
   .center {
     align-self: center;
@@ -13,7 +14,14 @@ interests-dialog {
   }
 
   .button {
-    margin-top: 12px;
+    position: sticky;
+    bottom: 6px;
+    margin-top: 6px;
+    z-index: 2;
+  }
+
+  .mat-mdc-raised-button:disabled {
+    background-color: var(--color-main);
   }
 
   .mdc-evolution-chip-set__chips {
