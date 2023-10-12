@@ -1,24 +1,14 @@
 <div class="inline">
   <my-input
-    label="Imię"
-    controlName="firstName"
-    [ppErrorMessage]="{
-    required: 'Imię jest wymagane'
-  }"
-  />
-
-  <my-input
     label="E-mail"
     placeholder="Wprowadź adres e-mail"
     controlName="email"
     [ppErrorMessage]="{
-    required: 'Wprowadź adres e-mail',
-    pattern: 'Adres e-mail jest nieprawidłowy'
-  }"
+      required: 'Wprowadź adres e-mail',
+      pattern: 'Adres e-mail jest nieprawidłowy'
+    }"
   />
-</div>
 
-<div class="inline">
   <my-input
     label="Hasło"
     placeholder="8 - 30 znaków, w tym cyfra"
@@ -46,6 +36,23 @@
 
 <div class="inline">
   <my-input
+    label="Imię"
+    controlName="firstName"
+    [ppErrorMessage]="{
+    required: 'Imię jest wymagane'
+  }"
+  />
+
+  <my-datepicker
+    label="Data urodzenia"
+    controlName="birthDate"
+  />
+
+  <city />
+</div>
+
+<div class="inline">
+  <my-input
     label="Wzrost"
     placeholder="Wprowadź wzrost"
     controlName="height"
@@ -66,8 +73,8 @@
     [suffixTemplate]="kg"
     [ppErrorMessage]="{
     required: 'Wprowadź wagę',
-    min: 'Minimalna waga to 30 cm',
-    max: 'Maksymalna waga to 180 cm'
+    min: 'Minimalna waga to 30 kg',
+    max: 'Maksymalna waga to 180 kg'
   }"
   />
 </div>

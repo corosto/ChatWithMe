@@ -1,6 +1,6 @@
 import { ComponentType, NoopScrollStrategy } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
 import { FormGroupDirective } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -20,8 +20,15 @@ export class AddButtonWithDialogComponent<T> implements OnDestroy {
   @Input({ required: true }) formName: string;
   @Input({ required: true }) title: string;
   @Input({ required: true }) buttonText: string;
+  @Input({ required: true }) set value(dataString: string | string[]) {
+    this.valueDisplay = Array.isArray(dataString) ? dataString.join(', ') : dataString;
+  }
   @Input() dialogHeight = '400px';
   @Input({ required: true }) component: ComponentType<T>;
+
+  @Output() valueChanged = new EventEmitter();
+
+  valueDisplay: string;
 
   private onDestroy$ = new Subject<void>();
 
@@ -51,6 +58,7 @@ export class AddButtonWithDialogComponent<T> implements OnDestroy {
     dialogRef.afterClosed().pipe(
       filter((res) => !!res),
       tap((res) => formValue.patchValue(res as string | string[])),
+      tap(() => this.valueChanged.emit()),
       takeUntil(this.onDestroy$),
     ).subscribe();
   }

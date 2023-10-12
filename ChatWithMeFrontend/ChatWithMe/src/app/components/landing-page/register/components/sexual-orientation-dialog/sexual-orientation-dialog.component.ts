@@ -24,7 +24,7 @@ export class SexualOrientationDialogComponent implements OnInit {
 
   ngOnInit(): void {
     this.SEXUAL_ORIENTATIONS_OPTIONS.forEach((option) => {
-      const matching = this.data?.find((res) => res === option.value);
+      const matching = this.data?.find((res) => res === option.text);
 
       if (matching)
         option.isChecked = true;
@@ -33,6 +33,6 @@ export class SexualOrientationDialogComponent implements OnInit {
 
   close(): void {
     const filtered = this.SEXUAL_ORIENTATIONS_OPTIONS.filter((res) => !!res.isChecked);
-    this.dialogRef.close(filtered.map((res) => res.value));
+    this.dialogRef.close(filtered.map((res) => res.text));
   }
 }

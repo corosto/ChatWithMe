@@ -1,46 +1,52 @@
 <div class="box">
   <span class="title">Płeć</span>
   <mat-chip-listbox formControlName="sex">
-    <mat-chip-option value="male">Mężczyzna</mat-chip-option>
-    <mat-chip-option value="female">Kobieta</mat-chip-option>
-    <mat-chip-option value="other">Inne</mat-chip-option>
+    <mat-chip-option>Mężczyzna</mat-chip-option>
+    <mat-chip-option>Kobieta</mat-chip-option>
+    <mat-chip-option>Inne</mat-chip-option>
   </mat-chip-listbox>
 </div>
 
 <div class="box">
   <span class="title">Pokaż mi</span>
   <mat-chip-listbox formControlName="showMe">
-    <mat-chip-option value="male">Mężczyzn</mat-chip-option>
-    <mat-chip-option value="female">Kobiety</mat-chip-option>
-    <mat-chip-option value="all">Wszyscy</mat-chip-option>
+    <mat-chip-option>Mężczyzn</mat-chip-option>
+    <mat-chip-option>Kobiety</mat-chip-option>
+    <mat-chip-option>Wszystkich</mat-chip-option>
   </mat-chip-listbox>
 </div>
 
 <div class="box">
   <add-button-with-dialog
     formName="lookingFor"
-    title="Szukam"
+    title="Szukam:"
+    [value]="lookingFor"
     buttonText="Czego szukasz?"
     [component]="LookingForDialogComponent"
+    (valueChanged)="valueChanged('lookingFor')"
   />
 </div>
 
 <div class="box">
   <add-button-with-dialog
     formName="sexualOrientation"
-    title="Orientacja seksualna"
+    title="Orientacja seksualna:"
+    [value]="sexualOrientation"
     buttonText="Dodaj orientację seksualną"
     dialogHeight="570px"
     [component]="SexualOrientationDialogComponent"
+    (valueChanged)="valueChanged('sexualOrientation')"
   />
 </div>
 
 <div class="box">
   <add-button-with-dialog
     formName="interests"
-    title="Zainteresowania"
+    title="Zainteresowania:"
+    [value]="interests"
     buttonText="Dodaj zainteresowania"
     dialogHeight="450px"
     [component]="InterestsDialogComponent"
+    (valueChanged)="valueChanged('interests')"
   />
 </div>

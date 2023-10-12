@@ -3,8 +3,8 @@
     <div
       *ngFor="let option of LOOKING_FOR_OPTIONS"
       class="option cursor-pointer"
-      [ngClass]="option.value === chosenOption ? 'chosen' : ''"
-      (click)="setOption(option.value)"
+      [ngClass]="option.text === chosenOption ? 'chosen' : ''"
+      (click)="setOption(option.text)"
     >
       <img
         width="34px"

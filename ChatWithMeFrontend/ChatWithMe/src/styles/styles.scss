@@ -49,10 +49,9 @@ $frontend-theme: mat.define-dark-theme((color: (primary: $frontend-primary,
 
   --color-font-primary: #F0F2F4;
   --color-font-secondary: #B9BFC8;
-  --color-main: #8a6c5f;
-  
-  --background-color: #222;
-  // --background-color: #2e2c2b;
+
+  --color-main: #445968;
+  --background-color: #222324;
 }
 
 * {
@@ -79,6 +78,15 @@ body {
   font-family: 'MainFont', "Open Sans", Roboto, "Helvetica Neue", sans-serif;
   font-size: var(--font-m);
   font-weight: 400;
+
+  &::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 15px;
+    background-color: var(--color-main);
+  }
 }
 
 .cursor-pointer {

@@ -8,19 +8,19 @@
   <basic />
 
   <div class="box">
-    <my-datepicker
-      label="Data urodzenia"
-      controlName="birthDate"
-    />
-
-    <city />
-  </div>
-
-  <div class="box">
     <sex-related />
     <image-dropdown />
   </div>
 
+  <button
+    class="additional"
+    mat-raised-button
+    color="primary"
+    type="button"
+    (click)="openAdditionalDialog()"
+  >
+    Dodatkowe informacje
+  </button>
 
   <button
     [disabled]="!form.valid"

@@ -6,10 +6,24 @@
 }
 
 .title {
-  font-weight: 600;
+  font-weight: 500;
   padding-left: 10px;
 }
 
 .button {
   border-radius: var(--border-max);
+  width: fit-content;
+}
+
+.restrict {
+  font-weight: 600;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 360px;
+}
+
+.flex {
+  display: flex;
 }
