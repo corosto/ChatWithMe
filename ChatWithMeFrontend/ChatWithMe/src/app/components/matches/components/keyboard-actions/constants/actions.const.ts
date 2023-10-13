@@ -16,6 +16,10 @@ export const ACTIONS: Action[] = [
     text: 'Zamknij profil',
   },
   {
+    iconName: 'enter',
+    text: 'Super like',
+  },
+  {
     iconName: 'space',
     text: 'Następne zdjęcie',
   },
@@ -26,4 +30,4 @@ export interface Action {
   text: string,
 }
 
-export type action = 'left' | 'right' | 'up' | 'down' | 'space';
+export type action = 'left' | 'right' | 'up' | 'down' | 'enter' | 'space';

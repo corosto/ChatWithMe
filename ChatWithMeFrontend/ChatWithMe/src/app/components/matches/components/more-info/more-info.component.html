@@ -1,0 +1,126 @@
+<div class="box">
+  <div>
+    <span class="name">{{match.name}}</span>
+    <span class="age">{{match.age}}</span>
+  </div>
+  <div class="flex">
+    <mat-icon class="material-icons-outlined">house</mat-icon>
+    Mieszka w:
+    <span>{{match.city}}</span>
+  </div>
+  <div class="flex">
+    <mat-icon class="material-icons-outlined">place</mat-icon>
+    <span>{{match.distance}} kilometrów stąd</span>
+  </div>
+  <div class="flex">
+    <mat-icon class="material-icons-outlined">height</mat-icon>
+    <span>{{match.height}} cm wzrostu</span>
+  </div>
+  <div class="flex">
+    <mat-icon class="material-icons-outlined">scale</mat-icon>
+    <span>{{match.weight}} kg żywej masy</span>
+  </div>
+</div>
+
+<div
+  *ngIf="match.description"
+  class="box description no-border"
+>
+  {{match.description}}
+</div>
+
+<div class="box no-border">
+  <looking-for-box [lookingFor]="match.lookingFor" />
+</div>
+
+<div class="box">
+  <h2 class="title">Więcej o mnie</h2>
+  <mat-chip-set>
+    <mat-chip *ngIf="match.pets">
+      <mat-icon matChipAvatar>auto_awesome</mat-icon>
+      {{match.zodiac}}
+    </mat-chip>
+    <mat-chip *ngIf="match.education">
+      <mat-icon matChipAvatar>schools</mat-icon>
+      {{match.education}}
+    </mat-chip>
+    <mat-chip *ngIf="match.kids">
+      <mat-icon matChipAvatar>family_restroom</mat-icon>
+      {{match.kids}}
+    </mat-chip>
+  </mat-chip-set>
+</div>
+
+<div class="box">
+  <h2 class="title">Lifestyle</h2>
+  <mat-chip-set>
+    <mat-chip *ngIf="match.pets">
+      <mat-icon matChipAvatar>pets</mat-icon>
+      {{match.pets}}
+    </mat-chip>
+    <mat-chip *ngIf="match.alcohol">
+      <mat-icon matChipAvatar>wine_bar</mat-icon>
+      {{match.alcohol}}
+    </mat-chip>
+    <mat-chip *ngIf="match.smoking">
+      <mat-icon matChipAvatar>smoking_rooms</mat-icon>
+      {{match.smoking}}
+    </mat-chip>
+    <mat-chip *ngIf="match.gym">
+      <mat-icon matChipAvatar>fitness_center</mat-icon>
+      {{match.gym}}
+    </mat-chip>
+    <mat-chip *ngIf="match.diet">
+      <mat-icon matChipAvatar>local_pizza</mat-icon>
+      {{match.diet}}
+    </mat-chip>
+  </mat-chip-set>
+</div>
+
+<div class="box">
+  <h2 class="title">Szkoła i praca</h2>
+  <div
+    *ngIf="match.school"
+    class="item"
+  >
+    <h4>Szkoła</h4>
+    {{match.school}}
+  </div>
+  <div
+    *ngIf="match.work"
+    class="item"
+  >
+    <h4>Praca</h4>
+    {{match.work}}
+  </div>
+  <div
+    *ngIf="match.position"
+    class="item"
+  >
+    <h4>Stanowisko</h4>
+    {{match.position}}
+  </div>
+</div>
+
+<div class="box">
+  <h2 class="title">Zainteresowania</h2>
+  <mat-chip-set>
+    <mat-chip *ngFor="let interest of match.interests">
+      {{interest}}
+    </mat-chip>
+  </mat-chip-set>
+</div>
+
+<div class="box no-border">
+  <h2 class="title">Inne</h2>
+  <div class="item">
+    <h4>Płeć</h4>
+    {{match.sex}}
+  </div>
+  <div>
+    <h4>Orientacja seksualna</h4>
+    <ng-container *ngFor="let item of match.sexualOrientations; let last=last">
+      {{item}}<span *ngIf="!last">,</span>
+    </ng-container>
+  </div>
+</div>

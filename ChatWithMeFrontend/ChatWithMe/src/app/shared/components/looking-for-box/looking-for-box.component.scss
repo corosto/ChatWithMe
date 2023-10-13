@@ -1,0 +1,44 @@
+.container {
+  padding: 10px 13px;
+  width: fit-content;
+  border-radius: 8px;
+
+  display: flex;
+  gap: 8px;
+}
+
+.flex {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.heart {
+  color: #ba52f5;
+  background-color: #200030;
+}
+
+.love {
+  color: #f13b2d;
+  background-color: #2f0701;
+}
+
+.champagne {
+  color: #cd7105;
+  background-color: #2d1000;
+}
+
+.party {
+  color: #129e68;
+  background-color: #001916;
+}
+
+.wave {
+  color: #199a9f;
+  background-color: #031619;
+}
+
+.think {
+  color: #1786ff;
+  background-color: #00132e;
+}

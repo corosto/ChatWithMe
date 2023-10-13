@@ -26,6 +26,9 @@ export class KeyboardActionsComponent {
         case 'ArrowDown':
           this.action.emit('down');
           break;
+        case 'Enter':
+          this.action.emit('enter');
+          break;
         case 'Space':
           this.action.emit('space');
           break;

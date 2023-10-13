@@ -1,5 +1,8 @@
 <ng-container *ngIf="{currentImage: currentImage$ | async} as val">
-  <div class="container">
+  <div
+    class="container"
+    [class.details]="expanded$ | async"
+  >
     <div
       *ngIf="match; else loading"
       class="image"
@@ -22,8 +25,14 @@
         class="icon right"
         (click)="switchImage(1)"
       >chevron_right</mat-icon>
-      <div class="blur"></div>
-      <div class="info">
+      <div
+        *ngIf="(expanded$ | async) === false"
+        class="blur"
+      ></div>
+      <div
+        *ngIf="(expanded$ | async) === false"
+        class="info"
+      >
         <div>
           <span class="name">{{match.name}}</span>
           <span class="age">{{match.age}}</span>
@@ -38,12 +47,30 @@
           <span>{{match.distance}} kilometrów stąd</span>
         </div>
       </div>
-      <mat-icon class="open">info</mat-icon>
+      <mat-icon
+        class="open"
+        (click)="toggleOpened()"
+      >info</mat-icon>
     </div>
 
-    <mouse-actions />
+    <mouse-actions
+      *ngIf="(expanded$ | async) === false"
+      class="actions"
+      [isExpanded]="expanded$ | async"
+    />
+
+    <more-info
+      *ngIf="match && expanded$ | async"
+      [match]="match"
+    />
   </div>
 </ng-container>
+
+<mouse-actions
+  *ngIf="(expanded$ | async)"
+  class="actions actions-expanded"
+  [isExpanded]="expanded$ | async"
+/>
 
 <ng-template #loading>
   <div class="center">

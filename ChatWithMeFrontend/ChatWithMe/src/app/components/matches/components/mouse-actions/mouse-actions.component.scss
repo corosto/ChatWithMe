@@ -4,9 +4,6 @@
   align-items: center;
   gap: 14px;
 
-  position: relative;
-  top: 6px;
-
   -webkit-touch-callout: none;
   -webkit-user-select: none;
   -khtml-user-select: none;
@@ -37,4 +34,13 @@
 
 .like {
   border-color: #56f9c4;
+}
+
+.expanded {
+  background-color: #111418;
+  border-color: transparent;
+  box-shadow: 0 0.46875rem 1.975rem rgba(125, 126, 128, 0.03),
+    0 0.9375rem 0.70625rem rgba(125, 126, 128, 0.03),
+    0 0.25rem 0.26125rem rgba(125, 126, 128, 0.05),
+    0 0.125rem 0.0975rem rgba(125, 126, 128, 0.03);
 }

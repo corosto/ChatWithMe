@@ -5,7 +5,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class MatchesService {
 
   private imageSwipeListener$ = new BehaviorSubject<number>(0);
-  private matchSwipeListener$ = new BehaviorSubject<boolean>(false);
+  private matchSwipeListener$ = new BehaviorSubject<'like' | 'dislike' | 'superLike'>(null);
   private profileOpenClosedListener$ = new BehaviorSubject<boolean>(false);
   private imagesCount$ = new BehaviorSubject<number>(null);
 
@@ -23,13 +23,19 @@ export class MatchesService {
   }
 
   // true - like, false - dislike
-  setMatchSwipeListener(data: boolean) {
+  setMatchSwipeListener(data: 'like' | 'dislike' | 'superLike') {
+    this.profileOpenClosedListener$.next(false);
     this.imageSwipeListener$.next(0);
     this.matchSwipeListener$.next(data);
   }
 
-  getMatchSwipeListener(): Observable<boolean> {
+  getMatchSwipeListener(): Observable<'like' | 'dislike' | 'superLike'> {
     return this.matchSwipeListener$.asObservable();
+  }
+
+  //toggle na przycisku info
+  setProfileClosedToggleListener() {
+    this.profileOpenClosedListener$.next(!this.profileOpenClosedListener$.value);
   }
 
   // true - otwarcie, false - zamknięcie

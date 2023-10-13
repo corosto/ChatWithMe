@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { MatchesService } from '@components/matches/service/matches.service';
 
 @Component({
@@ -11,7 +11,10 @@ import { MatchesService } from '@components/matches/service/matches.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class MouseActionsComponent {
-  actions: { icon: string, value: 'like' | 'superLike' | 'dislike' }[] = [
+
+  @Input() isExpanded: boolean;
+
+  actions: { icon: string, value: 'like' | 'dislike' | 'superLike' }[] = [
     {
       icon: 'cancel',
       value: 'dislike',
@@ -30,10 +33,17 @@ export class MouseActionsComponent {
     private matchesService: MatchesService,
   ) { }
 
-  action(action: 'like' | 'superLike' | 'dislike'): void {
-    if (action === 'like' || action === 'superLike')
-      this.matchesService.setMatchSwipeListener(true);
-    else
-      this.matchesService.setMatchSwipeListener(false);
+  action(action: 'like' | 'dislike' | 'superLike'): void {
+    switch (action) {
+      case 'like':
+        this.matchesService.setMatchSwipeListener('like');
+        break;
+      case 'dislike':
+        this.matchesService.setMatchSwipeListener('dislike');
+        break;
+      case 'superLike':
+        this.matchesService.setMatchSwipeListener('superLike');
+        break;
+    }
   }
 }
