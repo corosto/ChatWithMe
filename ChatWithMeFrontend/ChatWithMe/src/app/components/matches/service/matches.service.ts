@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
+import { LikeTypes } from '@components/matches/components/match/mock/mock';
+import { differenceInMilliseconds } from 'date-fns';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable()
 export class MatchesService {
 
   private imageSwipeListener$ = new BehaviorSubject<number>(0);
-  private matchSwipeListener$ = new BehaviorSubject<'like' | 'dislike' | 'superLike'>(null);
+  private matchSwipeListener$ = new BehaviorSubject<LikeTypes>(null);
   private profileOpenClosedListener$ = new BehaviorSubject<boolean>(false);
   private imagesCount$ = new BehaviorSubject<number>(null);
-
+  private previousTime: Date;
 
   // 1 - następne zdjęcie, -1 poprzednie zdjęcie
   setImageSwipeListener(data: number) {
@@ -22,14 +24,19 @@ export class MatchesService {
     return this.imageSwipeListener$.asObservable();
   }
 
-  // true - like, false - dislike
-  setMatchSwipeListener(data: 'like' | 'dislike' | 'superLike') {
-    this.profileOpenClosedListener$.next(false);
-    this.imageSwipeListener$.next(0);
-    this.matchSwipeListener$.next(data);
+  setMatchSwipeListener(data: LikeTypes) {
+    const now = new Date();
+    const millisecondsSincePreviousEvent = differenceInMilliseconds(now, this.previousTime);
+
+    if (millisecondsSincePreviousEvent >= 1250 || !this.previousTime) {
+      this.previousTime = new Date();
+      this.profileOpenClosedListener$.next(false);
+      this.imageSwipeListener$.next(0);
+      this.matchSwipeListener$.next(data);
+    }
   }
 
-  getMatchSwipeListener(): Observable<'like' | 'dislike' | 'superLike'> {
+  getMatchSwipeListener(): Observable<LikeTypes> {
     return this.matchSwipeListener$.asObservable();
   }
 

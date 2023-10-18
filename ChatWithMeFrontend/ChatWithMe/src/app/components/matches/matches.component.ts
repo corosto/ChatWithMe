@@ -6,7 +6,7 @@ import { KeyboardActionsComponent } from '@components/matches/components/keyboar
 import { MatchComponent } from '@components/matches/components/match/match.component';
 import { Match } from '@components/matches/components/match/mock/mock';
 import { MatchesService } from '@components/matches/service/matches.service';
-import { Observable, switchMap, tap } from 'rxjs';
+import { Observable, debounceTime, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'matches',
@@ -28,6 +28,7 @@ export class MatchesComponent implements OnInit {
 
   ngOnInit(): void {
     this.currentMatch$ = this.matchesService.getMatchSwipeListener().pipe(
+      debounceTime(1230),
       switchMap(() => this.matchesApiService.getNewMatch()),
       tap((res) => this.matchesService.setImagesCount(res.images.length))
     );
@@ -56,5 +57,3 @@ export class MatchesComponent implements OnInit {
     }
   }
 }
-
-//animacja like/dislike/superlike(w sensie przesuwanie sie zdjecia w bok i dopiska like/dislike)

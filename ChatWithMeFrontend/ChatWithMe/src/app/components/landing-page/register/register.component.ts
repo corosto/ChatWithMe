@@ -99,6 +99,7 @@ export class RegisterComponent implements OnInit {
   openAdditionalDialog(): void {
     const dialogRef = this.dialog.open(AdditionalDialogComponent, {
       data: this.form.value,
+      panelClass: 'changeDialogScrollView',
       width: '400px',
       maxHeight: '600px',
       disableClose: true,

@@ -7,7 +7,20 @@
       *ngIf="match; else loading"
       class="image"
       [ngStyle]="{'background-image': 'url('+match.images[val.currentImage]+')'}"
+      [ngClass]="swipeAction$ | async"
     >
+      <div
+        *ngIf="(swipeAction$ | async) === 'like'"
+        class="like label"
+      >POLUB</div>
+      <div
+        *ngIf="(swipeAction$ | async) === 'superLike'"
+        class="superLike label"
+      >SUPER LIKE</div>
+      <div
+        *ngIf="(swipeAction$ | async) === 'dislike'"
+        class="dislike label"
+      ><span class="move">ŻEGNAM</span></div>
       <div class="box">
         <div
           *ngFor="let item of match.images; let i=index"

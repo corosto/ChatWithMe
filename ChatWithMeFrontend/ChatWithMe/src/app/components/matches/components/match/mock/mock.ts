@@ -260,3 +260,5 @@ export interface Match {
   sex: string,
   sexualOrientations: string[],
 }
+
+export type LikeTypes = 'like' | 'dislike' | 'superLike';
