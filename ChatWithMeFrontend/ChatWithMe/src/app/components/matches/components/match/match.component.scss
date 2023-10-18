@@ -218,17 +218,17 @@
 
 @keyframes animLike {
   0% {
-    right: 0;
+    left: 0;
   }
 
   25% {
-    right: 0;
+    left: 0;
     transform: rotate(0);
   }
 
   100% {
-    right: 450%;
-    transform: rotate(-50deg);
+    left: 450%;
+    transform: rotate(50deg);
   }
 }
 
@@ -250,16 +250,16 @@
 
 @keyframes animDislike {
   0% {
-    left: 0;
+    right: 0;
   }
 
   25% {
-    left: 0;
+    right: 0;
     transform: rotate(0);
   }
 
   100% {
-    left: 450%;
-    transform: rotate(50deg);
+    right: 450%;
+    transform: rotate(-50deg);
   }
 }
