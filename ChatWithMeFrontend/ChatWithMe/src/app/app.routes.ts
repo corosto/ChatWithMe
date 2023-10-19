@@ -19,6 +19,11 @@ export const routes: Route[] = [
     canActivate: [userAuthenticated],
   },
   {
+    path: RoutesPath.SETTINGS,
+    loadComponent: () => import('@components/settings/settings.component').then(m => m.SettingsComponent),
+    canActivate: [userAuthenticated],
+  },
+  {
     path: '**',
     redirectTo: RoutesPath.LOGIN,
   },

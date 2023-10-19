@@ -1,0 +1,45 @@
+<ng-container *ngIf="{ expanded: expanded$ | async } as val">
+  <div
+    *ngIf="{match: currentMatch$ | async} as res"
+    class="container"
+    [class.details]="val.expanded"
+  >
+    <ng-container *ngIf="isLoaded$ | async; else loading">
+      <match-image
+        *ngIf="res.match; else noData"
+        [match]="res.match"
+        [expanded]="val.expanded"
+        [swipeAction]="swipeAction$ | async"
+      />
+    </ng-container>
+
+    <mouse-actions
+      *ngIf="!val.expanded"
+      class="actions"
+      [isExpanded]="val.expanded"
+    />
+
+    <more-info
+      *ngIf="res.match && val.expanded"
+      [match]="res.match"
+    />
+  </div>
+
+  <mouse-actions
+    *ngIf="val.expanded"
+    class="actions actions-expanded"
+    [isExpanded]="val.expanded"
+  />
+</ng-container>
+
+<ng-template #noData>
+  <div class="center">
+    Brak wyników dla wybranych kryteriów
+  </div>
+</ng-template>
+
+<ng-template #loading>
+  <div class="center">
+    <mat-spinner></mat-spinner>
+  </div>
+</ng-template>

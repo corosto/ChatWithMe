@@ -1,0 +1,66 @@
+<ng-container *ngIf="{currentImageIndex: currentImageIndex$ | async} as val">
+  <div
+    class="image"
+    [ngStyle]="{'background-image': 'url('+match.images[val.currentImageIndex]+')'}"
+    [ngClass]="swipeAction"
+  >
+
+    <div
+      *ngIf="swipeAction === 'like'"
+      class="like label"
+    >POLUB</div>
+    <div
+      *ngIf="swipeAction === 'superLike'"
+      class="superLike label"
+    >SUPER LIKE</div>
+    <div
+      *ngIf="swipeAction === 'dislike'"
+      class="dislike label"
+    ><span class="move">ŻEGNAM</span>
+    </div>
+
+    <div class="box">
+      <div
+        *ngFor="let item of match.images; let i=index"
+        class="progress"
+        [class.current]="val.currentImageIndex === i"
+      ></div>
+    </div>
+
+    <mat-icon
+      *ngIf="val.currentImageIndex !== 0"
+      class="icon"
+      (click)="switchImage(-1)"
+    >chevron_left</mat-icon>
+    <mat-icon
+      *ngIf="val.currentImageIndex !== match.images.length-1"
+      class="icon right"
+      (click)="switchImage(1)"
+    >chevron_right</mat-icon>
+
+    <ng-container *ngIf="!expanded || isUserProfile">
+      <div class="blur"></div>
+      <div class="info">
+        <div>
+          <span class="name">{{match.name}}</span>
+          <span class="age">{{match.age}}</span>
+        </div>
+        <div class="flex">
+          <mat-icon class="material-icons-outlined">house</mat-icon>
+          Mieszka w:
+          <span>{{match.city}}</span>
+        </div>
+        <div class="flex">
+          <mat-icon class="material-icons-outlined">place</mat-icon>
+          <span>{{match.distance}} kilometrów stąd</span>
+        </div>
+      </div>
+    </ng-container>
+
+    <mat-icon
+      *ngIf="!isUserProfile"
+      class="open"
+      (click)="toggleOpened()"
+    >info</mat-icon>
+  </div>
+</ng-container>
