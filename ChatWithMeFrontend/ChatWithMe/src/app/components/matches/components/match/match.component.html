@@ -1,70 +1,73 @@
 <ng-container *ngIf="{currentImage: currentImage$ | async} as val">
   <div
+    *ngIf="{match: currentMatch$ | async} as res"
     class="container"
     [class.details]="expanded$ | async"
   >
-    <div
-      *ngIf="match; else loading"
-      class="image"
-      [ngStyle]="{'background-image': 'url('+match.images[val.currentImage]+')'}"
-      [ngClass]="swipeAction$ | async"
-    >
+    <ng-container *ngIf="isLoaded$ | async; else loading">
       <div
-        *ngIf="(swipeAction$ | async) === 'like'"
-        class="like label"
-      >POLUB</div>
-      <div
-        *ngIf="(swipeAction$ | async) === 'superLike'"
-        class="superLike label"
-      >SUPER LIKE</div>
-      <div
-        *ngIf="(swipeAction$ | async) === 'dislike'"
-        class="dislike label"
-      ><span class="move">ŻEGNAM</span></div>
-      <div class="box">
-        <div
-          *ngFor="let item of match.images; let i=index"
-          class="progress"
-          [class.current]="val.currentImage === i"
-        ></div>
-      </div>
-      <mat-icon
-        *ngIf="val.currentImage !== 0"
-        class="icon"
-        (click)="switchImage(-1)"
-      >chevron_left</mat-icon>
-      <mat-icon
-        *ngIf="val.currentImage !== match.images.length-1"
-        class="icon right"
-        (click)="switchImage(1)"
-      >chevron_right</mat-icon>
-      <div
-        *ngIf="(expanded$ | async) === false"
-        class="blur"
-      ></div>
-      <div
-        *ngIf="(expanded$ | async) === false"
-        class="info"
+        *ngIf="res.match; else noData"
+        class="image"
+        [ngStyle]="{'background-image': 'url('+res.match.images[val.currentImage]+')'}"
+        [ngClass]="swipeAction$ | async"
       >
-        <div>
-          <span class="name">{{match.name}}</span>
-          <span class="age">{{match.age}}</span>
+        <div
+          *ngIf="(swipeAction$ | async) === 'like'"
+          class="like label"
+        >POLUB</div>
+        <div
+          *ngIf="(swipeAction$ | async) === 'superLike'"
+          class="superLike label"
+        >SUPER LIKE</div>
+        <div
+          *ngIf="(swipeAction$ | async) === 'dislike'"
+          class="dislike label"
+        ><span class="move">ŻEGNAM</span></div>
+        <div class="box">
+          <div
+            *ngFor="let item of res.match.images; let i=index"
+            class="progress"
+            [class.current]="val.currentImage === i"
+          ></div>
         </div>
-        <div class="flex">
-          <mat-icon class="material-icons-outlined">house</mat-icon>
-          Mieszka w:
-          <span>{{match.city}}</span>
+        <mat-icon
+          *ngIf="val.currentImage !== 0"
+          class="icon"
+          (click)="switchImage(-1)"
+        >chevron_left</mat-icon>
+        <mat-icon
+          *ngIf="val.currentImage !== res.match.images.length-1"
+          class="icon right"
+          (click)="switchImage(1)"
+        >chevron_right</mat-icon>
+        <div
+          *ngIf="(expanded$ | async) === false"
+          class="blur"
+        ></div>
+        <div
+          *ngIf="(expanded$ | async) === false"
+          class="info"
+        >
+          <div>
+            <span class="name">{{res.match.name}}</span>
+            <span class="age">{{res.match.age}}</span>
+          </div>
+          <div class="flex">
+            <mat-icon class="material-icons-outlined">house</mat-icon>
+            Mieszka w:
+            <span>{{res.match.city}}</span>
+          </div>
+          <div class="flex">
+            <mat-icon class="material-icons-outlined">place</mat-icon>
+            <span>{{res.match.distance}} kilometrów stąd</span>
+          </div>
         </div>
-        <div class="flex">
-          <mat-icon class="material-icons-outlined">place</mat-icon>
-          <span>{{match.distance}} kilometrów stąd</span>
-        </div>
+        <mat-icon
+          class="open"
+          (click)="toggleOpened()"
+        >info</mat-icon>
       </div>
-      <mat-icon
-        class="open"
-        (click)="toggleOpened()"
-      >info</mat-icon>
-    </div>
+    </ng-container>
 
     <mouse-actions
       *ngIf="(expanded$ | async) === false"
@@ -73,8 +76,8 @@
     />
 
     <more-info
-      *ngIf="match && expanded$ | async"
-      [match]="match"
+      *ngIf="res.match && (expanded$ | async)"
+      [match]="res.match"
     />
   </div>
 </ng-container>
@@ -84,6 +87,12 @@
   class="actions actions-expanded"
   [isExpanded]="expanded$ | async"
 />
+
+<ng-template #noData>
+  <div class="center">
+    Brak wyników dla wybranych kryteriów
+  </div>
+</ng-template>
 
 <ng-template #loading>
   <div class="center">

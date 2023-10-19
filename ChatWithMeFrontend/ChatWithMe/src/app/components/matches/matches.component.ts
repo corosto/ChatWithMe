@@ -1,38 +1,24 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { MatchesApiService } from '@components/matches/api/matches-api.service';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { action } from '@components/matches/components/keyboard-actions/constants/actions.const';
 import { KeyboardActionsComponent } from '@components/matches/components/keyboard-actions/keyboard-actions.component';
 import { MatchComponent } from '@components/matches/components/match/match.component';
-import { Match } from '@components/matches/components/match/mock/mock';
 import { MatchesService } from '@components/matches/service/matches.service';
-import { Observable, debounceTime, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'matches',
   standalone: true,
   imports: [CommonModule, KeyboardActionsComponent, MatchComponent],
-  providers: [MatchesApiService, MatchesService],
+  providers: [MatchesService],
   templateUrl: './matches.component.html',
   styleUrls: ['./matches.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class MatchesComponent implements OnInit {
-
-  currentMatch$: Observable<Match>;
+export class MatchesComponent {
 
   constructor(
-    private matchesApiService: MatchesApiService,
     private matchesService: MatchesService,
   ) { }
-
-  ngOnInit(): void {
-    this.currentMatch$ = this.matchesService.getMatchSwipeListener().pipe(
-      debounceTime(1230),
-      switchMap(() => this.matchesApiService.getNewMatch()),
-      tap((res) => this.matchesService.setImagesCount(res.images.length))
-    );
-  }
 
   actionEvent(action: action): void {
     switch (action) {

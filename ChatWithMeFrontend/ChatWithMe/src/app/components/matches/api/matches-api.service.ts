@@ -11,7 +11,7 @@ export class MatchesApiService {
 
     const value = MOCKS[this.iteration];
 
-    if (this.iteration >= MOCKS.length-1)
+    if (this.iteration >= MOCKS.length - 1)
       this.iteration = 0;
     else
       this.iteration++;
