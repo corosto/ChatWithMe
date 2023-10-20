@@ -9,9 +9,8 @@ export interface UserAuthorization {
 }
 
 export interface TokenData {
-  email: string,
-  firstName: string,
-  id: string,
+  name: string,
+  // image: string, //TODO żeby token dawał też zdjęcie
   exp?: number,
   expires_at?: string,
   refreshToken?: string,

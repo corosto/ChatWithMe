@@ -9,8 +9,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { LookingForDialogComponent } from '@components/landing-page/register/components/looking-for-dialog/looking-for-dialog.component';
 import { AddButtonWithDialogComponent } from '@shared/components/add-button-with-dialog/add-button-with-dialog.component';
 import { MyDatepickerComponent } from '@shared/components/my-datepicker/my-datepicker.component';
-import { InterestsDialogComponent } from '../interests-dialog/interests-dialog.component';
-import { SexualOrientationDialogComponent } from '../sexual-orientation-dialog/sexual-orientation-dialog.component';
+import { InterestsDialogComponent } from '@components/landing-page/register/components/interests-dialog/interests-dialog.component';
+import { SexualOrientationDialogComponent } from '@components/landing-page/register/components/sexual-orientation-dialog/sexual-orientation-dialog.component';
+import { SEX, SHOW_ME_SEX } from '@components/landing-page/register/components/sex-related/constants/sex.const';
 
 @Component({
   selector: 'sex-related',
@@ -32,6 +33,9 @@ export class SexRelatedComponent {
   lookingFor = '';
   sexualOrientation = '';
   interests = '';
+
+  SEX = SEX;
+  SHOW_ME_SEX = SHOW_ME_SEX;
 
   LookingForDialogComponent = LookingForDialogComponent;
   SexualOrientationDialogComponent = SexualOrientationDialogComponent;

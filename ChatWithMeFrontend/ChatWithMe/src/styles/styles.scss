@@ -114,6 +114,18 @@ body {
   }
 }
 
+
+
+
+
+.mat-mdc-slider {
+  margin: 0 !important;
+}
+
+.mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled):not(.mat-mdc-option-multiple) {
+  background-color: var(--color-whitish) !important;
+}
+
 .mat-mdc-snack-bar-container {
   &.error-snackbar {
     --mdc-snackbar-container-color: var(--color-error);

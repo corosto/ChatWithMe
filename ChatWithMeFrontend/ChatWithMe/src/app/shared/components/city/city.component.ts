@@ -7,7 +7,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { AuthenticationService } from '@components/landing-page/api/authentication.service';
 import { InputComponent } from '@shared/components/input/input.component';
-import { Observable, debounceTime, filter, switchMap, tap } from 'rxjs';
+import { Observable } from 'rxjs/internal/Observable';
+import { filter } from 'rxjs/internal/operators/filter';
+import { tap } from 'rxjs/internal/operators/tap';
+import { switchMap } from 'rxjs/internal/operators/switchMap';
+import { debounceTime } from 'rxjs/internal/operators/debounceTime';
 
 @Component({
   selector: 'city',
@@ -26,7 +30,7 @@ import { Observable, debounceTime, filter, switchMap, tap } from 'rxjs';
 })
 export class CityComponent implements OnInit {
 
-  cities$: Observable<{ text: string, value: { city: string, height: number, width: number } }[]>;
+  cities$: Observable<{ text: string, value: CityData }[]>;
 
   constructor(
     protected formGroupDirective: FormGroupDirective,
@@ -55,7 +59,7 @@ export class CityComponent implements OnInit {
   }
 }
 
-interface CityData {
+export interface CityData {
   city: string,
   height: number,
   width: number,

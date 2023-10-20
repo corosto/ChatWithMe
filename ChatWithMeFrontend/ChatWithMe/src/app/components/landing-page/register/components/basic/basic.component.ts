@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { CityComponent } from '@components/landing-page/register/components/city/city.component';
+import { CityComponent } from '@shared/components/city/city.component';
 import { InputComponent } from '@shared/components/input/input.component';
 import { MyDatepickerComponent } from '@shared/components/my-datepicker/my-datepicker.component';
 

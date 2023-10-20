@@ -1,1 +1,76 @@
-<button (click)="logout()">logout</button>
+<form
+  [formGroup]="form"
+  class="form"
+>
+  <my-input
+    class="divider"
+    label="E-mail"
+    controlName="email"
+    [readonly]="true"
+  >
+  </my-input>
+
+  <city class="divider" />
+
+  <mat-form-field
+  class="divider"
+    hideRequiredMarker
+    appearance="outline"
+  >
+    <mat-label>Pokaż mi</mat-label>
+    <mat-select formControlName="showMe">
+      <mat-option
+        *ngFor="let sex of SHOW_ME_SEX"
+        [value]="sex.value"
+      >
+        {{sex.text}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <div class="box divider">
+    <span>Wiek {{ form.value.lookingForAgeMin }} - {{ form.value.lookingForAgeMax }} lat</span>
+    <mat-slider
+      min="18"
+      max="99"
+    >
+      <input
+        value="20"
+        matSliderStartThumb
+        formControlName="lookingForAgeMin"
+      >
+      <input
+        value="35"
+        matSliderEndThumb
+        formControlName="lookingForAgeMax"
+      >
+    </mat-slider>
+    <mat-slide-toggle
+      hideIcon
+      formControlName="useAgeFilter"
+    >Pokazuj tylko osoby z tego przedziału</mat-slide-toggle>
+  </div>
+
+  <div class="box">
+    <span>Odległość {{ form.value.lookingForDistanceMax }} km</span>
+    <mat-slider
+      min="2"
+      max="160"
+    >
+      <input
+        matSliderThumb
+        formControlName="lookingForDistanceMax"
+      >
+    </mat-slider>
+    <mat-slide-toggle
+      hideIcon
+      formControlName="useDistanceFilter"
+    >Pokazuj tylko osoby z tego przedziału</mat-slide-toggle>
+  </div>
+
+  <button
+    mat-stroked-button
+    type="button"
+    (click)="logout()"
+  >Wyloguj</button>
+</form>

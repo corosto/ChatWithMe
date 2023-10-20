@@ -1,18 +1,20 @@
 <div class="box">
   <span class="title">Płeć</span>
   <mat-chip-listbox formControlName="sex">
-    <mat-chip-option>Mężczyzna</mat-chip-option>
-    <mat-chip-option>Kobieta</mat-chip-option>
-    <mat-chip-option>Inne</mat-chip-option>
+    <mat-chip-option
+      *ngFor="let sex of SEX"
+      [value]="sex.value"
+    >{{ sex.text }}</mat-chip-option>
   </mat-chip-listbox>
 </div>
 
 <div class="box">
   <span class="title">Pokaż mi</span>
   <mat-chip-listbox formControlName="showMe">
-    <mat-chip-option>Mężczyzn</mat-chip-option>
-    <mat-chip-option>Kobiety</mat-chip-option>
-    <mat-chip-option>Wszystkich</mat-chip-option>
+    <mat-chip-option
+      *ngFor="let sex of SHOW_ME_SEX"
+      [value]="sex.value"
+    >{{ sex.text }}</mat-chip-option>
   </mat-chip-listbox>
 </div>
 

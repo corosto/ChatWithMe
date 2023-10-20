@@ -8,7 +8,7 @@ import { LocalStorageService } from '@core/services/localStorage/local-storage.s
 import { addSeconds } from 'date-fns';
 import jwt_decode from 'jwt-decode';
 import { orderBy, uniqBy } from 'lodash';
-import { Observable, catchError, map, of, tap } from 'rxjs';
+import { Observable, catchError, map, of } from 'rxjs';
 
 @Injectable()
 export class AuthenticationService {
@@ -95,11 +95,11 @@ export class AuthenticationService {
 
     this.userService.setUserToken(token.accessToken);
 
-    const { email, exp, firstName, id } = decodedToken;
+    const { exp, name } = decodedToken;
     const refreshToken = token.refreshToken;
 
     this.localStorageService.setItem<TokenData>(KeyStorage.USER, {
-      refreshToken, email, firstName, id, expires_at: addSeconds(new Date(), exp).toISOString()
+      refreshToken, name, expires_at: addSeconds(new Date(), exp).toISOString()
     });
   }
 }

@@ -2,13 +2,17 @@
   <div
     [routerLink]="link"
     class="chip"
+    [title]="link === '/home' ? 'Wstecz' : 'Ustawienia'"
   >
     <img
       class="img"
       src="https://material.angular.io/assets/img/examples/shiba1.jpg"
       alt="Zdjęcie użytkownika"
     />
-    Imie użytkownika
+    <div class="inside">
+      Imie użytkownika
+      <mat-icon>{{link === '/home' ? 'undo' : 'settings'}}</mat-icon>
+    </div>
   </div>
 </div>
 
