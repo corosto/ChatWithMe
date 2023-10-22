@@ -22,7 +22,7 @@
   <add-button-with-dialog
     formName="lookingFor"
     title="Szukam:"
-    [value]="lookingFor"
+    [valueDisplay]="lookingFor"
     buttonText="Czego szukasz?"
     [component]="LookingForDialogComponent"
     (valueChanged)="valueChanged('lookingFor')"
@@ -31,13 +31,13 @@
 
 <div class="box">
   <add-button-with-dialog
-    formName="sexualOrientation"
+    formName="sexualOrientations"
     title="Orientacja seksualna:"
-    [value]="sexualOrientation"
+    [valueDisplay]="sexualOrientations"
     buttonText="Dodaj orientację seksualną"
     dialogHeight="570px"
     [component]="SexualOrientationDialogComponent"
-    (valueChanged)="valueChanged('sexualOrientation')"
+    (valueChanged)="valueChanged('sexualOrientations')"
   />
 </div>
 
@@ -45,7 +45,7 @@
   <add-button-with-dialog
     formName="interests"
     title="Zainteresowania:"
-    [value]="interests"
+    [valueDisplay]="interests"
     buttonText="Dodaj zainteresowania"
     dialogHeight="450px"
     [component]="InterestsDialogComponent"

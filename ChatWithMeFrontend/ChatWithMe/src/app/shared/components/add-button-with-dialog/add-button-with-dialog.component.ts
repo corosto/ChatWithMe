@@ -1,16 +1,17 @@
 import { ComponentType, NoopScrollStrategy } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnDestroy, Output } from '@angular/core';
-import { ControlContainer, FormGroupDirective } from '@angular/forms';
+import { FormGroupDirective } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
+import { SpaceArrayPipe } from '@shared/pipes/space-array.pipe';
 import { Subject, filter, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'add-button-with-dialog',
   standalone: true,
-  imports: [CommonModule, MatIconModule, MatButtonModule, MatDialogModule],
+  imports: [CommonModule, MatIconModule, MatButtonModule, MatDialogModule, SpaceArrayPipe],
   templateUrl: './add-button-with-dialog.component.html',
   styleUrls: ['./add-button-with-dialog.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
@@ -20,15 +21,12 @@ export class AddButtonWithDialogComponent<T> implements OnDestroy {
   @Input({ required: true }) formName: string;
   @Input({ required: true }) title: string;
   @Input({ required: true }) buttonText: string;
-  @Input({ required: true }) set value(dataString: string | string[]) {
-    this.valueDisplay = Array.isArray(dataString) ? dataString.join(', ') : dataString;
-  }
-  @Input() dialogHeight = '400px';
   @Input({ required: true }) component: ComponentType<T>;
+  @Input({ required: true }) valueDisplay: string | string[];
+  @Input() dialogHeight = '400px';
 
   @Output() valueChanged = new EventEmitter();
 
-  valueDisplay: string;
 
   private onDestroy$ = new Subject<void>();
 

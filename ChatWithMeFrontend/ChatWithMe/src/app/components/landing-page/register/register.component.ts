@@ -1,6 +1,6 @@
 import { NoopScrollStrategy } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
@@ -10,10 +10,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Router, RouterModule } from '@angular/router';
 import { AuthenticationService } from '@components/landing-page/api/authentication.service';
-import { AdditionalDialogComponent } from '@components/landing-page/register/components/additional-dialog/additional-dialog.component';
 import { BasicComponent } from '@components/landing-page/register/components/basic/basic.component';
 import { SexRelatedComponent } from '@components/landing-page/register/components/sex-related/sex-related.component';
 import { RoutesPath } from '@core/enums/routes-path.enum';
+import { AdditionalDialogComponent } from '@shared/components/additional-dialog/additional-dialog.component';
 import { ImageDropdownComponent } from '@shared/components/image-dropdown/image-dropdown.component';
 import { InputComponent } from '@shared/components/input/input.component';
 import { EMAIL_PATTERN, PASSWORD_PATTERN } from '@shared/patterns/valid.pattern';
@@ -30,7 +30,7 @@ import { Subject, filter, takeUntil, tap } from 'rxjs';
   styleUrls: ['./register.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RegisterComponent implements OnInit {
+export class RegisterComponent implements OnInit, OnDestroy {
 
   form = this.fb.group({
     firstName: [null as string, [Validators.required]],
@@ -65,7 +65,7 @@ export class RegisterComponent implements OnInit {
     images: [null as string[], [Validators.required, Validators.minLength(2)]],
 
     interests: [null as string[], [Validators.required, Validators.maxLength(5)]],
-    sexualOrientation: [null as string[], [Validators.required, Validators.maxLength(3)]],
+    sexualOrientations: [null as string[], [Validators.required, Validators.maxLength(3)]],
   },
     {
       updateOn: 'change',
@@ -86,6 +86,11 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {
     this.form.valueChanges.subscribe((res) => console.log(res));
+  }
+
+  ngOnDestroy(): void {
+    this.onDestroy$.next();
+    this.onDestroy$.complete();
   }
 
   register() {

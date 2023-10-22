@@ -1,1 +1,113 @@
-<p>user-profile works!</p>
+<div class="container">
+  <ng-container *ngIf="!inEdit; else edit">
+    <match-image
+      [match]="match"
+      [isUserProfile]="true"
+    />
+
+    <more-info [match]="match" />
+  </ng-container>
+
+  <ng-template #edit>
+    <form
+      [formGroup]="form"
+      class="form"
+    >
+      <image-dropdown
+        class="border"
+        origin="settings"
+      />
+
+      <my-input
+        label="Wzrost"
+        placeholder="Wprowadź wzrost"
+        controlName="height"
+        type="number"
+        class="padding border"
+        [suffixTemplate]="cm"
+        [ppErrorMessage]="{
+          required: 'Wprowadź wzrost',
+          min: 'Minimalny wzrost to 110 cm',
+          max: 'Maksymalny wzrost to 240 cm'
+        }"
+      />
+
+      <my-input
+        label="Waga"
+        placeholder="Wprowadź wagę"
+        controlName="weight"
+        type="number"
+        class="padding border"
+        [suffixTemplate]="kg"
+        [ppErrorMessage]="{
+          required: 'Wprowadź wagę',
+          min: 'Minimalna waga to 30 kg',
+          max: 'Maksymalna waga to 180 kg'
+        }"
+      />
+
+      <mat-form-field
+        class="border padding divider"
+        hideRequiredMarker
+        appearance="outline"
+      >
+        <mat-label>Płeć</mat-label>
+        <mat-select formControlName="sex">
+          <mat-option
+            *ngFor="let sex of SEX"
+            [value]="sex.value"
+          >
+            {{sex.text}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <div
+        class="border padding cursor-pointer"
+        (click)="openDialog('lookingFor')"
+      >
+        <h3>Szukam</h3>
+        <div class="center">{{ form.value.lookingFor | spaceArray }} <mat-icon>chevron_right</mat-icon></div>
+      </div>
+
+      <div
+        class="border padding cursor-pointer"
+        (click)="openDialog('sexualOrientations')"
+      >
+        <h3>Orientacja seksualna</h3>
+        <div class="center">{{ form.value.sexualOrientations | spaceArray }} <mat-icon>chevron_right</mat-icon></div>
+      </div>
+
+      <div
+        class="border padding cursor-pointer"
+        (click)="openDialog('interests')"
+      >
+        <h3>Zainteresowania</h3>
+        <div class="center">{{ form.value.interests | spaceArray }} <mat-icon>chevron_right</mat-icon></div>
+      </div>
+
+      <div class="border padding">
+        <button
+          mat-stroked-button
+          type="button"
+          class="w-max"
+          (click)="openAdditionalDialog()"
+        >Dodatkowe informacje</button>
+      </div>
+    </form>
+  </ng-template>
+</div>
+
+<button
+  class="button"
+  mat-raised-button
+  color="primary"
+  type="button"
+  (click)="saveForm()"
+>
+  {{inEdit ? 'Zapisz' : 'Edytuj profil'}}
+</button>
+
+<ng-template #kg>kg</ng-template>
+
+<ng-template #cm>cm</ng-template>

@@ -7,7 +7,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSliderModule } from '@angular/material/slider';
 import { AuthenticationService } from '@components/landing-page/api/authentication.service';
 import { SHOW_ME_SEX } from '@components/landing-page/register/components/sex-related/constants/sex.const';
-import { USER_DATA_MOCK } from '@components/settings/components/user-settings-panel/interfaces/user-data.interface';
+import { USER_DATA_MOCK } from '@components/settings/interfaces/user-data.interface';
 import { UserService } from '@core/services/authorization/user.service';
 import { CityComponent, CityData } from '@shared/components/city/city.component';
 import { InputComponent } from '@shared/components/input/input.component';
@@ -49,14 +49,13 @@ export class UserSettingsComponent implements OnInit, OnDestroy {
     private authenticationService: AuthenticationService,
   ) { }
 
-  
   ngOnInit(): void {
     this.form.patchValue(USER_DATA_MOCK);
 
     this.form.valueChanges.pipe(
       debounceTime(500)
     ).subscribe(() => {
-      // strzał do api z formularzem
+      //TODO strzał do api z formularzem i refresh danych uzytkownika
     });
   }
 

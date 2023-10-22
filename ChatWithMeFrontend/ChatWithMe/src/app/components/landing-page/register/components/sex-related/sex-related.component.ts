@@ -31,7 +31,7 @@ import { SEX, SHOW_ME_SEX } from '@components/landing-page/register/components/s
 export class SexRelatedComponent {
 
   lookingFor = '';
-  sexualOrientation = '';
+  sexualOrientations = '';
   interests = '';
 
   SEX = SEX;
@@ -50,8 +50,8 @@ export class SexRelatedComponent {
       case 'lookingFor':
         this.lookingFor = this.formGroupDirective.form.get(controlName).value as string;
         break;
-      case 'sexualOrientation':
-        this.sexualOrientation = this.formGroupDirective.form.get(controlName).value as string;
+      case 'sexualOrientations':
+        this.sexualOrientations = this.formGroupDirective.form.get(controlName).value as string;
         break;
       case 'interests':
         this.interests = this.formGroupDirective.form.get(controlName).value as string;

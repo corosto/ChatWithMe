@@ -5,7 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MAT_DIALOG_DATA, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
-import { ALCOHOL, DIET, EDUCATION, GYM, KIDS, PETS, SMOKING, ZODIAC_SIGNS } from '@components/landing-page/register/components/additional-dialog/constants/additional-dialog.const';
+import { ALCOHOL, DIET, EDUCATION, GYM, KIDS, PETS, SMOKING, ZODIAC_SIGNS } from '@shared/components/additional-dialog/constants/additional-dialog.const';
 import { InputComponent } from '@shared/components/input/input.component';
 
 @Component({

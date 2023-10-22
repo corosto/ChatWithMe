@@ -6,7 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatchesApiService } from '@components/home/components/matches/api/matches-api.service';
 import { LikeTypes, Match } from '@components/home/components/matches/components/match/mock/mock';
-import { MoreInfoComponent } from '@components/home/components/matches/components/more-info/more-info.component';
+import { MoreInfoComponent } from '@shared/components/more-info/more-info.component';
 import { MouseActionsComponent } from '@components/home/components/matches/components/mouse-actions/mouse-actions.component';
 import { MatchesService } from '@components/home/components/matches/service/matches.service';
 import { MatchImageComponent } from '@shared/components/match-image/match-image.component';

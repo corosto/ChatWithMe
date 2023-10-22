@@ -1,11 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { FormGroupDirective } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { BehaviorSubject } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { filter, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'image-dropdown',
@@ -16,6 +17,8 @@ import { filter } from 'rxjs/operators';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ImageDropdownComponent implements OnInit {
+
+  @Input({ required: true }) origin: 'register' | 'settings';
 
   @ViewChild('fileInput', { static: false }) fileInput: ElementRef;
 
@@ -28,9 +31,16 @@ export class ImageDropdownComponent implements OnInit {
     private formGroupDirective: FormGroupDirective,
   ) { }
 
+  //TODO poprawic dodawanie zdjec jak bedzie juz api
   ngOnInit(): void {
     const images = this.formGroupDirective.form.get('images');
-    this.previews$.asObservable().pipe(filter((res) => !!res.length)).subscribe((res) => images.patchValue(res));
+
+    if (this.origin === 'settings') {
+      this.previews$.next(images.value as string[]);
+      this.filesCounter = this.previews$.value?.length;
+    }
+
+    this.previews$.asObservable().pipe(filter((res) => !!res?.length)).subscribe((res) => images.patchValue(res));
   }
 
   onFileSelected(event: any) {
@@ -63,7 +73,7 @@ export class ImageDropdownComponent implements OnInit {
   }
 
   private handleImages(imageIndex: number) {
-    const myFile = this.selectedImages[this.selectedImages.length - imageIndex];// ! -1 nie działa xd
+    const myFile = this.selectedImages[this.selectedImages.length - imageIndex];
 
     if (myFile) {
       const reader = new FileReader();

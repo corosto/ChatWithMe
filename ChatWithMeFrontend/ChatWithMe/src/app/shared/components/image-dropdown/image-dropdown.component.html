@@ -1,5 +1,6 @@
 <div
   class="box"
+  [class.border]="origin === 'register'"
   [ngClass]="{'cursor-pointer': (filesCounter < 6)}"
   (click)="(filesCounter < 6) && fileInput.click()"
 >
@@ -7,7 +8,11 @@
     <span>Zdjęcia profilowe</span>
     <span class="text-secondary">Kliknij aby dodać zdjęcia</span>
   </div>
-  <div class="container">
+
+  <div
+    class="container"
+    [ngClass]="origin === 'register' ? 'gap-big' : 'gap-small'"
+  >
     <input
       class="file-input"
       type="file"
@@ -16,7 +21,6 @@
       #fileInput
       (change)="onFileSelected($event)"
     >
-
     <div
       *ngFor="let itemIndex of [0,1,2,3,4,5]"
       class="imageContainer"
@@ -51,5 +55,5 @@
       </ng-container>
     </div>
   </div>
-  <span class="text-secondary footer">Dodaj co najmniej dwa zdjęcia, aby przejść dalej</span>
+  <span class="text-secondary footer">Dodaj co najmniej dwa zdjęcia</span>
 </div>

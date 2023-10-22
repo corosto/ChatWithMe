@@ -17,8 +17,8 @@ import { of } from 'rxjs/internal/observable/of';
 export class MatchImageComponent implements OnInit {
 
   @Input({ required: true }) match: Match;
-  @Input({ required: true }) expanded: boolean;
   @Input() swipeAction: LikeTypes;
+  @Input() expanded = true;
   @Input() isUserProfile = false;
 
   currentImageIndex$: Observable<number> = of(0);

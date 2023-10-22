@@ -1,13 +1,17 @@
 .box {
-  padding: 10px;
-  border: 2px solid var(--color-main);
+  padding-block: 10px;
   border-radius: var(--border-normal);
   width: fit-content;
+  
+  &.border {
+    border: 2px solid var(--color-main);
+  }
 
   .title {
     display: flex;
     justify-content: space-between;
     margin-bottom: 16px;
+    margin-inline: 8px;
   }
 
   .container {
@@ -17,9 +21,16 @@
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    gap: var(--gap-xl);
-
+    
     max-width: 400px;
+    
+    &.gap-big {
+      gap: var(--gap-xl);
+    }
+
+    &.gap-small {
+      gap: 10px;
+    }
 
     .file-input {
       display: none;
@@ -78,5 +89,6 @@
     display: flex;
     justify-content: flex-end;
     margin-top: 8px;
+    margin-inline: 8px
   }
 }
