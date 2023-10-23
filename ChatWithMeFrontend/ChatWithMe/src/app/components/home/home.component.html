@@ -1,2 +1,9 @@
-<chats-panel class="left"></chats-panel>
-<matches class="right"></matches>
+<sidebar class="left"></sidebar>
+
+<ng-container *ngIf="chatVisible$ | async; else matchVisible">
+  <active-chat class="right"></active-chat>
+</ng-container>
+
+<ng-template #matchVisible>
+  <matches class="right"></matches>
+</ng-template>

@@ -1,0 +1,15 @@
+<div
+  *ngFor="let item of CONVERSATION; let index = index"
+  class="container"
+  [class.move]="item.userId === 'user1'"
+  [class.remove-gap]="CONVERSATION[index+1]?.userId === item.userId"
+>
+  <div
+    class="message"
+    [class.same-user]="CONVERSATION[index-1]?.userId === item.userId"
+    [title]="item.time | messengerDate"
+    [ngClass]="item.userId === 'user1' ? 'sent' : 'received'"
+  >
+    {{ item.message }}
+  </div>
+</div>

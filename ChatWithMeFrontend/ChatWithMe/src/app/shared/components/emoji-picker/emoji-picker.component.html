@@ -1,0 +1,19 @@
+<div
+  clickOutside
+  (clickOutside)="opened = false"
+>
+  <mat-icon
+    (click)="opened = !opened"
+    class="icon"
+  >sentiment_satisfied_alt</mat-icon>
+
+  <emoji-mart
+    *ngIf="opened"
+    class="picker"
+    [isNative]="true"
+    emoji="pinching_hand"
+    color="#445968"
+    (emojiSelect)="addEmoji($event)"
+    [darkMode]="true"
+  ></emoji-mart>
+</div>

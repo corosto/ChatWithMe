@@ -236,9 +236,9 @@ export const MOCKS: Match[] = [
 ];
 
 export interface Match {
-  name?: string,
-  age?: string,
-  city?: string,
+  name: string,
+  age: string,
+  city: string,
   distance?: string,
   images: string[],
   description: string,

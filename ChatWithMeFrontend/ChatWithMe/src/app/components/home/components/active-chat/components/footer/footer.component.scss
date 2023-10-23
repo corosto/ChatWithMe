@@ -1,0 +1,36 @@
+:host {
+  display: flex;
+}
+
+.form {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.message {
+  width: 90%;
+  background-color: transparent;
+  border: 0;
+  resize: none;
+  padding: 8px;
+  overflow: auto;
+  font-family: 'MainFont';
+  font-size: 17px;
+  color: var(--color-font-primary);
+  height: 70px;
+  max-height: 75px;
+
+  &:focus-visible {
+    outline: none;
+  }
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.button {
+  border-radius: 22px;
+}

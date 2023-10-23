@@ -4,6 +4,11 @@
   width: 375px;
   height: 570px;
 
+  &.chat {
+    width: 100%;
+    border-radius: 0;
+  }
+
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;

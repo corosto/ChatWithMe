@@ -2,10 +2,13 @@
   <ng-container *ngIf="!inEdit; else edit">
     <match-image
       [match]="match"
-      [isUserProfile]="true"
+      [hideInfoButton]="true"
     />
 
-    <more-info [match]="match" />
+    <more-info
+      [match]="match"
+      [isUserProfile]="true"
+    />
   </ng-container>
 
   <ng-template #edit>

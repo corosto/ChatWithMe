@@ -3,8 +3,8 @@
     class="image"
     [ngStyle]="{'background-image': 'url('+match.images[val.currentImageIndex]+')'}"
     [ngClass]="swipeAction"
+    [class.chat]="isChat"
   >
-
     <div
       *ngIf="swipeAction === 'like'"
       class="like label"
@@ -58,7 +58,7 @@
     </ng-container>
 
     <mat-icon
-      *ngIf="!isUserProfile"
+      *ngIf="!hideInfoButton"
       class="open"
       (click)="toggleOpened()"
     >info</mat-icon>

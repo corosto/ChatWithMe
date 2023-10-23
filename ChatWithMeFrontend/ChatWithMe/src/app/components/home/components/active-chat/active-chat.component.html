@@ -1,0 +1,22 @@
+<div class="container">
+  <header class="header"></header>
+  <content class="content"></content>
+  <footer class="footer"></footer>
+</div>
+
+<div class="user">
+  <match-image
+    [match]="match"
+    [isChat]="true"
+    [hideInfoButton]="true"
+  />
+
+  <more-info [match]="match" />
+
+  <button
+    mat-stroked-button
+    class="button"
+    (click)="removeMatch()"
+  >Usuń parę</button>
+
+</div>

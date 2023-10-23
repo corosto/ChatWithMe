@@ -1,0 +1,15 @@
+<div
+  *ngFor="let chat of LAST_CHATS"
+  class="chat"
+  (click)="matchService.setChatId('test')"
+>
+<!-- TODO przekazywac id chatu do serwisu -->
+  <div
+    class="image"
+    [ngStyle]="{'background-image': 'url('+chat.image+')'}"
+  ></div>
+  <div class="center">
+    <span class="title">{{ chat.name }}</span>
+    <span class="message">{{ chat.message }}</span>
+  </div>
+</div>

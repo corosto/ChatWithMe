@@ -1,0 +1,21 @@
+<form
+  [formGroup]="form"
+  class="form"
+  (ngSubmit)="sendMessage()"
+>
+  <textarea
+    formControlName="message"
+    class="message"
+    maxlength="256"
+    placeholder="Wpisz wiadomość"
+  ></textarea>
+
+  <emoji-picker />
+
+  <button
+    mat-flat-button
+    color="primary"
+    class="button"
+    [disabled]="!message.valid"
+  >Wyślij</button>
+</form>

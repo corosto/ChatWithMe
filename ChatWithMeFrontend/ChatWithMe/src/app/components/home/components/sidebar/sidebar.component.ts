@@ -1,18 +1,18 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ChatComponent } from '@components/home/components/chats-panel/components/chat/chat.component';
+import { ChatsComponent } from '@components/home/components/sidebar/components/chats/chats.component';
 import { RoutesPath } from '@core/enums/routes-path.enum';
 import { UserInfoComponent } from '@shared/components/user-info/user-info.component';
 
 @Component({
-  selector: 'chats-panel',
+  selector: 'sidebar',
   standalone: true,
-  imports: [CommonModule, UserInfoComponent, ChatComponent],
-  templateUrl: './chats-panel.component.html',
-  styleUrls: ['./chats-panel.component.scss'],
+  imports: [CommonModule, UserInfoComponent, ChatsComponent],
+  templateUrl: './sidebar.component.html',
+  styleUrls: ['./sidebar.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ChatsPanelComponent {
-  ChatComponent = ChatComponent;
+export class SidebarComponent {
+  ChatsComponent = ChatsComponent;
   RoutesPath = RoutesPath;
 }

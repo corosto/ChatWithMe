@@ -27,6 +27,9 @@ export const USER_DATA_MOCK: UserData = {
 
 export const USER_PROFILE_MOCKS: Match =
 {
+  name: 'Jarosław',
+  age: '72',
+  city: 'Rudy',
   images: [
     'https://images.pexels.com/photos/18031817/pexels-photo-18031817/free-photo-of-pouring-drink-to-cup.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',
     'https://images.pexels.com/photos/3468548/pexels-photo-3468548.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1',

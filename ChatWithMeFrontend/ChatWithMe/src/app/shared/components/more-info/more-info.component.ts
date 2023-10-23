@@ -15,4 +15,5 @@ import { LookingForBoxComponent } from '@shared/components/looking-for-box/looki
 })
 export class MoreInfoComponent {
   @Input() match: Match;
+  @Input() isUserProfile = false;
 }

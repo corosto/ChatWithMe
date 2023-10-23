@@ -8,7 +8,7 @@
     Mieszka w:
     <span>{{match.city}}</span>
   </div>
-  <div class="flex">
+  <div class="flex" *ngIf="!isUserProfile">
     <mat-icon class="material-icons-outlined">place</mat-icon>
     <span>{{match.distance}} kilometrów stąd</span>
   </div>

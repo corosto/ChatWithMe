@@ -1,16 +1,31 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ChatsPanelComponent } from '@components/home/components/chats-panel/chats-panel.component';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ActiveChatComponent } from '@components/home/components/active-chat/active-chat.component';
 import { MatchesComponent } from '@components/home/components/matches/matches.component';
+import { SidebarComponent } from '@components/home/components/sidebar/sidebar.component';
+import { MatchService } from '@components/home/services/match.service';
+import { Observable, map } from 'rxjs';
 
 @Component({
   selector: 'pp-home',
   standalone: true,
-  imports: [CommonModule, MatchesComponent, ChatsPanelComponent],
+  imports: [CommonModule, MatchesComponent, SidebarComponent, ActiveChatComponent],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
+
+  chatVisible$: Observable<boolean>;
+
+  constructor(
+    private matchService: MatchService,
+  ) { }
+
+  ngOnInit(): void {
+    this.chatVisible$ = this.matchService.getChatId().pipe(
+      map((res) => !!res),
+    );
+  }
 
 }

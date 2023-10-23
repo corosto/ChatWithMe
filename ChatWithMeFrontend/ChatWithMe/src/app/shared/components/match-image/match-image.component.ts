@@ -19,7 +19,8 @@ export class MatchImageComponent implements OnInit {
   @Input({ required: true }) match: Match;
   @Input() swipeAction: LikeTypes;
   @Input() expanded = true;
-  @Input() isUserProfile = false;
+  @Input() hideInfoButton = false;
+  @Input() isChat = false;
 
   currentImageIndex$: Observable<number> = of(0);
 

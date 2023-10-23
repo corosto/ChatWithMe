@@ -89,6 +89,31 @@ body {
   }
 }
 
+emoji-mart.picker {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.emoji-mart-scroll {
+  &::-webkit-scrollbar {
+    width: 7px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 15px;
+    background-color: var(--color-main);
+  }
+}
+
+.emoji-mart-dark .emoji-mart-category .emoji-mart-emoji:hover:before {
+  top: 3px;
+  left: 4.6px;
+}
+
 .cursor-pointer {
   cursor: pointer;
 }
