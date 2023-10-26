@@ -1,10 +1,18 @@
+:host {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .box {
   padding-block: 10px;
   border-radius: var(--border-normal);
   width: fit-content;
-  
-  &.border {
+  max-width: 950px;
+
+  &.register {
     border: 2px solid var(--color-main);
+    width: 100%
   }
 
   .title {
@@ -21,11 +29,12 @@
     flex-wrap: wrap;
     align-items: center;
     justify-content: center;
-    
+
     max-width: 400px;
-    
+
     &.gap-big {
       gap: var(--gap-xl);
+      max-width: unset;
     }
 
     &.gap-small {
@@ -43,15 +52,27 @@
       border-radius: var(--border-normal);
       border: 1px dashed var(--color-font-secondary);
 
+      &.register {
+        width: 225px;
+        height: 300px;
+      }
+
       .image {
         width: 110.5px;
         height: 148px;
+
+        &.register {
+          width: 223px;
+          height: 298px;
+        }
+
         border-radius: var(--border-normal);
         object-fit: cover;
-        transition: transform .5s ease;
+        transition: transform .8s ease;
 
         &:hover {
-          transform: scale(0.8);
+          transform: scale(0.9);
+          object-fit: contain;
         }
       }
 

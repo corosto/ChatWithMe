@@ -1,4 +1,4 @@
-additional-dialog {
+additional-data {
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -25,19 +25,19 @@ additional-dialog {
 
   .description {
     overflow-wrap: break-word;
-    height: 110px;
+    height: 150px;
 
     padding: 10.5px 16px;
     width: 100%;
     margin-block: 10px;
     resize: none;
-    box-shadow: inset 0 0 0 1px #aaa;
+    box-shadow: inset 0 0 0 1px #717272;
     border: 0;
     border-radius: 8px;
     font-size: var(--font-m);
     line-height: var(--lineHeight-m);
     color: #eee;
-    background-color: #424242;
+    background-color: transparent;
 
     font-family: "MainFont";
 
@@ -49,19 +49,27 @@ additional-dialog {
       border-radius: 15px;
       background-color: var(--color-main);
     }
-  }
 
-  .button {
-    position: sticky;
-    bottom: 6px;
-    z-index: 1;
+    &:focus-visible {
+      outline: none;
+    }
   }
 
   .length {
     position: absolute;
-    top: 125px;
+    top: 200px;
     right: 4px;
     font-size: 12px;
+  }
+
+  .box {
+    display: flex;
+    width: 100%;
+    gap: 16px;
+
+    &.column {
+      flex-direction: column;
+    }
   }
 
   .mat-mdc-form-field {

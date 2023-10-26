@@ -1,27 +1,7 @@
 <div class="box">
-  <span class="title">Płeć</span>
-  <mat-chip-listbox formControlName="sex">
-    <mat-chip-option
-      *ngFor="let sex of SEX"
-      [value]="sex.value"
-    >{{ sex.text }}</mat-chip-option>
-  </mat-chip-listbox>
-</div>
-
-<div class="box">
-  <span class="title">Pokaż mi</span>
-  <mat-chip-listbox formControlName="showMe">
-    <mat-chip-option
-      *ngFor="let sex of SHOW_ME_SEX"
-      [value]="sex.value"
-    >{{ sex.text }}</mat-chip-option>
-  </mat-chip-listbox>
-</div>
-
-<div class="box">
   <add-button-with-dialog
     formName="lookingFor"
-    title="Szukam:"
+    title="Szukam"
     [valueDisplay]="lookingFor"
     buttonText="Czego szukasz?"
     [component]="LookingForDialogComponent"
@@ -32,7 +12,7 @@
 <div class="box">
   <add-button-with-dialog
     formName="sexualOrientations"
-    title="Orientacja seksualna:"
+    title="Orientacja seksualna"
     [valueDisplay]="sexualOrientations"
     buttonText="Dodaj orientację seksualną"
     dialogHeight="570px"
@@ -44,7 +24,7 @@
 <div class="box">
   <add-button-with-dialog
     formName="interests"
-    title="Zainteresowania:"
+    title="Zainteresowania"
     [valueDisplay]="interests"
     buttonText="Dodaj zainteresowania"
     dialogHeight="450px"

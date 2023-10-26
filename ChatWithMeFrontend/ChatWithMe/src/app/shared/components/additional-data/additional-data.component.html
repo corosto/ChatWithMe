@@ -1,0 +1,167 @@
+<div class="form">
+  <h3 class="title">Dodatkowe informacje(opcjonalne)</h3>
+
+  <textarea
+    matInput
+    formControlName="description"
+    class="description"
+    placeholder="Opis"
+    maxlength="500"
+  ></textarea>
+  <span class="length">{{formGroupDirective.form.value.description.length}}/500</span>
+
+  <div
+    class="box"
+    [class.column]="inSettings"
+  >
+    <mat-form-field appearance="outline">
+      <mat-label class="flex">
+        <mat-icon>auto_awesome</mat-icon>
+        Znak zodiaku
+      </mat-label>
+      <mat-select formControlName="zodiac">
+        <mat-option>---</mat-option>
+        <mat-option
+          *ngFor="let sign of ZODIAC_SIGNS"
+          [value]="sign"
+        >{{sign}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label class="flex">
+        <mat-icon>schools</mat-icon>
+        Wykształcenie
+      </mat-label>
+      <mat-select formControlName="education">
+        <mat-option>---</mat-option>
+        <mat-option
+          *ngFor="let sign of EDUCATION"
+          [value]="sign"
+        >{{sign}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div
+    class="box"
+    [class.column]="inSettings"
+  >
+    <mat-form-field appearance="outline">
+      <mat-label class="flex">
+        <mat-icon>family_restroom</mat-icon>
+        Plany dotyczące rodziny
+      </mat-label>
+      <mat-select formControlName="kids">
+        <mat-option>---</mat-option>
+        <mat-option
+          *ngFor="let sign of KIDS"
+          [value]="sign"
+        >{{sign}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label class="flex">
+        <mat-icon>pets</mat-icon>
+        Czy masz zwierzęta domowe?
+      </mat-label>
+      <mat-select formControlName="pets">
+        <mat-option>---</mat-option>
+        <mat-option
+          *ngFor="let sign of PETS"
+          [value]="sign"
+        >{{sign}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div
+    class="box"
+    [class.column]="inSettings"
+  >
+    <mat-form-field appearance="outline">
+      <mat-label class="flex">
+        <mat-icon>wine_bar</mat-icon>
+        Jak często pijesz alkohol?
+      </mat-label>
+      <mat-select formControlName="alcohol">
+        <mat-option>---</mat-option>
+        <mat-option
+          *ngFor="let sign of ALCOHOL"
+          [value]="sign"
+        >{{sign}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label class="flex">
+        <mat-icon>smoking_rooms</mat-icon>
+        Jak często palisz?
+      </mat-label>
+      <mat-select formControlName="smoking">
+        <mat-option>---</mat-option>
+        <mat-option
+          *ngFor="let sign of SMOKING"
+          [value]="sign"
+        >{{sign}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div
+    class="box"
+    [class.column]="inSettings"
+  >
+    <mat-form-field appearance="outline">
+      <mat-label class="flex">
+        <mat-icon>fitness_center</mat-icon>
+        Trenujesz?
+      </mat-label>
+      <mat-select formControlName="gym">
+        <mat-option>---</mat-option>
+        <mat-option
+          *ngFor="let sign of GYM"
+          [value]="sign"
+        >{{sign}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label class="flex">
+        <mat-icon>local_pizza</mat-icon>
+        Jaki jest Twój stosunek do diety
+      </mat-label>
+      <mat-select formControlName="diet">
+        <mat-option>---</mat-option>
+        <mat-option
+          *ngFor="let sign of DIET"
+          [value]="sign"
+        >{{sign}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  <div
+    class="box"
+    [class.column]="inSettings"
+  >
+    <my-input
+      label="Szkoła"
+      placeholder="Wpisz swoją szkołę"
+      controlName="school"
+    />
+
+    <my-input
+      label="Firma"
+      placeholder="Wpisz swoją firmę"
+      controlName="work"
+    />
+
+    <my-input
+      label="Stanowisko"
+      placeholder="Wpisz swoje stanowisko"
+      controlName="position"
+    />
+  </div>
+</div>

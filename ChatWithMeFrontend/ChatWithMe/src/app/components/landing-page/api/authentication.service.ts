@@ -1,14 +1,17 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { TokenData, UserAuthorization } from '@components/landing-page/interfaces/authentication-interface';
+import { Api } from '@core/enums/api.enum';
 import { KeyStorage } from '@core/enums/key-storage.enum';
 import { UserService } from '@core/services/authorization/user.service';
 import { LocalStorageService } from '@core/services/localStorage/local-storage.service';
+import { environment } from '@env/environment';
 import { addSeconds } from 'date-fns';
 import jwt_decode from 'jwt-decode';
 import { orderBy, uniqBy } from 'lodash';
 import { Observable, catchError, map, of } from 'rxjs';
+import { tap } from 'rxjs/internal/operators/tap';
 
 @Injectable()
 export class AuthenticationService {
@@ -26,31 +29,46 @@ export class AuthenticationService {
   ) { }
 
   register(form: FormGroup): Observable<boolean> {
-    console.log(form);
-    this.setUserStorage(this.token);
-    return of(true);
+    // console.log(form);
+    // this.setUserStorage(this.token);
+
+    return this.http.post<UserAuthorization>(`${environment.httpBackend}${Api.REGISTER}`, {})
+      .pipe(
+        tap((res) => console.log(res)),
+        // tap((token) => {
+        //   this.setUserStorage(token);
+        //   this.userService.setUserToken(token.accessToken);
+        // }),
+        map(() => true),
+        catchError((err: HttpErrorResponse) => {
+          // const error = err.error as string[];
+          // this.toastMessageService.notifyOfError(error[0]);
+          return of(null);
+        })
+      );
+
+
+    // return of(true);
   }
 
   login(form: FormGroup): Observable<boolean> {
 
-
-    // return this.http.post<UserAuthorization>(`${environment.httpBackend}${Api.LOGIN}`, { ...userData, grantType: "password" })
-    // .pipe(
-    //   tap((token) => {
-    //     this.setUserStorage(token);
-    //     this.userService.setUserToken(token.accessToken);
-    //   }),
-    //   catchError((err: HttpErrorResponse) => {
-    //     const error = err.error as string[];
-    //     this.toastMessageService.notifyOfError(error[0]);
-    //     return of(null);
-    //   })
-    // );
-
-
-    console.log(form);
     this.setUserStorage(this.token);
-    return of(true);
+
+    return this.http.post<UserAuthorization>(`${environment.httpBackend}${Api.LOGIN}`, { ...form.value })
+      .pipe(
+        tap((res) => console.log(res)),
+        tap((token) => {
+          this.setUserStorage(token);
+          this.userService.setUserToken(token.accessToken);
+        }),
+        map(() => true),
+        catchError((err: HttpErrorResponse) => {
+          const error = err.error as string[];
+          // this.toastMessageService.notifyOfError(error[0]);
+          return of(null);
+        })
+      );
   }
 
   logout(): Observable<unknown> {
@@ -95,11 +113,11 @@ export class AuthenticationService {
 
     this.userService.setUserToken(token.accessToken);
 
-    const { exp, name } = decodedToken;
+    const { exp, userId } = decodedToken;
     const refreshToken = token.refreshToken;
 
     this.localStorageService.setItem<TokenData>(KeyStorage.USER, {
-      refreshToken, name, expires_at: addSeconds(new Date(), exp).toISOString()
+      refreshToken, userId, expires_at: addSeconds(new Date(), exp).toISOString()
     });
   }
 }

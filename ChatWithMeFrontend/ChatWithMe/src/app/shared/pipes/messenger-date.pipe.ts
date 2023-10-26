@@ -21,7 +21,7 @@ export class MessengerDatePipe implements PipeTransform {
       return `Wczoraj, ${format(date, 'HH:mm')}`;
     }
     else if (differenceDays < 8) {
-      return format(date, 'dd MMMM', { locale: pl });
+      return format(date, 'dd MMMM, HH:mm', { locale: pl });
     } else if (differenceDays < 31) {
       return "Ponad tydzień temu";
     } else {

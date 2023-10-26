@@ -1,16 +1,16 @@
 <div class="box">
   <div class="flex">
     <span class="title">{{title}}</span>
-    <div class="restrict">&nbsp;{{ valueDisplay | spaceArray }}</div>
   </div>
   <button
     mat-stroked-button
     disableRipple
     class="button"
-    (click)="openDialog()"
     type="button"
+    (click)="openDialog()"
   >
     <mat-icon>add</mat-icon>
     {{buttonText}}
   </button>
+  <span class="title">{{ valueDisplay ? (valueDisplay | spaceArray) : '--brak--' }}</span>
 </div>

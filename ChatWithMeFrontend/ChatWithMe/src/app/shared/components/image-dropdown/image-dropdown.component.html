@@ -1,6 +1,6 @@
 <div
   class="box"
-  [class.border]="origin === 'register'"
+  [class.register]="origin === 'register'"
   [ngClass]="{'cursor-pointer': (filesCounter < 6)}"
   (click)="(filesCounter < 6) && fileInput.click()"
 >
@@ -24,12 +24,15 @@
     <div
       *ngFor="let itemIndex of [0,1,2,3,4,5]"
       class="imageContainer"
+      [class.register]="origin === 'register'"
     >
       <ng-container *ngIf="previews$ | async as preview">
         <img
           *ngIf="preview[itemIndex]"
           [src]="preview[itemIndex]"
+          [class.register]="origin === 'register'"
           class="image"
+          (click)="$event.stopPropagation()"
         />
         <mat-icon
           *ngIf="preview[itemIndex] && itemIndex !== 0"

@@ -5,31 +5,20 @@
 >
   <h1 class="align--header">Rejestracja</h1>
 
-  <basic />
-
-  <div class="box">
-    <sex-related />
-    <image-dropdown origin="register" />
-  </div>
-
-  <button
-    class="additional"
-    mat-raised-button
-    color="primary"
-    type="button"
-    (click)="openAdditionalDialog()"
-  >
-    Dodatkowe informacje
-  </button>
-
-  <button
-    [disabled]="!form.valid"
-    mat-raised-button
-    color="primary"
-    class="align--button"
-  >
-    Stwórz konto
-  </button>
+  <ng-container [ngSwitch]="currentPageListener$ | async">
+    <first-page
+      *ngSwitchCase="1"
+      (changePage)="changePage($event)"
+    />
+    <second-page
+      *ngSwitchCase="2"
+      (changePage)="changePage($event)"
+    />
+    <third-page
+      *ngSwitchCase="3"
+      (changePage)="changePage($event)"
+    />
+  </ng-container>
 
   <div class="divider"></div>
 

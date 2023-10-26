@@ -1,0 +1,22 @@
+.box {
+  display: flex;
+  justify-content: space-between;
+  padding-inline: 6%;
+
+  @media (max-width: 1000px) {
+    flex-direction: column;
+    padding-inline: 0;
+    gap: 22px;
+  }
+
+  .title {
+    font-weight: 500;
+    padding-left: 10px;
+  }
+}
+
+.button {
+  float: right;
+  margin-top: 22px;
+  margin-right: 20px;
+}

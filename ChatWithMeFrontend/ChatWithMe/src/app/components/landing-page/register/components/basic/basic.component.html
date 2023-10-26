@@ -1,5 +1,13 @@
 <div class="inline">
   <my-input
+    label="Imię"
+    controlName="name"
+    [ppErrorMessage]="{
+    required: 'Imię jest wymagane'
+  }"
+  />
+
+  <my-input
     label="E-mail"
     placeholder="Wprowadź adres e-mail"
     controlName="email"
@@ -8,7 +16,9 @@
       pattern: 'Adres e-mail jest nieprawidłowy'
     }"
   />
+</div>
 
+<div class="inline">
   <my-input
     label="Hasło"
     placeholder="8 - 30 znaków, w tym cyfra"
@@ -35,14 +45,6 @@
 </div>
 
 <div class="inline">
-  <my-input
-    label="Imię"
-    controlName="firstName"
-    [ppErrorMessage]="{
-    required: 'Imię jest wymagane'
-  }"
-  />
-
   <my-datepicker
     label="Data urodzenia"
     controlName="birthDate"

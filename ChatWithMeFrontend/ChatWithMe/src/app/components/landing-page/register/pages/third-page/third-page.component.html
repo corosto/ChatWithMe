@@ -1,0 +1,16 @@
+<additional-data />
+
+<div class="buttons">
+  <button
+    mat-flat-button
+    color="primary"
+    type="button"
+    (click)="changePage.emit(-1)"
+  >Wstecz</button>
+
+  <button
+    [disabled]="!formGroupDirective.form.valid"
+    mat-flat-button
+    color="primary"
+  >Stwórz konto</button>
+</div>

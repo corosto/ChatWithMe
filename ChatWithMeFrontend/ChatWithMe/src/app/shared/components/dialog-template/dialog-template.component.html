@@ -1,0 +1,11 @@
+<form [formGroup]="form">
+  <additional-data [inSettings]="true" />
+</form>
+
+<button
+  type="button"
+  class="button"
+  color="primary"
+  mat-flat-button
+  [mat-dialog-close]="form.value"
+>Zamknij</button>

@@ -1,0 +1,31 @@
+<basic />
+
+<div class="box">
+  <div>
+    <span class="title">Płeć</span>
+    <mat-chip-listbox formControlName="sex">
+      <mat-chip-option
+        *ngFor="let sex of SEX"
+        [value]="sex.value"
+      >{{ sex.text }}</mat-chip-option>
+    </mat-chip-listbox>
+  </div>
+
+  <div>
+    <span class="title">Pokaż mi</span>
+    <mat-chip-listbox formControlName="showMe">
+      <mat-chip-option
+        *ngFor="let sex of SHOW_ME_SEX"
+        [value]="sex.value"
+      >{{ sex.text }}</mat-chip-option>
+    </mat-chip-listbox>
+  </div>
+</div>
+
+<button
+  mat-flat-button
+  color="primary"
+  class="button"
+  type="button"
+  (click)="changePage.emit(1)"
+>Dalej</button>

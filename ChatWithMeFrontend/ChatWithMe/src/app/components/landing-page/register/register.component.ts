@@ -1,30 +1,23 @@
-import { NoopScrollStrategy } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
-import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatAutocompleteModule } from '@angular/material/autocomplete';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
-import { MatDialog } from '@angular/material/dialog';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatIconModule } from '@angular/material/icon';
-import { MatInputModule } from '@angular/material/input';
 import { Router, RouterModule } from '@angular/router';
 import { AuthenticationService } from '@components/landing-page/api/authentication.service';
 import { BasicComponent } from '@components/landing-page/register/components/basic/basic.component';
-import { SexRelatedComponent } from '@components/landing-page/register/components/sex-related/sex-related.component';
+import { FirstPageComponent } from '@components/landing-page/register/pages/first-page/first-page.component';
+import { SecondPageComponent } from '@components/landing-page/register/pages/second-page/second-page.component';
+import { ThirdPageComponent } from '@components/landing-page/register/pages/third-page/third-page.component';
 import { RoutesPath } from '@core/enums/routes-path.enum';
-import { AdditionalDialogComponent } from '@shared/components/additional-dialog/additional-dialog.component';
-import { ImageDropdownComponent } from '@shared/components/image-dropdown/image-dropdown.component';
 import { InputComponent } from '@shared/components/input/input.component';
 import { EMAIL_PATTERN, PASSWORD_PATTERN } from '@shared/patterns/valid.pattern';
 import { mustMatch } from '@shared/utils/must-match';
-import { Subject, filter, takeUntil, tap } from 'rxjs';
+import { BehaviorSubject, Subject, filter, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'register',
   standalone: true,
-  imports: [CommonModule, MatIconModule, MatButtonModule, InputComponent, SexRelatedComponent, MatAutocompleteModule, MatFormFieldModule,
-    FormsModule, ReactiveFormsModule, RouterModule, BasicComponent, ImageDropdownComponent, MatInputModule],
+  imports: [CommonModule, MatButtonModule, InputComponent, ReactiveFormsModule, RouterModule, BasicComponent, FirstPageComponent, SecondPageComponent, ThirdPageComponent],
   providers: [AuthenticationService],
   templateUrl: './register.component.html',
   styleUrls: ['./register.component.scss'],
@@ -33,7 +26,7 @@ import { Subject, filter, takeUntil, tap } from 'rxjs';
 export class RegisterComponent implements OnInit, OnDestroy {
 
   form = this.fb.group({
-    firstName: [null as string, [Validators.required]],
+    name: [null as string, [Validators.required]],
     email: [null as string, [Validators.required, Validators.pattern(EMAIL_PATTERN)]],
     password: [null as string, [Validators.required, Validators.pattern(PASSWORD_PATTERN)]],
     confirmedPassword: [null as string, [Validators.required]],
@@ -75,13 +68,14 @@ export class RegisterComponent implements OnInit, OnDestroy {
 
   readonly LOGIN_LINK = `/${RoutesPath.LOGIN}`;
 
+  currentPageListener$ = new BehaviorSubject<number>(1);
+
   private onDestroy$ = new Subject<void>();
 
   constructor(
     private fb: FormBuilder,
     protected authenticationService: AuthenticationService,
     private router: Router,
-    private dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
@@ -101,21 +95,7 @@ export class RegisterComponent implements OnInit, OnDestroy {
     ).subscribe();
   }
 
-  openAdditionalDialog(): void {
-    const dialogRef = this.dialog.open(AdditionalDialogComponent, {
-      data: this.form.value,
-      panelClass: 'changeDialogScrollView',
-      width: '400px',
-      maxHeight: '600px',
-      disableClose: true,
-      autoFocus: false,
-      scrollStrategy: new NoopScrollStrategy(),
-    });
-
-    dialogRef.afterClosed().pipe(
-      filter((res) => !!res),
-      tap((res) => this.form.patchValue(res)),
-      takeUntil(this.onDestroy$),
-    ).subscribe();
+  changePage(pageSide: number): void {
+    this.currentPageListener$.next(this.currentPageListener$.value + pageSide);
   }
 }

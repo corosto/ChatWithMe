@@ -2,7 +2,7 @@
 import { ComponentType, NoopScrollStrategy } from '@angular/cdk/overlay';
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
@@ -13,7 +13,7 @@ import { LookingForDialogComponent } from '@components/landing-page/register/com
 import { SEX } from '@components/landing-page/register/components/sex-related/constants/sex.const';
 import { SexualOrientationDialogComponent } from '@components/landing-page/register/components/sexual-orientation-dialog/sexual-orientation-dialog.component';
 import { USER_PROFILE_MOCKS } from '@components/settings/interfaces/user-data.interface';
-import { AdditionalDialogComponent } from '@shared/components/additional-dialog/additional-dialog.component';
+import { DialogTemplateComponent } from '@shared/components/dialog-template/dialog-template.component';
 import { ImageDropdownComponent } from '@shared/components/image-dropdown/image-dropdown.component';
 import { InputComponent } from '@shared/components/input/input.component';
 import { MatchImageComponent } from '@shared/components/match-image/match-image.component';
@@ -68,7 +68,6 @@ export class UserProfileComponent<T> implements OnInit, OnDestroy {
     sexualOrientations: [null as string[], [Validators.required, Validators.maxLength(3)]],
   });
 
-
   match = USER_PROFILE_MOCKS;
   inEdit = false;
 
@@ -77,13 +76,15 @@ export class UserProfileComponent<T> implements OnInit, OnDestroy {
   constructor(
     private fb: FormBuilder,
     private matchesService: MatchesService,
+    private cd: ChangeDetectorRef,
     private dialog: MatDialog,
-    private cd: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
     this.matchesService.setImagesCount(this.match.images.length);
     this.form.patchValue(this.match);
+
+    this.form.valueChanges.subscribe((res) => console.log(res));
   }
 
   ngOnDestroy(): void {
@@ -92,7 +93,7 @@ export class UserProfileComponent<T> implements OnInit, OnDestroy {
   }
 
   openAdditionalDialog(): void {
-    const dialogRef = this.dialog.open(AdditionalDialogComponent, {
+    const dialogRef = this.dialog.open(DialogTemplateComponent, {
       data: this.form.value,
       panelClass: 'changeDialogScrollView',
       width: '400px',

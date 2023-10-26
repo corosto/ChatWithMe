@@ -11,8 +11,12 @@ sex-related {
   .box {
     display: flex;
     flex-direction: column;
-    width: fit-content;
     gap: var(--gap-s);
+
+    &:not(:last-of-type) {
+      border-bottom: 1px solid var(--color-border);
+      padding-bottom: 20px;
+    }
   }
 
   .mat-mdc-standard-chip:not(.mdc-evolution-chip--disabled) {

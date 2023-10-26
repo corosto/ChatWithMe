@@ -6,7 +6,7 @@
 
 .box {
   padding: 15px;
-  border-bottom: 1px solid rgba(121, 121, 121, 0.582);
+  border-bottom: 1px solid var(--color-border);
 
   .title {
     padding-bottom: 6px;
@@ -48,5 +48,5 @@
 
 .mat-mdc-standard-chip:not(.mdc-evolution-chip--disabled) {
   background-color: transparent !important;
-  border: 1px solid rgba(121, 121, 121, 0.582);
+  border: 1px solid var(--color-border);
 }
