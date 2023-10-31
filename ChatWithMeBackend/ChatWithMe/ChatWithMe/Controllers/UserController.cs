@@ -1,4 +1,6 @@
-﻿using ChatWithMe.Models;
+﻿using Azure.Core;
+using ChatWithMe.Common;
+using ChatWithMe.Models;
 using ChatWithMe.Models.UserDtos;
 using ChatWithMe.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -6,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ChatWithMe.Controllers
 {
     [ApiController]
-    [Route("user")]
+    [Route("api/user")]
     public class UserController: ControllerBase
     {
 
@@ -19,7 +21,7 @@ namespace ChatWithMe.Controllers
 
 
         [HttpPost("register")]
-        public ActionResult<int> Register([FromBody] CreateUserDto dto)
+        public ActionResult<TokenToReturn> Register([FromForm] CreateUserDto dto)
         {
             return Ok(_service.RegisterUser(dto));
         }
@@ -27,32 +29,33 @@ namespace ChatWithMe.Controllers
         [HttpPost("login")]
         public ActionResult<TokenToReturn> Login([FromBody] LoginUserDto dto)
         {
-            return Ok(_service.LoginUser(dto));
+            return dto.GrantType switch
+            {
+                "password" => Ok(_service.Login(dto)),
+                "refresh_token" =>  Ok(_service.LoginWithRefreshToken(dto)),
+            };
         }
 
-        [HttpPost("refreshToken")]
-        public ActionResult<string> RefreshToken([FromBody] LoginUserDto dto)
+        [HttpPost("logout")]
+        [RoleAuthorize]
+        public ActionResult Logout()
         {
-            var user = _service.GetUser(dto);
-            var refreshToken = Request.Cookies["refreshToken"];
-
-            if (!user.RefreshToken.Equals(refreshToken))
-            {
-                return Unauthorized("Invalid Refresh Token.");
-            }
-
-            if (user.TokenExpires < DateTime.Now)
-            {
-                return Unauthorized("Token expired.");
-            }
-
-            return Ok(_service.GenerateNewTokensForUser(user));
+            _service.LogoutUser();
+            return Ok();
         }
 
-        //[HttpGet("{id}")]
-        //public ActionResult<UserDto> GetUser([FromRoute] int id)
-        //{
-        //    return Ok(_service.GetUser(id));
-        //}
+        [HttpGet("all")]
+        [RoleAuthorize]
+        public ActionResult<UserAllDto> GetUserAllData()
+        {
+            return Ok(_service.GetUserAll());
+        }
+        
+        [HttpGet("basic")]
+        [RoleAuthorize]
+        public ActionResult<UserBasicDto> GetUserBasicData()
+        {
+            return Ok(_service.GetUserBasic());
+        }
     }
 }

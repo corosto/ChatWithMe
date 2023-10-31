@@ -2,11 +2,7 @@
 {
     public class TokenToReturn
     {
-        public string TokenContent { get; set; }
-
-        public TokenToReturn(string TokenContent)
-        {
-            this.TokenContent = TokenContent;
-        }
+        public string AccessToken { get; init; } = null!;
+        public string RefreshToken { get; init; } = null!;
     }
 }

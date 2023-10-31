@@ -57,7 +57,7 @@ export class UserProfileComponent<T> implements OnInit, OnDestroy {
     gym: [null as string],
     diet: [null as string],
     school: [null as string],
-    work: [null as string],
+    job: [null as string],
     position: [null as string],
 
     lookingFor: [null as string, [Validators.required]],

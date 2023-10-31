@@ -9,7 +9,7 @@ import { AuthenticationService } from '@components/landing-page/api/authenticati
 import { SHOW_ME_SEX } from '@components/landing-page/register/components/sex-related/constants/sex.const';
 import { USER_DATA_MOCK } from '@components/settings/interfaces/user-data.interface';
 import { UserService } from '@core/services/authorization/user.service';
-import { CityComponent, CityData } from '@shared/components/city/city.component';
+import { CityComponent, City } from '@shared/components/city/city.component';
 import { InputComponent } from '@shared/components/input/input.component';
 import { debounceTime } from 'rxjs';
 import { Subject } from 'rxjs/internal/Subject';
@@ -38,7 +38,7 @@ export class UserSettingsComponent implements OnInit, OnDestroy {
     useAgeFilter: [null as boolean, [Validators.required]],
     useDistanceFilter: [null as boolean, [Validators.required]],
     cityInput: [null as string, [Validators.required]],
-    cityChosen: [null as CityData, [Validators.required]],
+    cityChosen: [null as City, [Validators.required]],
   });
 
   private onDestroy$ = new Subject<void>();

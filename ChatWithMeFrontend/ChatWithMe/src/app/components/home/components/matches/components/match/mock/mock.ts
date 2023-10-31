@@ -27,7 +27,7 @@ export const MOCKS: Match[] = [
     gym: 'Często',
     diet: 'Peskatariańska',
     school: 'Polsl',
-    work: 'Elzab',
+    job: 'Elzab',
     position: 'Programista',
   },
   {
@@ -56,7 +56,7 @@ export const MOCKS: Match[] = [
     gym: 'Occasionally',
     diet: 'Vegetarian',
     school: 'UCLA',
-    work: 'Graphic Designer',
+    job: 'Graphic Designer',
     position: 'Designer',
   },
   {
@@ -85,7 +85,7 @@ export const MOCKS: Match[] = [
     gym: 'Occasionally',
     diet: 'Omnivore',
     school: 'Harvard University',
-    work: 'Writer',
+    job: 'Writer',
     position: 'Author',
   },
   {
@@ -113,7 +113,7 @@ export const MOCKS: Match[] = [
     gym: 'Regularly',
     diet: 'Vegetarian',
     school: 'University of California, Berkeley',
-    work: 'Environmental Scientist',
+    job: 'Environmental Scientist',
     position: 'Researcher',
   },
   {
@@ -142,7 +142,7 @@ export const MOCKS: Match[] = [
     gym: 'Occasionally',
     diet: 'Omnivore',
     school: 'Stanford University',
-    work: 'Travel Blogger',
+    job: 'Travel Blogger',
     position: 'Editor',
   },
   {
@@ -170,7 +170,7 @@ export const MOCKS: Match[] = [
     gym: 'Regularly',
     diet: 'Omnivore',
     school: 'New York University',
-    work: 'Event Planner',
+    job: 'Event Planner',
     position: 'Coordinator',
   },
   {
@@ -199,7 +199,7 @@ export const MOCKS: Match[] = [
     gym: 'Regularly',
     diet: 'Omnivore',
     school: 'Massachusetts Institute of Technology',
-    work: 'Software Engineer',
+    job: 'Software Engineer',
     position: 'Developer',
   },
   {
@@ -230,7 +230,7 @@ export const MOCKS: Match[] = [
     gym: 'Occasionally',
     diet: 'Vegetarian',
     school: 'Rhode Island School of Design',
-    work: 'Fine Artist',
+    job: 'Fine Artist',
     position: 'Painter',
   },
 ];
@@ -254,7 +254,7 @@ export interface Match {
   diet: string,
   lookingFor: LookingForText,
   school: string,
-  work: string,
+  job: string,
   position: string,
   interests: string[],
   sex: string,

@@ -1,19 +1,66 @@
 using ChatWithMe.Database;
 using ChatWithMe.Middleware;
 using ChatWithMe.Services;
+using MapacenBackend.Models;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    options.AddSecurityDefinition("auth", new OpenApiSecurityScheme
+    {
+        Type = SecuritySchemeType.Http,
+        In = ParameterLocation.Header,
+        Scheme = JwtBearerDefaults.AuthenticationScheme,
+        Description = "Standard Authorization header using the Bearer scheme (\"bearer {token}\")",
+        Name = "Authorization",
+    });
+    options.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type = ReferenceType.SecurityScheme,
+                    Id = "auth"
+                }
+            },
+            Array.Empty<string>()
+        }
+    });
+    options.DescribeAllParametersInCamelCase();
+});
 builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("ChatWithMeString")));
+
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+})
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Token"]))
+        };
+    });
 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<ErrorHandlingMiddleware>();
+builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 builder.Services.AddHttpContextAccessor();
-
+builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
     builder.AllowAnyMethod()
     .AllowAnyHeader()
@@ -29,8 +76,9 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 }
 
 app.UseMiddleware<ErrorHandlingMiddleware>();
-app.UseHttpsRedirection();
-app.UseAuthorization();
 app.UseCors("corsapp");
+app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
 app.MapControllers();
 app.Run();

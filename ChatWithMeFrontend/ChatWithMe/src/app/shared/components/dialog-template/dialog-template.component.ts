@@ -26,7 +26,7 @@ export class DialogTemplateComponent implements OnInit {
     gym: [null as string],
     diet: [null as string],
     school: [null as string],
-    work: [null as string],
+    job: [null as string],
     position: [null as string],
   });
 

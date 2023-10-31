@@ -31,16 +31,18 @@ export class ImageDropdownComponent implements OnInit {
     private formGroupDirective: FormGroupDirective,
   ) { }
 
-  //TODO poprawic dodawanie zdjec jak bedzie juz api
   ngOnInit(): void {
     const images = this.formGroupDirective.form.get('images');
 
-    if (this.origin === 'settings') {
-      this.previews$.next(images.value as string[]);
-      this.filesCounter = this.previews$.value?.length;
-    }
+    this.previews$.next((images?.value as string[]) || []);
+    this.filesCounter = this.previews$.value?.length;
 
-    this.previews$.asObservable().pipe(filter((res) => !!res?.length)).subscribe((res) => images.patchValue(res));
+    this.previews$.asObservable().pipe(
+      filter((res) => !!res?.length)
+    ).subscribe((res) => {
+      images.patchValue(res);
+      this.formGroupDirective.form.get('imagesToSend').patchValue(this.selectedImages);
+    });
   }
 
   onFileSelected(event: any) {

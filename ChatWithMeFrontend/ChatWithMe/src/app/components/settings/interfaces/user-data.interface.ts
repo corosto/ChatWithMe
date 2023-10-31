@@ -1,5 +1,5 @@
 import { Match } from "@components/home/components/matches/components/match/mock/mock";
-import { CityData } from "@shared/components/city/city.component";
+import { City } from "@shared/components/city/city.component";
 
 export interface UserData {
   email: string,
@@ -10,7 +10,7 @@ export interface UserData {
   useAgeFilter: boolean,
   useDistanceFilter: boolean,
   cityInput: string,
-  cityChosen: CityData,
+  cityChosen: City,
 }
 
 export const USER_DATA_MOCK: UserData = {
@@ -22,7 +22,7 @@ export const USER_DATA_MOCK: UserData = {
   useAgeFilter: false,
   useDistanceFilter: true,
   cityInput: "Rudy, Powiat raciborski",
-  cityChosen: { city: 'Rudy', height: 50.191890265496895, width: 18.448735892422576 },
+  cityChosen: { Name: 'Rudy', Height: 50.191890265496895, Width: 18.448735892422576 },
 };
 
 export const USER_PROFILE_MOCKS: Match =
@@ -53,6 +53,6 @@ export const USER_PROFILE_MOCKS: Match =
   gym: 'Często',
   diet: 'Peskatariańska',
   school: 'Polsl',
-  work: 'Elzab',
+  job: 'Elzab',
   position: 'Programista',
 };

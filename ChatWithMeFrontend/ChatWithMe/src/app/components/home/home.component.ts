@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { HomeService } from '@components/home/api/home.service';
 import { ActiveChatComponent } from '@components/home/components/active-chat/active-chat.component';
 import { MatchesComponent } from '@components/home/components/matches/matches.component';
 import { SidebarComponent } from '@components/home/components/sidebar/sidebar.component';
@@ -10,6 +11,7 @@ import { Observable, map } from 'rxjs';
   selector: 'pp-home',
   standalone: true,
   imports: [CommonModule, MatchesComponent, SidebarComponent, ActiveChatComponent],
+  providers: [HomeService],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -20,12 +22,15 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private matchService: MatchService,
+    private homeService: HomeService,
   ) { }
 
   ngOnInit(): void {
     this.chatVisible$ = this.matchService.getChatId().pipe(
       map((res) => !!res),
     );
-  }
 
+    this.homeService.getUserBasicData().subscribe((res) => console.log(res))
+    this.homeService.getUserAllData().subscribe((res) => console.log(res))
+  }
 }

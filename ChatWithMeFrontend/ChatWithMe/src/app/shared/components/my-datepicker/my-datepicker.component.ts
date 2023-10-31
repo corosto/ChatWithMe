@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { ControlContainer, FormControl, FormGroupDirective, ReactiveFormsModule } from '@angular/forms';
 import { MomentDateAdapter } from '@angular/material-moment-adapter';
 import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
@@ -7,7 +7,7 @@ import { MatDatepickerInputEvent, MatDatepickerModule } from '@angular/material/
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { FULL_MONTH_FORMAT } from '@shared/components/my-datepicker/constants/my-datepicker.const';
-import { format, startOfDay, subYears } from 'date-fns';
+import { format, parse, startOfDay, subYears } from 'date-fns';
 
 @Component({
   selector: 'my-datepicker',
@@ -38,15 +38,21 @@ import { format, startOfDay, subYears } from 'date-fns';
     }
   ]
 })
-export class MyDatepickerComponent {
+export class MyDatepickerComponent implements OnInit {
   @Input({ required: true }) controlName: string;
   @Input({ required: true }) label: string;
   @Input() min: Date = startOfDay(subYears(new Date(), 99));
   @Input() max: Date = startOfDay(subYears(new Date(), 18));
 
+  value: Date;
+
   constructor(
     private formGroupDirective: FormGroupDirective,
   ) { }
+
+  ngOnInit(): void {
+    this.value = parse(this.control.value as string, 'dd.MM.yyyy', new Date());
+  }
 
   dateChange(date: MatDatepickerInputEvent<Date>): void {
     this.control.patchValue(format(new Date(date.value), 'dd.MM.yyyy'));

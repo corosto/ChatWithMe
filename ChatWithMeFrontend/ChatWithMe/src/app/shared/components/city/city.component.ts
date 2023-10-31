@@ -30,7 +30,7 @@ import { debounceTime } from 'rxjs/internal/operators/debounceTime';
 })
 export class CityComponent implements OnInit {
 
-  cities$: Observable<{ text: string, value: CityData }[]>;
+  cities$: Observable<{ text: string, value: City }[]>;
 
   constructor(
     protected formGroupDirective: FormGroupDirective,
@@ -41,12 +41,12 @@ export class CityComponent implements OnInit {
     this.cities$ = this.cityInput.valueChanges.pipe(
       tap(() => this.cityChosen?.value ? this.cityInput.setErrors(null) : this.cityInput.setErrors({ error: true })),
       filter((res) => !!res),
-      debounceTime(240),
+      debounceTime(450),
       switchMap((res: string) => this.authenticationService.getCities(res)),
     );
   }
 
-  save(data: CityData) {
+  save(data: City) {
     this.cityChosen.patchValue(data);
   }
 
@@ -59,8 +59,8 @@ export class CityComponent implements OnInit {
   }
 }
 
-export interface CityData {
-  city: string,
-  height: number,
-  width: number,
+export interface City {
+  Name: string,
+  Height: number,
+  Width: number,
 }

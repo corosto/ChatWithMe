@@ -1,12 +1,14 @@
 import { HttpClient, HttpErrorResponse, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { TokenData, UserAuthorization } from '@components/landing-page/interfaces/authentication-interface';
+import { Register, TokenData, UserAuthorization } from '@components/landing-page/interfaces/authentication-interface';
 import { Api } from '@core/enums/api.enum';
 import { KeyStorage } from '@core/enums/key-storage.enum';
 import { UserService } from '@core/services/authorization/user.service';
 import { LocalStorageService } from '@core/services/localStorage/local-storage.service';
 import { environment } from '@env/environment';
+import { City } from '@shared/components/city/city.component';
+import { ToastMessageService } from '@shared/components/toast-message/services/toast-message.service';
 import { addSeconds } from 'date-fns';
 import jwt_decode from 'jwt-decode';
 import { orderBy, uniqBy } from 'lodash';
@@ -16,56 +18,77 @@ import { tap } from 'rxjs/internal/operators/tap';
 @Injectable()
 export class AuthenticationService {
 
-  readonly token: UserAuthorization = {
-    accessToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZWxvLnBsIiwiZXhwIjoiMTIzMTMyMzEyIiwiZmlyc3ROYW1lIjoiVGVzdCIsImlkIjoiMCIsImxhc3ROYW1lIjoiU2llbWEifQ.HShV2dcPwtcFBwtD5SbcK-Bb2qoYmeuUQx-fhK4KDIE',
-    refreshToken: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZWxvLnBsIiwiZXhwIjoiMTIzMTMyMzEyIiwiZmlyc3ROYW1lIjoiVGVzdCIsImlkIjoiMCIsImxhc3ROYW1lIjoiU2llbWEifQ.HShV2dcPwtcFBwtD5SbcK-Bb2qoYmeuUQx-fhK4KDIE'
-  };
-
   constructor(
     private http: HttpClient,
-    // private toastMessageService: ToastMessageService,
+    private toastMessageService: ToastMessageService,
     private userService: UserService,
     private localStorageService: LocalStorageService,
   ) { }
 
-  register(form: FormGroup): Observable<boolean> {
-    // console.log(form);
-    // this.setUserStorage(this.token);
+  register(value: Register): Observable<boolean> {
 
-    return this.http.post<UserAuthorization>(`${environment.httpBackend}${Api.REGISTER}`, {})
+    const formData = new FormData();
+    formData.append('Name', value.name);
+    formData.append('Email', value.email);
+    formData.append('Password', value.password);
+    formData.append('ConfirmedPassword', value.confirmedPassword);
+    formData.append('Height', value.height);
+    formData.append('Width', value.weight);
+    formData.append('BirthDate', value.birthDate);
+    formData.append('Sex', value.sex);
+    formData.append('City', JSON.stringify(value.cityChosen));
+    formData.append('ShowMe', value.showMe);
+    formData.append('LookingFor', value.lookingFor);
+    formData.append('Description', value.description);
+    formData.append('Zodiac', value.zodiac);
+    formData.append('Kids', value.kids);
+    formData.append('Pets', value.pets);
+    formData.append('Alcohol', value.alcohol);
+    formData.append('Smoking', value.smoking);
+    formData.append('Gym', value.gym);
+    formData.append('Diet', value.diet);
+    formData.append('School', value.school);
+    formData.append('Job', value.job);
+    formData.append('Position', value.position);
+
+    value.interests.forEach((interest) => {
+      formData.append('Interests', interest);
+    });
+
+    value.sexualOrientations.forEach((sexualOrientation) => {
+      formData.append('SexualOrientations', sexualOrientation);
+    });
+
+    value.imagesToSend.forEach((image) => {
+      formData.append('Images', image);
+    });
+
+    return this.http.post<UserAuthorization>(`${environment.httpBackend}${Api.REGISTER}`, formData)
       .pipe(
-        tap((res) => console.log(res)),
-        // tap((token) => {
-        //   this.setUserStorage(token);
-        //   this.userService.setUserToken(token.accessToken);
-        // }),
+        tap((token) => this.setUserStorage(token)),
         map(() => true),
         catchError((err: HttpErrorResponse) => {
-          // const error = err.error as string[];
-          // this.toastMessageService.notifyOfError(error[0]);
+          const error = err.error as string[];
+          this.toastMessageService.notifyOfError(error[0]);
           return of(null);
         })
       );
-
-
-    // return of(true);
   }
 
   login(form: FormGroup): Observable<boolean> {
 
-    this.setUserStorage(this.token);
+    const userData = {
+      ...form.value,
+      grantType: 'password',
+    };
 
-    return this.http.post<UserAuthorization>(`${environment.httpBackend}${Api.LOGIN}`, { ...form.value })
+    return this.http.post<UserAuthorization>(`${environment.httpBackend}${Api.LOGIN}`, userData)
       .pipe(
-        tap((res) => console.log(res)),
-        tap((token) => {
-          this.setUserStorage(token);
-          this.userService.setUserToken(token.accessToken);
-        }),
+        tap((token) => this.setUserStorage(token)),
         map(() => true),
         catchError((err: HttpErrorResponse) => {
           const error = err.error as string[];
-          // this.toastMessageService.notifyOfError(error[0]);
+          this.toastMessageService.notifyOfError(error[0]);
           return of(null);
         })
       );
@@ -83,7 +106,7 @@ export class AuthenticationService {
     return of(true);
   }
 
-  getCities(placeName: string): Observable<{ text: string, value: { city: string, height: number, width: number } }[]> {
+  getCities(placeName: string): Observable<{ text: string, value: City }[]> {
     const params = new HttpParams()
       .set('country', 'PL')
       .set('placename_startsWith', placeName)
@@ -100,7 +123,7 @@ export class AuthenticationService {
         return res.map((result) => {
           return {
             text: `${result?.placeName}, ${result?.adminName2}`,
-            value: { city: result?.placeName, height: result?.lat, width: result?.lng },
+            value: { Name: result?.placeName, Height: result?.lat, Width: result?.lng },
           };
         });
       }),
