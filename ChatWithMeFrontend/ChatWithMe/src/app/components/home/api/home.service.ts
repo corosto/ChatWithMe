@@ -13,8 +13,8 @@ export class HomeService {
     private toastMessageService: ToastMessageService,
   ) { }
 
-  getUserBasicData(): Observable<any> {
-    return this.http.get<any>(`${environment.httpBackend}${Api.USER_BASIC}`)
+  getUserBasicData(): Observable<UserBasicData> {
+    return this.http.get<UserBasicData>(`${environment.httpBackend}${Api.USER_BASIC}`)
       .pipe(
         catchError((err: HttpErrorResponse) => {
           this.toastMessageService.notifyOfError(err.statusText);
@@ -32,4 +32,9 @@ export class HomeService {
         })
       );
   }
+}
+
+export interface UserBasicData {
+  name: string,
+  image: string,
 }

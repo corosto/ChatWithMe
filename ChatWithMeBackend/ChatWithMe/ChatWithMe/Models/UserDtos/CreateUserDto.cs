@@ -55,6 +55,13 @@ public class CreateUserDto
     public IFormFile[] Images { get; set; }
 
 
+    public int LookingForAgeMin { get; set; } = 20;
+    public int LookingForAgeMax { get; set; } = 35;
+    public int LookingForDistanceMax { get; set; } = 40;
+    public bool UseAgeFilter { get; set; } = true;
+    public bool UseDistanceFilter { get; set; } = false;
+
+
     public string? Description { get; set; }
     public string? Zodiac { get; set; }
     public string? Education { get; set; }

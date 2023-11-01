@@ -61,5 +61,9 @@ namespace ChatWithMe.Database
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<UserInterests> UserInterests { get; set; }
+        public DbSet<Interest> Interest { get; set; }
+        public DbSet<UserSexualOrientations> UserSexualOrientations { get; set; }
+        public DbSet<SexualOrientation> SexualOrientation { get; set; }
     }
 }

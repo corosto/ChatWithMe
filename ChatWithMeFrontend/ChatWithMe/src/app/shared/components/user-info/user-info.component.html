@@ -4,15 +4,17 @@
     class="chip"
     [title]="link === '/home' ? 'Wstecz' : 'Ustawienia'"
   >
-    <img
-      class="img"
-      src="https://material.angular.io/assets/img/examples/shiba1.jpg"
-      alt="Zdjęcie użytkownika"
-    />
-    <div class="inside">
-      Imie użytkownika
-      <mat-icon>{{link === '/home' ? 'undo' : 'settings'}}</mat-icon>
-    </div>
+    <ng-container *ngIf="userBasicData$ | async as userBasicData">
+      <img
+        class="img"
+        [src]="userBasicData.image"
+        alt="Zdjęcie użytkownika"
+      />
+      <div class="inside">
+        {{userBasicData.name}}
+        <mat-icon>{{link === '/home' ? 'undo' : 'settings'}}</mat-icon>
+      </div>
+    </ng-container>
   </div>
 </div>
 

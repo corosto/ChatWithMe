@@ -21,9 +21,10 @@ namespace ChatWithMe.Controllers
 
 
         [HttpPost("register")]
-        public ActionResult<TokenToReturn> Register([FromForm] CreateUserDto dto)
+        public ActionResult Register([FromForm] CreateUserDto dto)
         {
-            return Ok(_service.RegisterUser(dto));
+            _service.RegisterUser(dto);
+            return Ok();
         }
 
         [HttpPost("login")]
@@ -49,6 +50,20 @@ namespace ChatWithMe.Controllers
         public ActionResult<UserAllDto> GetUserAllData()
         {
             return Ok(_service.GetUserAll());
+        }
+        
+        [HttpGet("side")]
+        [RoleAuthorize]
+        public ActionResult<UserSideDto> GetUserSideData()
+        {
+            return Ok(_service.GetUserSide());
+        }        
+        [HttpPut("side")]
+        [RoleAuthorize]
+        public ActionResult UpdateUserSideData([FromBody] UserSideDto dto)
+        {
+            _service.UpdateUserSide(dto);
+            return Ok();
         }
         
         [HttpGet("basic")]

@@ -6,6 +6,6 @@ namespace ChatWithMe.Entities
     {
         public int Id { get; set; }
         public string InterestName { get; set; }
-        public List<UserInterests> Users { get; set; }
+        public List<UserInterests> Users { get; set; } = new();
     }
 }

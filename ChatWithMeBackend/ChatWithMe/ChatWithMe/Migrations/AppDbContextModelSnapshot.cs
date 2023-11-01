@@ -121,6 +121,15 @@ namespace ChatWithMe.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("LookingForAgeMax")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LookingForAgeMin")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LookingForDistanceMax")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -161,6 +170,12 @@ namespace ChatWithMe.Migrations
 
                     b.Property<DateTime?>("TokenExpires")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("UseAgeFilter")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("UseDistanceFilter")
+                        .HasColumnType("bit");
 
                     b.Property<int>("Width")
                         .HasColumnType("int");
@@ -220,6 +235,10 @@ namespace ChatWithMe.Migrations
                         {
                             b1.Property<int>("UserId")
                                 .HasColumnType("int");
+
+                            b1.Property<string>("FullPlaceName")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
 
                             b1.Property<double>("Height")
                                 .HasColumnType("float");

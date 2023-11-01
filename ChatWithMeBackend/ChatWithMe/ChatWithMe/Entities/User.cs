@@ -24,6 +24,13 @@ namespace ChatWithMe.Entities
         public List<Image> Images { get; set; } = new();
 
 
+        public int LookingForAgeMin { get; set; }
+        public int LookingForAgeMax { get; set; }
+        public int LookingForDistanceMax { get; set; }
+        public bool UseAgeFilter { get; set; }
+        public bool UseDistanceFilter { get; set; }
+
+
         public string? Description { get; set; }
         public string? Zodiac { get; set; }
         public string? Education { get; set; }

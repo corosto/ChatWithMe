@@ -96,8 +96,8 @@ export class UserProfileComponent<T> implements OnInit, OnDestroy {
     const dialogRef = this.dialog.open(DialogTemplateComponent, {
       data: this.form.value,
       panelClass: 'changeDialogScrollView',
-      width: '400px',
-      maxHeight: '600px',
+      width: '375px',
+      maxHeight: '640px',
       disableClose: true,
       autoFocus: false,
       scrollStrategy: new NoopScrollStrategy(),

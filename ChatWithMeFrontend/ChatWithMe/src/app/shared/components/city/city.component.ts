@@ -60,7 +60,12 @@ export class CityComponent implements OnInit {
 }
 
 export interface City {
-  Name: string,
-  Height: number,
-  Width: number,
+  Name?: string,
+  FullPlaceName?: string,
+  Height?: number,
+  Width?: number,
+  name?: string,
+  fullPlaceName?: string,
+  height?: number,
+  width?: number,
 }

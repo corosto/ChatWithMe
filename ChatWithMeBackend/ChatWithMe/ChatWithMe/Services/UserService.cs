@@ -22,13 +22,15 @@ namespace ChatWithMe.Services;
 public interface IUserService
 {
     User GetUser(LoginUserDto dto);
-    TokenToReturn RegisterUser(CreateUserDto dto);
+    void RegisterUser(CreateUserDto dto);
     TokenToReturn Login(LoginUserDto dto);
     TokenToReturn LoginWithRefreshToken(LoginUserDto dto);
-    UserAllDto GetUserAll();
     void LogoutUser();
+    UserAllDto GetUserAll();
+    UserSideDto GetUserSide();
     UserBasicDto GetUserBasic();
     string GenerateToken(User user);
+    void UpdateUserSide(UserSideDto dto);
 }
 
 public class UserService : IUserService
@@ -46,6 +48,8 @@ public class UserService : IUserService
         _mapper = mapper;
     }
 
+
+    //Authentication
     public User GetUser(LoginUserDto dto)
     {
         return _dbContext
@@ -53,7 +57,7 @@ public class UserService : IUserService
             .FirstOrDefault(u => u != null && u.Email == dto.Email) ?? throw new NotFoundException();
     }
 
-    public TokenToReturn RegisterUser(CreateUserDto dto)
+    public void RegisterUser(CreateUserDto dto)
     {
         CreatePasswordHash(dto.Password, out var passwordHash, out var passwordSalt);
 
@@ -83,11 +87,11 @@ public class UserService : IUserService
 
             using (var image = System.Drawing.Image.FromStream(dto.Images[i].OpenReadStream()))
             {
-                imageArray[i] = new Bitmap(image, new Size(170, 125));
+                imageArray[i] = new Bitmap(image, new Size(375, 570));
                 imageArray[i].Save(Path.Combine(Path.GetFullPath("wwwroot"), generatedName));
             }
 
-            user.Images.Add(new ChatWithMe.Entities.Image
+            user.Images.Add(new Entities.Image
             {
                 Name = generatedName,
                 User = user,
@@ -95,20 +99,86 @@ public class UserService : IUserService
             });
         }
 
+        foreach (var interestName in dto.Interests)
+        {
+            var foundInterest = _dbContext.Interest.FirstOrDefault(u => u.InterestName == interestName);
 
-        string accessToken = GenerateToken(user);
-        var refreshToken = GenerateRefreshToken();
+            if(foundInterest != null)
+            {
+                var newUserInterest = new UserInterests
+                {
+                    InterestId = foundInterest.Id,
+                    Interest = foundInterest,
+                    UserId = user.Id,
+                    User = user,
+                };
 
-        user.RefreshToken = refreshToken;
+                user.Interests.Add(newUserInterest);
+
+                foundInterest.Users.Add(newUserInterest);
+            }
+            else
+            {
+                var newInterest = new Interest
+                {
+                    InterestName = interestName,
+                };
+
+                var newUserInterest = new UserInterests
+                {
+                    InterestId = newInterest.Id,
+                    Interest = newInterest,
+                    UserId = user.Id,
+                    User = user,
+                };
+
+                user.Interests.Add(newUserInterest);
+
+                newInterest.Users.Add(newUserInterest);
+            }
+        }
+
+        foreach (var orientationName in dto.SexualOrientations)
+        {
+            var foundOrientation = _dbContext.SexualOrientation.FirstOrDefault(u => u.SexualOrientationName == orientationName);
+
+            if (foundOrientation != null)
+            {
+                var newUserOrientation = new UserSexualOrientations
+                {
+                    SexualOrientationId = foundOrientation.Id,
+                    SexualOrientation = foundOrientation,
+                    UserId = user.Id,
+                    User = user,
+                };
+
+                user.SexualOrientations.Add(newUserOrientation);
+
+                foundOrientation.Users.Add(newUserOrientation);
+            }
+            else
+            {
+                var newOrientaion = new SexualOrientation
+                {
+                    SexualOrientationName = orientationName,
+                };
+
+                var newUserSexualOrientation = new UserSexualOrientations
+                {
+                    SexualOrientationId = newOrientaion.Id,
+                    SexualOrientation = newOrientaion,
+                    UserId = user.Id,
+                    User = user,
+                };
+
+                user.SexualOrientations.Add(newUserSexualOrientation);
+
+                newOrientaion.Users.Add(newUserSexualOrientation);
+            }
+        }
 
         _dbContext.Users.Add(user);
         _dbContext.SaveChanges();
-
-        return new TokenToReturn
-        {
-            AccessToken = accessToken,
-            RefreshToken = refreshToken
-        };
     }
 
     public TokenToReturn Login(LoginUserDto dto)
@@ -173,6 +243,9 @@ public class UserService : IUserService
         _dbContext.SaveChanges();
     }
 
+
+
+    //All user data
     public UserAllDto GetUserAll()
     {
         var id = _currentUserService.UserId;
@@ -189,6 +262,19 @@ public class UserService : IUserService
             ?? throw new NotFoundException("Użytkownik nie istnieje");
 
         var fixedUser = _mapper.Map<UserAllDto>(user);
+
+        var interest = _dbContext.UserInterests
+            .Where(u => u.UserId.ToString() == id)
+            .Include(u => u.Interest)
+            .Select(u => u.Interest.InterestName).ToList();
+
+        var sexualOrientation = _dbContext.UserSexualOrientations
+            .Where(u => u.UserId.ToString() == id)
+            .Include(u => u.SexualOrientation)
+            .Select(u => u.SexualOrientation.SexualOrientationName).ToList();
+
+        fixedUser.Interests = interest;
+        fixedUser.SexualOrientations = sexualOrientation;
 
         var rootPath = Directory.GetCurrentDirectory();
         fixedUser.Images = new();
@@ -208,15 +294,15 @@ public class UserService : IUserService
         return fixedUser;
     }
 
-    //Zainteresowania i Orientacja nie dodają się
-    //Niektóre pola wypełnia jako string "null" zamiast null przy rejestracji
 
 
+
+    //Side menu
     public UserBasicDto GetUserBasic()
     {
         var id = _currentUserService.UserId;
 
-        if(id == null)
+        if (id == null)
             throw new NotFoundException("Proszę się zalogować");
 
         var user = _dbContext
@@ -241,6 +327,50 @@ public class UserService : IUserService
         return fixedUser;
     }
 
+    public UserSideDto GetUserSide()
+    {
+        var id = _currentUserService.UserId;
+
+        if(id == null)
+            throw new NotFoundException("Proszę się zalogować");
+
+        var user = _dbContext
+            .Users
+            .FirstOrDefault(u => u.Id.ToString() == id)
+            ?? throw new NotFoundException("Użytkownik nie istnieje");
+
+        var fixedUser = _mapper.Map<UserSideDto>(user);
+
+        return fixedUser;
+    }
+
+    public void UpdateUserSide(UserSideDto dto)
+    {
+        var id = _currentUserService.UserId;
+
+        if(id == null)
+            throw new NotFoundException("Proszę się zalogować");
+
+        var user = _dbContext
+            .Users
+            .FirstOrDefault(u => u.Id.ToString() == id)
+            ?? throw new NotFoundException("Użytkownik nie istnieje");
+
+        user.ShowMe = dto.ShowMe;
+        user.LookingForAgeMin = dto.LookingForAgeMin;
+        user.LookingForAgeMax = dto.LookingForAgeMax;
+        user.LookingForDistanceMax = dto.LookingForDistanceMax;
+        user.UseAgeFilter = dto.UseAgeFilter;
+        user.UseDistanceFilter = dto.UseDistanceFilter;
+        user.City = dto.City;
+
+        _dbContext.Users.Update(user);
+        _dbContext.SaveChanges();
+    }
+
+
+
+    //Token | Password
     private void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
     {
         using var hmac = new HMACSHA512();

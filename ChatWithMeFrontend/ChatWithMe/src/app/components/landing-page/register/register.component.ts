@@ -13,6 +13,7 @@ import { RoutesPath } from '@core/enums/routes-path.enum';
 import { City } from '@shared/components/city/city.component';
 import { InputComponent } from '@shared/components/input/input.component';
 import { EMAIL_PATTERN, PASSWORD_PATTERN } from '@shared/patterns/valid.pattern';
+import { ControllerService } from '@shared/services/controller.service';
 import { mustMatch } from '@shared/utils/must-match';
 import { BehaviorSubject, Subject, filter, takeUntil, tap } from 'rxjs';
 
@@ -25,7 +26,7 @@ import { BehaviorSubject, Subject, filter, takeUntil, tap } from 'rxjs';
   styleUrls: ['./register.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class RegisterComponent implements OnInit, OnDestroy {
+export class RegisterComponent implements OnDestroy {
 
   form = this.fb.group({
     name: [null as string, [Validators.required]],
@@ -39,17 +40,17 @@ export class RegisterComponent implements OnInit, OnDestroy {
     sex: [null as string, [Validators.required]],
 
     description: ['', [Validators.maxLength(500)]],
-    zodiac: [null as string],
-    education: [null as string],
-    kids: [null as string],
-    pets: [null as string],
-    alcohol: [null as string],
-    smoking: [null as string],
-    gym: [null as string],
-    diet: [null as string],
-    school: [null as string],
-    job: [null as string],
-    position: [null as string],
+    zodiac: [''],
+    education: [''],
+    kids: [''],
+    pets: [''],
+    alcohol: [''],
+    smoking: [''],
+    gym: [''],
+    diet: [''],
+    school: [''],
+    job: [''],
+    position: [''],
 
     cityInput: [null as string, [Validators.required]],
     cityChosen: [null as City, [Validators.required]],
@@ -79,15 +80,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     protected authenticationService: AuthenticationService,
     private router: Router,
+    private controllerService: ControllerService,
   ) { }
-
-  ngOnInit(): void {
-    this.form.valueChanges.subscribe((res) => {
-      // console.log(this.form.get('images').value)
-      // console.log(this.form.get('imagesToSend').value)
-      console.log(res);
-    });
-  }
 
   ngOnDestroy(): void {
     this.onDestroy$.next();
@@ -97,7 +91,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
   register() {
     this.authenticationService.register(this.form.value as Register).pipe(
       filter((res) => !!res),
-      tap(() => this.router.navigateByUrl(RoutesPath.HOME)),
+      tap(() => this.controllerService.userAuthentication = { email: this.form.value.email, password: this.form.value.password }),
+      tap(() => this.router.navigateByUrl(RoutesPath.LOGIN)),
       takeUntil(this.onDestroy$),
     ).subscribe();
   }

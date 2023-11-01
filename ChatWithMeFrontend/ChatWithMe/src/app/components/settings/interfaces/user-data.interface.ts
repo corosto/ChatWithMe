@@ -13,18 +13,6 @@ export interface UserData {
   cityChosen: City,
 }
 
-export const USER_DATA_MOCK: UserData = {
-  email: 'email@example.com',
-  lookingForAgeMin: 20,
-  lookingForAgeMax: 35,
-  lookingForDistanceMax: 40,
-  showMe: 'female',
-  useAgeFilter: false,
-  useDistanceFilter: true,
-  cityInput: "Rudy, Powiat raciborski",
-  cityChosen: { Name: 'Rudy', Height: 50.191890265496895, Width: 18.448735892422576 },
-};
-
 export const USER_PROFILE_MOCKS: Match =
 {
   name: 'Jarosław',

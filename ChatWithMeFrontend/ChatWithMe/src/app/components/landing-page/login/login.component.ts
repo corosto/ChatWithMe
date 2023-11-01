@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
@@ -9,6 +9,7 @@ import { AuthenticationService } from '@components/landing-page/api/authenticati
 import { RoutesPath } from '@core/enums/routes-path.enum';
 import { InputComponent } from '@shared/components/input/input.component';
 import { EMAIL_PATTERN, PASSWORD_PATTERN } from '@shared/patterns/valid.pattern';
+import { ControllerService } from '@shared/services/controller.service';
 import { Subject, filter, takeUntil, tap } from 'rxjs';
 
 @Component({
@@ -20,7 +21,7 @@ import { Subject, filter, takeUntil, tap } from 'rxjs';
   styleUrls: ['./login.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class LoginComponent implements OnDestroy {
+export class LoginComponent implements OnInit, OnDestroy {
 
   readonly RoutesPath = RoutesPath;
   readonly REGISTER_LINK = `/${RoutesPath.REGISTER}`;
@@ -38,7 +39,12 @@ export class LoginComponent implements OnDestroy {
     private fb: FormBuilder,
     private authenticationService: AuthenticationService,
     private router: Router,
+    private controllerService: ControllerService,
   ) { }
+
+  ngOnInit(): void {
+    this.form.patchValue(this.controllerService.userAuthentication);
+  }
 
   ngOnDestroy(): void {
     this.onDestroy$.next();

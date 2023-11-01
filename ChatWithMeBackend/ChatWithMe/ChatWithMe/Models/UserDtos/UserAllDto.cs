@@ -1,20 +1,14 @@
-﻿using ChatWithMe.Entities;
-using Microsoft.AspNetCore.Http;
-
-namespace ChatWithMe.Models.UserDtos
+﻿namespace ChatWithMe.Models.UserDtos
 {
     public class UserAllDto
     {
-        public int Id { get; set; }
-        public string Email { get; set; }
         public string Name { get; set; }
         public int Height { get; set; }
         public int Width { get; set; }
-        public DateTime BirthDate { get; set; }
+        public int Age { get; set; }
         public string Sex { get; set; }
-        public City City { get; set; }
-        public string ShowMe { get; set; }
         public string LookingFor { get; set; }
+        public City City { get; set; }
 
 
         public List<string> Interests { get; set; }

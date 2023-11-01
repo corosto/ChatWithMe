@@ -7,11 +7,11 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { MatSliderModule } from '@angular/material/slider';
 import { AuthenticationService } from '@components/landing-page/api/authentication.service';
 import { SHOW_ME_SEX } from '@components/landing-page/register/components/sex-related/constants/sex.const';
-import { USER_DATA_MOCK } from '@components/settings/interfaces/user-data.interface';
+import { SettingsService, SideData } from '@components/settings/api/settings.service';
 import { UserService } from '@core/services/authorization/user.service';
-import { CityComponent, City } from '@shared/components/city/city.component';
+import { City, CityComponent } from '@shared/components/city/city.component';
 import { InputComponent } from '@shared/components/input/input.component';
-import { debounceTime } from 'rxjs';
+import { debounceTime, skip, switchMap } from 'rxjs';
 import { Subject } from 'rxjs/internal/Subject';
 import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 import { tap } from 'rxjs/internal/operators/tap';
@@ -20,7 +20,7 @@ import { tap } from 'rxjs/internal/operators/tap';
   selector: 'user-settings',
   standalone: true,
   imports: [CommonModule, MatButtonModule, MatSliderModule, MatSlideToggleModule, InputComponent, ReactiveFormsModule, CityComponent, MatSelectModule],
-  providers: [AuthenticationService],
+  providers: [AuthenticationService, SettingsService],
   templateUrl: './user-settings.component.html',
   styleUrls: ['./user-settings.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -47,16 +47,21 @@ export class UserSettingsComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private userService: UserService,
     private authenticationService: AuthenticationService,
+    private settingsService: SettingsService,
   ) { }
 
   ngOnInit(): void {
-    this.form.patchValue(USER_DATA_MOCK);
+    this.settingsService.getUserSideData().pipe(
+      tap((res) => {
+        this.form.patchValue(res);
 
-    this.form.valueChanges.pipe(
-      debounceTime(500)
-    ).subscribe(() => {
-      //TODO strzał do api z formularzem i refresh danych uzytkownika
-    });
+        this.form.get('cityInput').patchValue(res.city.FullPlaceName);
+        this.form.get('cityChosen').patchValue(res.city);
+      }),
+      switchMap(() => this.form.valueChanges),
+      debounceTime(1000),
+      switchMap((res) => this.settingsService.updateUserSideData(res as SideData)),
+    ).subscribe();
   }
 
   ngOnDestroy(): void {

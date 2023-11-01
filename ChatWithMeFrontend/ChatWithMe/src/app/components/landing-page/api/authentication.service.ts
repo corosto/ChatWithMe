@@ -39,17 +39,18 @@ export class AuthenticationService {
     formData.append('City', JSON.stringify(value.cityChosen));
     formData.append('ShowMe', value.showMe);
     formData.append('LookingFor', value.lookingFor);
-    formData.append('Description', value.description);
-    formData.append('Zodiac', value.zodiac);
-    formData.append('Kids', value.kids);
-    formData.append('Pets', value.pets);
-    formData.append('Alcohol', value.alcohol);
-    formData.append('Smoking', value.smoking);
-    formData.append('Gym', value.gym);
-    formData.append('Diet', value.diet);
-    formData.append('School', value.school);
-    formData.append('Job', value.job);
-    formData.append('Position', value.position);
+    formData.append('Description', value.description ?? '');
+    formData.append('Zodiac', value.zodiac ?? '');
+    formData.append('Education', value.education ?? '');
+    formData.append('Kids', value.kids ?? '');
+    formData.append('Pets', value.pets ?? '');
+    formData.append('Alcohol', value.alcohol ?? '');
+    formData.append('Smoking', value.smoking ?? '');
+    formData.append('Gym', value.gym ?? '');
+    formData.append('Diet', value.diet ?? '');
+    formData.append('School', value.school ?? '');
+    formData.append('Job', value.job ?? '');
+    formData.append('Position', value.position ?? '');
 
     value.interests.forEach((interest) => {
       formData.append('Interests', interest);
@@ -65,20 +66,18 @@ export class AuthenticationService {
 
     return this.http.post<UserAuthorization>(`${environment.httpBackend}${Api.REGISTER}`, formData)
       .pipe(
-        tap((token) => this.setUserStorage(token)),
         map(() => true),
         catchError((err: HttpErrorResponse) => {
-          const error = err.error as string[];
-          this.toastMessageService.notifyOfError(error[0]);
-          return of(null);
+          this.toastMessageService.notifyOfError(err.statusText);
+          return of(false);
         })
       );
   }
 
   login(form: FormGroup): Observable<boolean> {
 
-    const userData = {
-      ...form.value,
+    const userData: { login: string, password: string, grantType: string, } = {
+      ...form.value as { login: string, password: string, },
       grantType: 'password',
     };
 
@@ -87,23 +86,19 @@ export class AuthenticationService {
         tap((token) => this.setUserStorage(token)),
         map(() => true),
         catchError((err: HttpErrorResponse) => {
-          const error = err.error as string[];
-          this.toastMessageService.notifyOfError(error[0]);
-          return of(null);
+          this.toastMessageService.notifyOfError(err.statusText);
+          return of(false);
         })
       );
   }
 
   logout(): Observable<unknown> {
-    // return this.http.post(`${environment.httpBackend}${Api.LOGOUT}`, {}).pipe(
-    //   catchError((err: HttpErrorResponse) => {
-    //     const error = err.error as string[];
-    //     this.toastMessageService.notifyOfError(error[0]);
-    //     return of(null);
-    //   })
-    // );
-
-    return of(true);
+    return this.http.post(`${environment.httpBackend}${Api.LOGOUT}`, {}).pipe(
+      catchError((err: HttpErrorResponse) => {
+        this.toastMessageService.notifyOfError(err.statusText);
+        return of(null);
+      })
+    );
   }
 
   getCities(placeName: string): Observable<{ text: string, value: City }[]> {
@@ -123,7 +118,7 @@ export class AuthenticationService {
         return res.map((result) => {
           return {
             text: `${result?.placeName}, ${result?.adminName2}`,
-            value: { Name: result?.placeName, Height: result?.lat, Width: result?.lng },
+            value: { Name: result?.placeName, FullPlaceName: `${result?.placeName}, ${result?.adminName2}`, Height: result?.lat, Width: result?.lng },
           };
         });
       }),

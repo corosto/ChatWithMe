@@ -6,6 +6,6 @@ namespace ChatWithMe.Entities
     {
         public int Id { get; set; }
         public string SexualOrientationName { get; set; }
-        public List<UserSexualOrientations> Users { get; set; }
+        public List<UserSexualOrientations> Users { get; set; } = new();
     }
 }
