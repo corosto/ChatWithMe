@@ -15,11 +15,17 @@ namespace MapacenBackend.Models
                 .ForMember(dto => dto.Interests, p => p.Ignore())
                 .ForMember(dto => dto.SexualOrientations, p => p.Ignore())
                 .ForMember(dto => dto.Images, p => p.Ignore());
-
-            CreateMap<User, UserAllDto> ()
+            
+            CreateMap<UserMainUpdateDto, User>()
                 .ForMember(dto => dto.Interests, p => p.Ignore())
                 .ForMember(dto => dto.SexualOrientations, p => p.Ignore())
                 .ForMember(dto => dto.Images, p => p.Ignore());
+
+            CreateMap<User, UserMainDto>()
+                .ForMember(dto => dto.Interests, p => p.Ignore())
+                .ForMember(dto => dto.SexualOrientations, p => p.Ignore())
+                .ForMember(dto => dto.Images, p => p.Ignore())
+                .ForMember(dto => dto.City, p => p.Ignore());
 
             CreateMap<User, UserBasicDto>();
 

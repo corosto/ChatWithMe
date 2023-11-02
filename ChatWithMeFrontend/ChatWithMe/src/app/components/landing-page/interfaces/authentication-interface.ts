@@ -43,7 +43,6 @@ export interface Register {
   showMe: string,
   lookingFor: string,
   images: string[],
-  imagesToSend: File[],
   interests: string[],
   sexualOrientations: string[],
 }

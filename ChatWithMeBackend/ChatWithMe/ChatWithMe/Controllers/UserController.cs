@@ -45,22 +45,31 @@ namespace ChatWithMe.Controllers
             return Ok();
         }
 
-        [HttpGet("all")]
+        [HttpGet("main")]
         [RoleAuthorize]
-        public ActionResult<UserAllDto> GetUserAllData()
+        public ActionResult<UserMainDto> GetUserMainData()
         {
-            return Ok(_service.GetUserAll());
+            return Ok(_service.GetUserMain());
         }
-        
+
+        [HttpPut("main")]
+        [RoleAuthorize]
+        public ActionResult UpdateUserMainData([FromForm] UserMainUpdateDto dto)
+        {
+            _service.UpdateUserMain(dto);
+            return Ok();
+        }
+
         [HttpGet("side")]
         [RoleAuthorize]
         public ActionResult<UserSideDto> GetUserSideData()
         {
             return Ok(_service.GetUserSide());
         }        
+
         [HttpPut("side")]
         [RoleAuthorize]
-        public ActionResult UpdateUserSideData([FromBody] UserSideDto dto)
+        public ActionResult UpdateUserSideData([FromBody] UserSideUpdateDto dto)
         {
             _service.UpdateUserSide(dto);
             return Ok();

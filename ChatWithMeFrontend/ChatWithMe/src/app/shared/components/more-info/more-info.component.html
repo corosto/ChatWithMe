@@ -8,7 +8,10 @@
     Mieszka w:
     <span>{{match.city}}</span>
   </div>
-  <div class="flex" *ngIf="!isUserProfile">
+  <div
+    class="flex"
+    *ngIf="!isUserProfile"
+  >
     <mat-icon class="material-icons-outlined">place</mat-icon>
     <span>{{match.distance}} kilometrów stąd</span>
   </div>
@@ -33,10 +36,13 @@
   <looking-for-box [lookingFor]="match.lookingFor" />
 </div>
 
-<div class="box">
+<div
+  *ngIf="match.zodiac || match.education || match.kids"
+  class="box"
+>
   <h2 class="title">Więcej o mnie</h2>
   <mat-chip-set>
-    <mat-chip *ngIf="match.pets">
+    <mat-chip *ngIf="match.zodiac">
       <mat-icon matChipAvatar>auto_awesome</mat-icon>
       {{match.zodiac}}
     </mat-chip>
@@ -51,7 +57,10 @@
   </mat-chip-set>
 </div>
 
-<div class="box">
+<div
+  *ngIf="match.pets || match.alcohol || match.smoking || match.gym || match.diet"
+  class="box"
+>
   <h2 class="title">Lifestyle</h2>
   <mat-chip-set>
     <mat-chip *ngIf="match.pets">
@@ -77,7 +86,10 @@
   </mat-chip-set>
 </div>
 
-<div class="box">
+<div
+  *ngIf="match.school || match.job || match.position"
+  class="box"
+>
   <h2 class="title">Szkoła i praca</h2>
   <div
     *ngIf="match.school"
@@ -115,7 +127,7 @@
   <h2 class="title">Inne</h2>
   <div class="item">
     <h4>Płeć</h4>
-    {{match.sex}}
+    {{ match.sex | genderBender }}
   </div>
   <div>
     <h4>Orientacja seksualna</h4>

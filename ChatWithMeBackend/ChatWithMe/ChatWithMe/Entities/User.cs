@@ -11,7 +11,7 @@ namespace ChatWithMe.Entities
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
         public int Height { get; set; }
-        public int Width { get; set; }
+        public int Weight { get; set; }
         public DateTime BirthDate { get; set; }
         public string Sex { get; set; }
         public City City { get; set; }

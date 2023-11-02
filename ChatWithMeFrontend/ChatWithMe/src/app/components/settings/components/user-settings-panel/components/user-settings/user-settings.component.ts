@@ -11,7 +11,7 @@ import { SettingsService, SideData } from '@components/settings/api/settings.ser
 import { UserService } from '@core/services/authorization/user.service';
 import { City, CityComponent } from '@shared/components/city/city.component';
 import { InputComponent } from '@shared/components/input/input.component';
-import { debounceTime, skip, switchMap } from 'rxjs';
+import { debounceTime, switchMap } from 'rxjs';
 import { Subject } from 'rxjs/internal/Subject';
 import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 import { tap } from 'rxjs/internal/operators/tap';
@@ -20,7 +20,7 @@ import { tap } from 'rxjs/internal/operators/tap';
   selector: 'user-settings',
   standalone: true,
   imports: [CommonModule, MatButtonModule, MatSliderModule, MatSlideToggleModule, InputComponent, ReactiveFormsModule, CityComponent, MatSelectModule],
-  providers: [AuthenticationService, SettingsService],
+  providers: [AuthenticationService],
   templateUrl: './user-settings.component.html',
   styleUrls: ['./user-settings.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

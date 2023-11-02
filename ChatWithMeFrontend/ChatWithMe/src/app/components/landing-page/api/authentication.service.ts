@@ -33,7 +33,7 @@ export class AuthenticationService {
     formData.append('Password', value.password);
     formData.append('ConfirmedPassword', value.confirmedPassword);
     formData.append('Height', value.height);
-    formData.append('Width', value.weight);
+    formData.append('Weight', value.weight);
     formData.append('BirthDate', value.birthDate);
     formData.append('Sex', value.sex);
     formData.append('City', JSON.stringify(value.cityChosen));
@@ -60,7 +60,7 @@ export class AuthenticationService {
       formData.append('SexualOrientations', sexualOrientation);
     });
 
-    value.imagesToSend.forEach((image) => {
+    value.images.forEach((image) => {
       formData.append('Images', image);
     });
 

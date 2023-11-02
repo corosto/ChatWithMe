@@ -7,18 +7,22 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
+import { Match } from '@components/home/components/matches/components/match/mock/mock';
 import { MatchesService } from '@components/home/components/matches/service/matches.service';
 import { InterestsDialogComponent } from '@components/landing-page/register/components/interests-dialog/interests-dialog.component';
 import { LookingForDialogComponent } from '@components/landing-page/register/components/looking-for-dialog/looking-for-dialog.component';
 import { SEX } from '@components/landing-page/register/components/sex-related/constants/sex.const';
 import { SexualOrientationDialogComponent } from '@components/landing-page/register/components/sexual-orientation-dialog/sexual-orientation-dialog.component';
-import { USER_PROFILE_MOCKS } from '@components/settings/interfaces/user-data.interface';
+import { MainData, SettingsService } from '@components/settings/api/settings.service';
+import { RefreshDataService } from '@components/settings/services/refresh-data.service';
 import { DialogTemplateComponent } from '@shared/components/dialog-template/dialog-template.component';
 import { ImageDropdownComponent } from '@shared/components/image-dropdown/image-dropdown.component';
 import { InputComponent } from '@shared/components/input/input.component';
 import { MatchImageComponent } from '@shared/components/match-image/match-image.component';
 import { MoreInfoComponent } from '@shared/components/more-info/more-info.component';
 import { SpaceArrayPipe } from '@shared/pipes/space-array.pipe';
+import { isEqual } from 'lodash';
+import { BehaviorSubject, Observable, map, of, switchMap } from 'rxjs';
 import { Subject } from 'rxjs/internal/Subject';
 import { filter } from 'rxjs/internal/operators/filter';
 import { finalize } from 'rxjs/internal/operators/finalize';
@@ -29,7 +33,6 @@ import { tap } from 'rxjs/internal/operators/tap';
   selector: 'user-profile',
   standalone: true,
   imports: [CommonModule, MatSelectModule, MatIconModule, SpaceArrayPipe, MatchImageComponent, MoreInfoComponent, MatButtonModule, ImageDropdownComponent, ReactiveFormsModule, MatDialogModule, InputComponent],
-  providers: [MatchesService],
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -68,8 +71,9 @@ export class UserProfileComponent<T> implements OnInit, OnDestroy {
     sexualOrientations: [null as string[], [Validators.required, Validators.maxLength(3)]],
   });
 
-  match = USER_PROFILE_MOCKS;
-  inEdit = false;
+  userProfileData$: Observable<Match>;
+  reloadDataListener$ = new BehaviorSubject<void>(null);
+  inEdit$ = new BehaviorSubject<boolean>(false);
 
   private onDestroy$ = new Subject<void>();
 
@@ -78,13 +82,22 @@ export class UserProfileComponent<T> implements OnInit, OnDestroy {
     private matchesService: MatchesService,
     private cd: ChangeDetectorRef,
     private dialog: MatDialog,
+    private settingsService: SettingsService,
+    private refreshDataService: RefreshDataService,
   ) { }
 
   ngOnInit(): void {
-    this.matchesService.setImagesCount(this.match.images.length);
-    this.form.patchValue(this.match);
-
-    this.form.valueChanges.subscribe((res) => console.log(res));
+    this.userProfileData$ = this.reloadDataListener$.asObservable().pipe(
+      switchMap(() => this.settingsService.getUserMainData()),
+      map((res) => ({
+        ...res,
+        description: res.description ?? '',
+      })),
+      tap((res) => {
+        this.form.patchValue(res);
+        this.matchesService.setImagesCount(res.images.length);
+      }),
+    );
   }
 
   ngOnDestroy(): void {
@@ -152,8 +165,13 @@ export class UserProfileComponent<T> implements OnInit, OnDestroy {
   }
 
   saveForm(): void {
-    this.inEdit = !this.inEdit;
-
-    //TODO strzał do api z nowym formularzem i odswiezenie matcha
+    this.settingsService.updateUserMainData(this.form.value as MainData).pipe(
+      filter((res) => !!res),
+    ).subscribe(() => {
+      this.inEdit$.next(false);
+      this.matchesService.forceSetCurrentImageIndex(0);
+      this.refreshDataService.refreshImage();
+      this.reloadDataListener$.next();
+    });
   }
 }

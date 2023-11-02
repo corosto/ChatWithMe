@@ -38,7 +38,7 @@ export class MatchesComponent {
         this.matchesService.setMatchSwipeListener('superLike');
         break;
       case 'space':
-        this.matchesService.setImageSwipeListener(1);
+        this.matchesService.setCurrentImageIndex(1);
         break;
     }
   }

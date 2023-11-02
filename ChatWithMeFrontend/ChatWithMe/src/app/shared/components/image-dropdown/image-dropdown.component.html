@@ -1,8 +1,8 @@
 <div
   class="box"
   [class.register]="origin === 'register'"
-  [ngClass]="{'cursor-pointer': (filesCounter < 6)}"
-  (click)="(filesCounter < 6) && fileInput.click()"
+  [ngClass]="{'cursor-pointer': (previews$.value?.length < 6)}"
+  (click)="(previews$.value?.length < 6) && fileInput.click()"
 >
   <div class="title">
     <span>Zdjęcia profilowe</span>
@@ -17,7 +17,6 @@
       class="file-input"
       type="file"
       accept="image/*"
-      multiple
       #fileInput
       (change)="onFileSelected($event)"
     >
@@ -36,21 +35,21 @@
         />
         <mat-icon
           *ngIf="preview[itemIndex] && itemIndex !== 0"
-          class="absolute leftButton"
+          class="absolute leftButton cursor-pointer"
           (click)="$event.stopPropagation(); move(itemIndex, -1)"
         >
           arrow_back
         </mat-icon>
         <mat-icon
           *ngIf="preview[itemIndex]"
-          class="absolute removeButton"
+          class="absolute removeButton cursor-pointer"
           (click)="$event.stopPropagation(); deleteImage(itemIndex)"
         >
           delete
         </mat-icon>
         <mat-icon
-          *ngIf="preview[itemIndex] && itemIndex+1 !== filesCounter"
-          class="absolute rightButton"
+          *ngIf="preview[itemIndex] && itemIndex+1 !== previews$.value?.length"
+          class="absolute rightButton cursor-pointer"
           (click)="$event.stopPropagation(); move(itemIndex, 1)"
         >
           arrow_forward

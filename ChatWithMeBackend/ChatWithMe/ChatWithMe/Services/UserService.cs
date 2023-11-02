@@ -12,25 +12,21 @@ using Microsoft.IdentityModel.Tokens;
 using System.Drawing;
 using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.StaticFiles;
-using System.IO;
-using Azure.Core;
-using Microsoft.AspNetCore.Identity;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ChatWithMe.Services;
 
 public interface IUserService
 {
-    User GetUser(LoginUserDto dto);
     void RegisterUser(CreateUserDto dto);
     TokenToReturn Login(LoginUserDto dto);
     TokenToReturn LoginWithRefreshToken(LoginUserDto dto);
     void LogoutUser();
-    UserAllDto GetUserAll();
-    UserSideDto GetUserSide();
     UserBasicDto GetUserBasic();
-    string GenerateToken(User user);
-    void UpdateUserSide(UserSideDto dto);
+    UserMainDto GetUserMain();
+    UserSideDto GetUserSide();
+    void UpdateUserMain(UserMainUpdateDto dto);
+    void UpdateUserSide(UserSideUpdateDto dto);
 }
 
 public class UserService : IUserService
@@ -50,7 +46,7 @@ public class UserService : IUserService
 
 
     //Authentication
-    public User GetUser(LoginUserDto dto)
+    private User GetUser(LoginUserDto dto)
     {
         return _dbContext
             .Users
@@ -73,27 +69,11 @@ public class UserService : IUserService
 
         user.City = JsonSerializer.Deserialize<City>(dto.City);
 
-
-        for (int i = 0; i < dto.Images.Length; i++)
+        foreach (var image in dto.Images)
         {
-            var fileName = Path.Combine(Path.GetFullPath("wwwroot"), dto.Images[i].FileName);
-
-            var contentProvider = new FileExtensionContentTypeProvider();
-            contentProvider.TryGetContentType(fileName, out var contentType);
-
-            var fileType = Path.GetExtension(fileName);
-
-            var generatedName = $"{Guid.NewGuid()}{fileType}";
-
-            using (var image = System.Drawing.Image.FromStream(dto.Images[i].OpenReadStream()))
-            {
-                imageArray[i] = new Bitmap(image, new Size(375, 570));
-                imageArray[i].Save(Path.Combine(Path.GetFullPath("wwwroot"), generatedName));
-            }
-
             user.Images.Add(new Entities.Image
             {
-                Name = generatedName,
+                Name = image,
                 User = user,
                 UserId = user.Id,
             });
@@ -230,7 +210,7 @@ public class UserService : IUserService
         var id = _currentUserService.UserId;
 
         if (id == null)
-            throw new NotFoundException("Proszę się zalogować");
+            throw new NotFoundException("Coś poszło nie tak");
 
         var user = _dbContext
             .Users
@@ -246,12 +226,12 @@ public class UserService : IUserService
 
 
     //All user data
-    public UserAllDto GetUserAll()
+    public UserMainDto GetUserMain()
     {
         var id = _currentUserService.UserId;
 
         if(id == null)
-            throw new NotFoundException("Proszę się zalogować");
+            throw new NotFoundException("Coś poszło nie tak");
 
         var user = _dbContext
             .Users
@@ -261,7 +241,18 @@ public class UserService : IUserService
             .FirstOrDefault(u => u.Id.ToString() == id)
             ?? throw new NotFoundException("Użytkownik nie istnieje");
 
-        var fixedUser = _mapper.Map<UserAllDto>(user);
+        var fixedUser = _mapper.Map<UserMainDto>(user);
+
+        fixedUser.City = user.City.Name;
+
+        var today = DateTime.Today;
+        var age = today.Year - user.BirthDate.Year;
+        if (user.BirthDate.Date > today.AddYears(-age))
+        {
+            age--;
+        }
+
+        fixedUser.Age = age;
 
         var interest = _dbContext.UserInterests
             .Where(u => u.UserId.ToString() == id)
@@ -276,24 +267,158 @@ public class UserService : IUserService
         fixedUser.Interests = interest;
         fixedUser.SexualOrientations = sexualOrientation;
 
-        var rootPath = Directory.GetCurrentDirectory();
         fixedUser.Images = new();
 
-        foreach (var item in user.Images)
+        foreach (var image in user.Images)
         {
-            var path = $"{rootPath}/wwwroot/{item.Name}";
-
-            var contentProvider = new FileExtensionContentTypeProvider();
-            contentProvider.TryGetContentType(path, out var contentType);
-
-            var fileContentes = System.IO.File.ReadAllBytes(path);
-
-            fixedUser.Images.Add($"data:image/{contentType};base64,{Convert.ToBase64String(fileContentes)}");
+            fixedUser.Images.Add(image.Name);
         }
 
         return fixedUser;
     }
 
+    public void UpdateUserMain(UserMainUpdateDto dto)
+    {
+        var id = _currentUserService.UserId;
+
+        if (id == null)
+            throw new NotFoundException("Coś poszło nie tak");
+
+        var user = _dbContext
+            .Users
+            .Include(u => u.Interests)
+            .Include(u => u.SexualOrientations)
+            .Include(u => u.Images)
+            .FirstOrDefault(u => u.Id.ToString() == id)
+            ?? throw new NotFoundException("Użytkownik nie istnieje");
+
+
+        //usuwanie
+        var interestToRemove = _dbContext.UserInterests
+            .Where(u => u.UserId.ToString() == id)
+            .ToList();
+        _dbContext.UserInterests.RemoveRange(interestToRemove);
+
+        var orientationsToRemove = _dbContext.UserSexualOrientations
+            .Where(u => u.UserId.ToString() == id)
+            .ToList();
+        _dbContext.UserSexualOrientations.RemoveRange(orientationsToRemove);
+
+        var imagesToRemove = _dbContext.Image
+            .Where(u => u.UserId.ToString() == id)
+            .ToList();
+        _dbContext.Image.RemoveRange(imagesToRemove);
+
+
+        //nowe dane
+        foreach (var interestName in dto.Interests)
+        {
+            var foundInterest = _dbContext.Interest.FirstOrDefault(u => u.InterestName == interestName);
+
+            if (foundInterest != null)
+            {
+                var newUserInterest = new UserInterests
+                {
+                    InterestId = foundInterest.Id,
+                    Interest = foundInterest,
+                    UserId = user.Id,
+                    User = user,
+                };
+
+                user.Interests.Add(newUserInterest);
+
+                foundInterest.Users.Add(newUserInterest);
+            }
+            else
+            {
+                var newInterest = new Interest
+                {
+                    InterestName = interestName,
+                };
+
+                var newUserInterest = new UserInterests
+                {
+                    InterestId = newInterest.Id,
+                    Interest = newInterest,
+                    UserId = user.Id,
+                    User = user,
+                };
+
+                user.Interests.Add(newUserInterest);
+
+                newInterest.Users.Add(newUserInterest);
+            }
+        }
+
+        foreach (var orientationName in dto.SexualOrientations)
+        {
+            var foundOrientation = _dbContext.SexualOrientation.FirstOrDefault(u => u.SexualOrientationName == orientationName);
+
+            if (foundOrientation != null)
+            {
+                var newUserOrientation = new UserSexualOrientations
+                {
+                    SexualOrientationId = foundOrientation.Id,
+                    SexualOrientation = foundOrientation,
+                    UserId = user.Id,
+                    User = user,
+                };
+
+                user.SexualOrientations.Add(newUserOrientation);
+
+                foundOrientation.Users.Add(newUserOrientation);
+            }
+            else
+            {
+                var newOrientaion = new SexualOrientation
+                {
+                    SexualOrientationName = orientationName,
+                };
+
+                var newUserSexualOrientation = new UserSexualOrientations
+                {
+                    SexualOrientationId = newOrientaion.Id,
+                    SexualOrientation = newOrientaion,
+                    UserId = user.Id,
+                    User = user,
+                };
+
+                user.SexualOrientations.Add(newUserSexualOrientation);
+
+                newOrientaion.Users.Add(newUserSexualOrientation);
+            }
+        }
+
+        foreach (var image in dto.Images)
+        {
+            user.Images.Add(new Entities.Image
+            {
+                Name = image,
+                User = user,
+                UserId = user.Id,
+            });
+        }
+
+        user.Height = dto.Height;
+        user.Weight = dto.Weight;
+        user.Sex = dto.Sex;
+        user.LookingFor = dto.LookingFor;
+        user.Description = dto.Description;
+        user.Zodiac = dto.Zodiac;
+        user.Education = dto.Education;
+        user.Kids = dto.Kids;
+        user.Pets = dto.Pets;
+        user.Alcohol = dto.Alcohol;
+        user.Smoking = dto.Smoking;
+        user.Gym = dto.Gym;
+        user.Diet = dto.Diet;
+        user.School = dto.School;
+        user.Job = dto.Job;
+        user.Position = dto.Position;
+
+        _dbContext.Users.Update(user);
+        _dbContext.SaveChanges();
+    }
 
 
 
@@ -303,7 +428,7 @@ public class UserService : IUserService
         var id = _currentUserService.UserId;
 
         if (id == null)
-            throw new NotFoundException("Proszę się zalogować");
+            throw new NotFoundException("Coś poszło nie tak");
 
         var user = _dbContext
             .Users
@@ -313,16 +438,7 @@ public class UserService : IUserService
 
         var fixedUser = _mapper.Map<UserBasicDto>(user);
 
-        var rootPath = Directory.GetCurrentDirectory();
-
-        var path = $"{rootPath}/wwwroot/{user.Images[0].Name}";
-
-        var contentProvider = new FileExtensionContentTypeProvider();
-        contentProvider.TryGetContentType(path, out var contentType);
-
-        var fileContentes = System.IO.File.ReadAllBytes(path);
-
-        fixedUser.Image = $"data:image/{contentType};base64,{Convert.ToBase64String(fileContentes)}";
+        fixedUser.Image = user.Images[0].Name;
 
         return fixedUser;
     }
@@ -332,7 +448,7 @@ public class UserService : IUserService
         var id = _currentUserService.UserId;
 
         if(id == null)
-            throw new NotFoundException("Proszę się zalogować");
+            throw new NotFoundException("Coś poszło nie tak");
 
         var user = _dbContext
             .Users
@@ -344,12 +460,12 @@ public class UserService : IUserService
         return fixedUser;
     }
 
-    public void UpdateUserSide(UserSideDto dto)
+    public void UpdateUserSide(UserSideUpdateDto dto)
     {
         var id = _currentUserService.UserId;
 
         if(id == null)
-            throw new NotFoundException("Proszę się zalogować");
+            throw new NotFoundException("Coś poszło nie tak");
 
         var user = _dbContext
             .Users
@@ -385,7 +501,7 @@ public class UserService : IUserService
         return computedHash.SequenceEqual(passwordHash);
     }
 
-    public string GenerateToken(User user)
+    private string GenerateToken(User user)
     {
         var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(
             _configuration.GetSection("Token").Value));

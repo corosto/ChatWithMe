@@ -26,7 +26,7 @@ public class CreateUserDto
     public int Height { get; set; }
 
     [Required(ErrorMessage = "Pole jest wymagane")]
-    public int Width { get; set; }
+    public int Weight { get; set; }
 
     [Required(ErrorMessage = "Pole jest wymagane")]
     public DateTime BirthDate { get; set; }
@@ -52,7 +52,7 @@ public class CreateUserDto
     public string[] SexualOrientations { get; set; }
 
     [Required(ErrorMessage = "Pole jest wymagane")]
-    public IFormFile[] Images { get; set; }
+    public string[] Images { get; set; }
 
 
     public int LookingForAgeMin { get; set; } = 20;

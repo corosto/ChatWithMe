@@ -22,16 +22,6 @@ export class HomeService {
         })
       );
   }
-
-  getUserAllData(): Observable<any> {
-    return this.http.get<any>(`${environment.httpBackend}${Api.USER_ALL}`)
-      .pipe(
-        catchError((err: HttpErrorResponse) => {
-          this.toastMessageService.notifyOfError(err.statusText);
-          return of(null);
-        })
-      );
-  }
 }
 
 export interface UserBasicData {

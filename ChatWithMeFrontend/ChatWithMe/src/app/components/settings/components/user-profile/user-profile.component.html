@@ -1,14 +1,16 @@
 <div class="container">
-  <ng-container *ngIf="!inEdit; else edit">
-    <match-image
-      [match]="match"
-      [hideInfoButton]="true"
-    />
+  <ng-container *ngIf="(inEdit$ | async) === false; else edit">
+    <ng-container *ngIf="userProfileData$ | async as userProfileData">
+      <match-image
+        [match]="userProfileData"
+        [hideInfoButton]="true"
+      />
 
-    <more-info
-      [match]="match"
-      [isUserProfile]="true"
-    />
+      <more-info
+        [match]="userProfileData"
+        [isUserProfile]="true"
+      />
+    </ng-container>
   </ng-container>
 
   <ng-template #edit>
@@ -70,7 +72,10 @@
         (click)="openDialog('lookingFor')"
       >
         <h3>Szukam</h3>
-        <div class="center">{{ form.value.lookingFor | spaceArray }} <mat-icon>chevron_right</mat-icon></div>
+        <div class="center">
+          {{ form.value.lookingFor | spaceArray }}
+          <mat-icon class="icon">chevron_right</mat-icon>
+        </div>
       </div>
 
       <div
@@ -78,7 +83,10 @@
         (click)="openDialog('sexualOrientations')"
       >
         <h3>Orientacja seksualna</h3>
-        <div class="center">{{ form.value.sexualOrientations | spaceArray }} <mat-icon>chevron_right</mat-icon></div>
+        <div class="center">
+          {{ form.value.sexualOrientations | spaceArray }}
+          <mat-icon class="icon">chevron_right</mat-icon>
+        </div>
       </div>
 
       <div
@@ -86,7 +94,10 @@
         (click)="openDialog('interests')"
       >
         <h3>Zainteresowania</h3>
-        <div class="center">{{ form.value.interests | spaceArray }} <mat-icon>chevron_right</mat-icon></div>
+        <div class="center">
+          {{ form.value.interests | spaceArray }}
+          <mat-icon class="icon">chevron_right</mat-icon>
+        </div>
       </div>
 
       <div class="border padding">
@@ -102,13 +113,24 @@
 </div>
 
 <button
+  *ngIf="inEdit$ | async"
+  class="button"
+  mat-raised-button
+  color="primary"
+  (click)="saveForm()"
+>
+  Zapisz
+</button>
+
+<button
+  *ngIf="(inEdit$ | async) === false"
   class="button"
   mat-raised-button
   color="primary"
   type="button"
-  (click)="saveForm()"
+  (click)="inEdit$.next(true)"
 >
-  {{inEdit ? 'Zapisz' : 'Edytuj profil'}}
+  Edytuj profil
 </button>
 
 <ng-template #kg>kg</ng-template>

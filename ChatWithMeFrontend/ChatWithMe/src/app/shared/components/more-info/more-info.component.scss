@@ -39,11 +39,15 @@
 }
 
 .item {
-  padding-bottom: 10px;
+  padding-bottom: 14px;
 }
 
 .description {
   line-height: 17px;
+}
+
+h4 {
+  padding-bottom: 3px;
 }
 
 .mat-mdc-standard-chip:not(.mdc-evolution-chip--disabled) {

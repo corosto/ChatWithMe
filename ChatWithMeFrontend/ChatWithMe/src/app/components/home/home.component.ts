@@ -26,8 +26,5 @@ export class HomeComponent implements OnInit {
     this.chatVisible$ = this.matchService.getChatId().pipe(
       map((res) => !!res),
     );
-
-    //zrobic pobieranie danych na switchmapie z tworzenia konta lub logowania!!!
-    //dac delay jezeli zapytanie idzie po stworzeniu konta bo nie znajduje jeszcze uzytkownika
   }
 }

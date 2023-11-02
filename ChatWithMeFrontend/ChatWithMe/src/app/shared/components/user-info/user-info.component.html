@@ -5,11 +5,10 @@
     [title]="link === '/home' ? 'Wstecz' : 'Ustawienia'"
   >
     <ng-container *ngIf="userBasicData$ | async as userBasicData">
-      <img
+      <div
         class="img"
-        [src]="userBasicData.image"
-        alt="Zdjęcie użytkownika"
-      />
+        [ngStyle]="{'background-image': 'url('+userBasicData.image+')'}"
+      ></div>
       <div class="inside">
         {{userBasicData.name}}
         <mat-icon>{{link === '/home' ? 'undo' : 'settings'}}</mat-icon>

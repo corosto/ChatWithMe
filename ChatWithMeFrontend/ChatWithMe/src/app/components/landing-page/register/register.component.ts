@@ -59,7 +59,6 @@ export class RegisterComponent implements OnDestroy {
     lookingFor: [null as string, [Validators.required]],
 
     images: [null as string[], [Validators.required, Validators.minLength(2)]],
-    imagesToSend: [null as File[], [Validators.required, Validators.minLength(2)]],
 
     interests: [null as string[], [Validators.required, Validators.maxLength(5)]],
     sexualOrientations: [null as string[], [Validators.required, Validators.maxLength(3)]],

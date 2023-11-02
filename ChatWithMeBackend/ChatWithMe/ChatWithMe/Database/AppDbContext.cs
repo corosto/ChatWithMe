@@ -49,7 +49,7 @@ namespace ChatWithMe.Database
                 .OnDelete(DeleteBehavior.NoAction);
 
 
-            modelBuilder.Entity<Image>()
+            modelBuilder.Entity<Entities.Image>()
                 .HasOne(o => o.User)
                 .WithMany(p => p.Images)
                 .HasForeignKey(o => o.UserId)
@@ -65,5 +65,6 @@ namespace ChatWithMe.Database
         public DbSet<Interest> Interest { get; set; }
         public DbSet<UserSexualOrientations> UserSexualOrientations { get; set; }
         public DbSet<SexualOrientation> SexualOrientation { get; set; }
+        public DbSet<Image> Image { get; set; }
     }
 }

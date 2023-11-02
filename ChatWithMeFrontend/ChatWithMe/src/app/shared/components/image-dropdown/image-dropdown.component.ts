@@ -6,7 +6,7 @@ import { FormGroupDirective } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { BehaviorSubject } from 'rxjs';
-import { filter, tap } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'image-dropdown',
@@ -22,9 +22,6 @@ export class ImageDropdownComponent implements OnInit {
 
   @ViewChild('fileInput', { static: false }) fileInput: ElementRef;
 
-  selectedImages: File[] = [];
-  filesCounter = 0;
-
   previews$ = new BehaviorSubject<string[]>([]);
 
   constructor(
@@ -35,27 +32,19 @@ export class ImageDropdownComponent implements OnInit {
     const images = this.formGroupDirective.form.get('images');
 
     this.previews$.next((images?.value as string[]) || []);
-    this.filesCounter = this.previews$.value?.length;
 
     this.previews$.asObservable().pipe(
-      filter((res) => !!res?.length)
-    ).subscribe((res) => {
-      images.patchValue(res);
-      this.formGroupDirective.form.get('imagesToSend').patchValue(this.selectedImages);
-    });
+      filter((res) => !!res?.length),
+    ).subscribe((res) => images.patchValue(res));
   }
 
   onFileSelected(event: any) {
-    if (this.filesCounter >= 6)
+    if (this.previews$.value?.length >= 6)
       return;
 
-    const files = event.target.files as File[];
-    this.selectedImages = [...this.selectedImages, ...files];
-    this.filesCounter = this.selectedImages.length;
+    const file = event.target.files as File[];
 
-    for (let i = 0; i < files.length; i++) {
-      this.handleImages(i + 1);
-    }
+    this.handleImage(file[0]);
 
     this.fileInput.nativeElement.value = null;
   }
@@ -69,20 +58,16 @@ export class ImageDropdownComponent implements OnInit {
   }
 
   deleteImage(index: number) {
-    this.selectedImages = this.selectedImages.filter((file, i) => i !== index);
     this.previews$.next(this.previews$.value.filter((file, i) => i !== index));
-    this.filesCounter = this.selectedImages.length;
   }
 
-  private handleImages(imageIndex: number) {
-    const myFile = this.selectedImages[this.selectedImages.length - imageIndex];
-
+  private handleImage(myFile: File) {
     if (myFile) {
       const reader = new FileReader();
 
       reader.onload = (e: any) => {
-        const url = e.target.result as string;
-        this.previews$.next([...this.previews$.value, url]);
+        const bmp = e.target.result as string;
+        this.previews$.next([...this.previews$.value, bmp]);
       };
 
       reader.readAsDataURL(myFile);

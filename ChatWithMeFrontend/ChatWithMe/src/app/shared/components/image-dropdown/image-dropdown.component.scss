@@ -5,7 +5,7 @@
 }
 
 .box {
-  padding-block: 10px;
+  margin-block: 10px;
   border-radius: var(--border-normal);
   width: fit-content;
   max-width: 950px;
@@ -60,6 +60,13 @@
       .image {
         width: 110.5px;
         height: 148px;
+
+        cursor: default;
+        -webkit-user-drag: none;
+        user-select: none;
+        -moz-user-select: none;
+        -webkit-user-select: none;
+        -ms-user-select: none;
 
         &.register {
           width: 223px;

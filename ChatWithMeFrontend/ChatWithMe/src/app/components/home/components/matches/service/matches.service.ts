@@ -6,7 +6,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 @Injectable()
 export class MatchesService {
 
-  private imageSwipeListener$ = new BehaviorSubject<number>(0);
+  private currentImageIndexListener$ = new BehaviorSubject<number>(0);
   private matchSwipeListener$ = new BehaviorSubject<LikeTypes>(null);
   private profileOpenClosedListener$ = new BehaviorSubject<boolean>(false);
   private imagesCount$ = new BehaviorSubject<number>(null);
@@ -15,19 +15,19 @@ export class MatchesService {
 
 
   // 1 - następne zdjęcie, -1 poprzednie zdjęcie
-  setImageSwipeListener(data: number) {
-    const value = this.imageSwipeListener$.value + data;
+  setCurrentImageIndex(data: number) {
+    const value = this.currentImageIndexListener$.value + data;
 
     if (value < this.imagesCount$.value)
-      this.imageSwipeListener$.next(value);
+      this.currentImageIndexListener$.next(value);
   }
 
-  forceSetImageSwipeListener(value: number): void {
-    this.imageSwipeListener$.next(value);
+  forceSetCurrentImageIndex(value: number): void {
+    this.currentImageIndexListener$.next(value);
   }
 
-  getImageSwipeListener(): Observable<number> {
-    return this.imageSwipeListener$.asObservable();
+  getCurrentImageIndex(): Observable<number> {
+    return this.currentImageIndexListener$.asObservable();
   }
 
   setMatchSwipeListener(data: LikeTypes) {

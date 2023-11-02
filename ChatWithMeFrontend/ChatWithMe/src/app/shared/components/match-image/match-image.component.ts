@@ -29,7 +29,7 @@ export class MatchImageComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.currentImageIndex$ = this.matchesService.getImageSwipeListener();
+    this.currentImageIndex$ = this.matchesService.getCurrentImageIndex();
   }
 
   toggleOpened(): void {
@@ -37,6 +37,6 @@ export class MatchImageComponent implements OnInit {
   }
 
   switchImage(side: number): void {
-    this.matchesService.setImageSwipeListener(side);
+    this.matchesService.setCurrentImageIndex(side);
   }
 }
