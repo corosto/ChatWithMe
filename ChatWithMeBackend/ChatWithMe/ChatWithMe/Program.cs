@@ -56,8 +56,8 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
-//builder.Services.AddHostedService<StatisticsUpdateWorkerService>()
-            //.Configure<HostOptions>(hostOptions => hostOptions.BackgroundServiceExceptionBehavior = BackgroundServiceExceptionBehavior.Ignore);
+builder.Services.AddHostedService<ClearDislikesWorkerService>()
+            .Configure<HostOptions>(hostOptions => hostOptions.BackgroundServiceExceptionBehavior = BackgroundServiceExceptionBehavior.Ignore);
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IMatchService, MatchService>();
 builder.Services.AddScoped<ErrorHandlingMiddleware>();

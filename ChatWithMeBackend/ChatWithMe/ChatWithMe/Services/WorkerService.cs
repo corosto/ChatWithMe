@@ -1,40 +1,32 @@
 ﻿using ChatWithMe.Database;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace ChatWithMe.Services;
 
-public sealed class WorkerService : BackgroundService
+public sealed class ClearDislikesWorkerService : BackgroundService
 {
-    //private readonly AppDbContext _dbContext;
-    //private readonly PeriodicTimer? _timer;
+    private readonly IServiceProvider _serviceProvider;
 
-    //public WorkerService(AppDbContext dbContext)
-    //{
-        //    _dbContext = dbContext;
-        //    _timer = new PeriodicTimer(interval);
-    //}
+    public ClearDislikesWorkerService(IServiceProvider serviceProvider)
+    {
+        _serviceProvider = serviceProvider;
+    }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        //if (_timer is null)
-        //{
-        //    _logger.LogError("Invalid statistics update interval. Worker service will not start");
-        //    return;
-        //}
-        //_logger.LogInformation("Statistics update worker service started.");
+        while (!stoppingToken.IsCancellationRequested)
+        {
+            using var scope = _serviceProvider.CreateScope();
+            var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
 
-        //while (await _timer.WaitForNextTickAsync(stoppingToken) && !stoppingToken.IsCancellationRequested)
-        //{
-        //    using var scope = _serviceProvider.CreateScope();
-        //    var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
-        //    await mediator.Send(new UpdateStatisticsCommand(), stoppingToken);
-        //}
+            var matches = dbContext
+                .Match
+                .Where(u => u.Status == 0)
+                .ToList();
 
-        //_logger.LogInformation("Statistics update worker service stopped.");
+            dbContext.Match.RemoveRange(matches);
+            dbContext.SaveChanges();
+
+            await Task.Delay(TimeSpan.FromHours(4), stoppingToken);
+        }
     }
 }
-
-
-//w while sprawdzac czy godzina%6 == 0, jak tak to reset disliked

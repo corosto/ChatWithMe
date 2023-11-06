@@ -20,6 +20,8 @@ namespace ChatWithMe.Services;
 public interface IMatchService
 {
     GetMatchDto GetNewMatch(GetMatchAPIDto dto);
+    void ForceClearAllMatches();
+    void ForceClearAllDislikes();
 }
 
 public class MatchService : IMatchService
@@ -50,6 +52,9 @@ public class MatchService : IMatchService
             .FirstOrDefault(u => u.Id.ToString() == id)
             ?? throw new NotFoundException("Użytkownik nie istnieje");
 
+
+
+        //jezeli aktualny user i user ktoremu dal like'a maja sie wzajemnie w likach to jest event stworzenia nowego chatu
         if (dto.LikedUserId != null && dto.Status != null)
         {
             user.Match.Add(new Match
@@ -166,5 +171,26 @@ public class MatchService : IMatchService
     private double DegreeToRadian(double angle)
     {
         return Math.PI * angle / 180.0;
+    }
+
+
+
+
+    public void ForceClearAllMatches()
+    {
+        var matches = _dbContext.Match.ToList();
+        _dbContext.Match.RemoveRange(matches);
+        _dbContext.SaveChanges();
+    }
+
+    public void ForceClearAllDislikes()
+    {
+        var matches = _dbContext
+            .Match
+            .Where(u => u.Status == 0)
+            .ToList();
+
+        _dbContext.Match.RemoveRange(matches);
+        _dbContext.SaveChanges();
     }
 }

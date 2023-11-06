@@ -26,5 +26,19 @@ namespace ChatWithMe.Controllers
         {
             return Ok(_service.GetNewMatch(dto));
         }
+
+        [HttpPost("api/clear/all")]
+        public ActionResult ForceClearAllMatches()
+        {
+            _service.ForceClearAllMatches();
+            return Ok();
+        }
+
+        [HttpPost("api/clear/dislikes")]
+        public ActionResult ForceClearAllDislikes()
+        {
+            _service.ForceClearAllDislikes();
+            return Ok();
+        }
     }
 }

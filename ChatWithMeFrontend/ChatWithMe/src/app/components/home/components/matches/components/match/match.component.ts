@@ -49,7 +49,7 @@ export class MatchComponent implements OnInit {
     );
 
     this.matchesService.getMatchSwipeListener().pipe(
-      filter((res) => !!res),
+      filter((res) => res !== null),
     ).subscribe((res) => {
       this.swipeAction$.next(res);
       setTimeout(() => {
