@@ -1,21 +1,40 @@
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { MOCKS, Match } from '@components/home/components/matches/components/match/mock/mock';
-import { Observable, of } from 'rxjs';
+import { Match } from '@components/home/components/matches/components/match/mock/mock';
+import { MatchService } from '@components/home/services/match.service';
+import { Api } from '@core/enums/api.enum';
+import { environment } from '@env/environment';
+import { ToastMessageService } from '@shared/components/toast-message/services/toast-message.service';
+import { Observable, catchError, of } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Injectable()
 export class MatchesApiService {
 
-  private iteration = 0;
+  constructor(
+    private http: HttpClient,
+    private toastMessageService: ToastMessageService,
+    private matchService: MatchService,
+  ) { }
 
-  getNewMatch(): Observable<Match> {
+  getNewMatch(status: Status): Observable<Match> {
+    const likedUserId = this.matchService.getCurrentMatchId();
+    const location = this.matchService.getUserLocation();
 
-    const value = MOCKS[this.iteration];
-
-    if (this.iteration >= MOCKS.length - 1)
-      this.iteration = 0;
-    else
-      this.iteration++;
-
-    return of(value);
+    return this.http.post<Match>(`${environment.httpBackend}${Api.MATCH}`, { likedUserId, status, ...location })
+      .pipe(
+        tap((res) => this.matchService.setCurrentMatchId(res ? res.id : null)),
+        catchError((err: HttpErrorResponse) => {
+          this.toastMessageService.notifyOfError(err.statusText);
+          return of(null);
+        })
+      );
   }
+}
+
+export enum Status {
+  Dislike,
+  SuperLike,
+  Like,
+  Blocked,
 }

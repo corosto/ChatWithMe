@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { AbstractControl, ControlContainer, FormGroupDirective, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -12,6 +12,7 @@ import { filter } from 'rxjs/internal/operators/filter';
 import { tap } from 'rxjs/internal/operators/tap';
 import { switchMap } from 'rxjs/internal/operators/switchMap';
 import { debounceTime } from 'rxjs/internal/operators/debounceTime';
+import { skip } from 'rxjs/internal/operators/skip';
 
 @Component({
   selector: 'city',
@@ -30,6 +31,8 @@ import { debounceTime } from 'rxjs/internal/operators/debounceTime';
 })
 export class CityComponent implements OnInit {
 
+  @Input() skip = 0;
+
   cities$: Observable<{ text: string, value: City }[]>;
 
   constructor(
@@ -39,6 +42,7 @@ export class CityComponent implements OnInit {
 
   ngOnInit(): void {
     this.cities$ = this.cityInput.valueChanges.pipe(
+      skip(this.skip),
       tap(() => this.cityChosen?.value ? this.cityInput.setErrors(null) : this.cityInput.setErrors({ error: true })),
       filter((res) => !!res),
       debounceTime(450),

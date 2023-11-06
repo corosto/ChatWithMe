@@ -75,12 +75,13 @@ export class SettingsService {
       .pipe(
         map((res) => ({
           ...res,
-          city: {
+          cityChosen: {
             Name: res.city.name,
             FullPlaceName: res.city.fullPlaceName,
             Height: res.city.height,
             Width: res.city.width,
-          }
+          },
+          cityInput: res.city.fullPlaceName,
         })),
         catchError((err: HttpErrorResponse) => {
           this.toastMessageService.notifyOfError(err.statusText);

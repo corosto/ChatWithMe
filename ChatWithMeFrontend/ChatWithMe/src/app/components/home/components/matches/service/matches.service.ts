@@ -1,5 +1,5 @@
+import { Status } from '@components/home/components/matches/api/matches-api.service';
 import { Injectable } from '@angular/core';
-import { LikeTypes } from '@components/home/components/matches/components/match/mock/mock';
 import { differenceInMilliseconds } from 'date-fns';
 import { BehaviorSubject, Observable } from 'rxjs';
 
@@ -7,7 +7,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class MatchesService {
 
   private currentImageIndexListener$ = new BehaviorSubject<number>(0);
-  private matchSwipeListener$ = new BehaviorSubject<LikeTypes>(null);
+  private matchSwipeListener$ = new BehaviorSubject<Status>(null);
   private profileOpenClosedListener$ = new BehaviorSubject<boolean>(false);
   private imagesCount$ = new BehaviorSubject<number>(null);
 
@@ -30,7 +30,7 @@ export class MatchesService {
     return this.currentImageIndexListener$.asObservable();
   }
 
-  setMatchSwipeListener(data: LikeTypes) {
+  setMatchSwipeListener(data: Status) {
     const now = new Date();
     const millisecondsSincePreviousEvent = differenceInMilliseconds(now, this.previousTime);
 
@@ -41,7 +41,7 @@ export class MatchesService {
     }
   }
 
-  getMatchSwipeListener(): Observable<LikeTypes> {
+  getMatchSwipeListener(): Observable<Status> {
     return this.matchSwipeListener$.asObservable();
   }
 

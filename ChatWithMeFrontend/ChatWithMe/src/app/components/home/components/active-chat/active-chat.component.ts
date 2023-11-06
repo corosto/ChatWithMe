@@ -34,4 +34,8 @@ export class ActiveChatComponent implements OnInit {
   removeMatch(): void {
     console.log('usuwanie pary');
   }
+
+  blockMatch(): void {
+    console.log('banicja pary');
+  }
 }

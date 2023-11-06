@@ -3,9 +3,9 @@
   class="border"
   (click)="action(item.value)"
   [class.expanded]="isExpanded"
-  [class.dislike]="item.value === 'dislike'"
-  [class.superLike]="item.value === 'superLike'"
-  [class.like]="item.value === 'like'"
+  [class.dislike]="item.value === Status.Dislike"
+  [class.superLike]="item.value === Status.SuperLike"
+  [class.like]="item.value === Status.Like"
 >
   <img
     width="34px"

@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { UserBasicData } from '@components/home/api/home.service';
+import { Match } from '@components/home/components/matches/components/match/mock/mock';
+import { SideData } from '@components/settings/api/settings.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 
 @Injectable({
@@ -7,34 +9,54 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class ControllerService {
 
-  // private isRegisterFinished$ = new BehaviorSubject(false);
-  // setIsRegisterFinished(isRegisterFinished: boolean) {
-  //   this.isRegisterFinished$.next(isRegisterFinished);
-  // }
-  // getIsRegisterFinished(): Observable<boolean> {
-  //   return this.isRegisterFinished$.asObservable();
-  // }
-
   private userAuthentication$ = new BehaviorSubject<UserAuthentication>(null);
-  
+
   set userAuthentication(userAuthentication: UserAuthentication) {
     this.userAuthentication$.next(userAuthentication);
   }
-  
+
   get userAuthentication(): UserAuthentication {
     return this.userAuthentication$.value;
   }
 
 
-  
-  private cachedUserInfo$ = new BehaviorSubject<UserBasicData>(null);
 
-  set cachedUserInfo(cachedUserInfo: UserBasicData) {
-    this.cachedUserInfo$.next(cachedUserInfo);
+  private cachedUserBasicInfo$ = new BehaviorSubject<UserBasicData>(null);
+
+  set cachedUserBasicInfo(cachedUserBasicInfo: UserBasicData) {
+    this.cachedUserBasicInfo$.next(cachedUserBasicInfo);
   }
 
-  get cachedUserInfo(): UserBasicData {
-    return this.cachedUserInfo$.value;
+  get cachedUserBasicInfo(): UserBasicData {
+    return this.cachedUserBasicInfo$.value;
+  }
+
+
+
+  private cachedUserMainInfo$ = new BehaviorSubject<Match>(null);
+
+  set cachedUserMainInfo(cachedUserMainInfo: Match) {
+    this.cachedUserMainInfo$.next(cachedUserMainInfo);
+  }
+
+  get cachedUserMainInfo(): Match {
+    return this.cachedUserMainInfo$.value;
+  }
+
+
+
+  private cachedUserSideInfo$ = new BehaviorSubject<SideData>(null);
+
+  set cachedUserSideInfo(cachedUserSideInfo: SideData) {
+    this.cachedUserSideInfo$.next(cachedUserSideInfo);
+  }
+
+  get cachedUserSideInfo(): SideData {
+    return this.cachedUserSideInfo$.value;
+  }
+
+  getCachedUserSideInfoObservable(): Observable<SideData> {
+    return this.cachedUserSideInfo$.asObservable();
   }
 }
 

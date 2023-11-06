@@ -12,7 +12,7 @@ namespace ChatWithMe.Entities
         public byte[] PasswordSalt { get; set; }
         public int Height { get; set; }
         public int Weight { get; set; }
-        public DateTime BirthDate { get; set; }
+        public DateTimeOffset BirthDate { get; set; }
         public string Sex { get; set; }
         public City City { get; set; }
         public string ShowMe { get; set; }
@@ -22,6 +22,7 @@ namespace ChatWithMe.Entities
         public List<UserInterests> Interests { get; set; } = new();
         public List<UserSexualOrientations> SexualOrientations { get; set; } = new();
         public List<Image> Images { get; set; } = new();
+        public List<Match> Match { get; set; } = new();
 
 
         public int LookingForAgeMin { get; set; }

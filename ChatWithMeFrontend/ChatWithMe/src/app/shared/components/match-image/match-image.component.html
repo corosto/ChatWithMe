@@ -2,19 +2,19 @@
   <div
     class="image"
     [ngStyle]="{'background-image': 'url('+match.images[val.currentImageIndex]+')'}"
-    [ngClass]="swipeAction"
+    [ngClass]="matchClass"
     [class.chat]="isChat"
   >
     <div
-      *ngIf="swipeAction === 'like'"
+      *ngIf="matchClass === 'like'"
       class="like label"
     >POLUB</div>
     <div
-      *ngIf="swipeAction === 'superLike'"
+      *ngIf="matchClass === 'superLike'"
       class="superLike label"
     >SUPER LIKE</div>
     <div
-      *ngIf="swipeAction === 'dislike'"
+      *ngIf="matchClass === 'dislike'"
       class="dislike label"
     ><span class="move">ŻEGNAM</span>
     </div>

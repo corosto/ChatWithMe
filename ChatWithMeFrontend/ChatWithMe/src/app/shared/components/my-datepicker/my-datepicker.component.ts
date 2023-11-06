@@ -51,11 +51,11 @@ export class MyDatepickerComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.value = parse(this.control.value as string, 'dd.MM.yyyy', new Date());
+    this.value = this.control.value as Date;
   }
 
   dateChange(date: MatDatepickerInputEvent<Date>): void {
-    this.control.patchValue(format(new Date(date.value), 'dd.MM.yyyy'));
+    this.control.patchValue(new Date(date.value));
   }
 
   get control(): FormControl {

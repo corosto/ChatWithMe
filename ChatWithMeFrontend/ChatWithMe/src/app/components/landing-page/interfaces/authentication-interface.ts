@@ -24,7 +24,7 @@ export interface Register {
   confirmedPassword: string,
   height: string,
   weight: string,
-  birthDate: string,
+  birthDate: Date,
   sex: string,
   description: string,
   zodiac: string,

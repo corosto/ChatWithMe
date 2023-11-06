@@ -61,6 +61,30 @@ namespace ChatWithMe.Migrations
                     b.ToTable("Interest");
                 });
 
+            modelBuilder.Entity("ChatWithMe.Entities.Match", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("LikedId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Match");
+                });
+
             modelBuilder.Entity("ChatWithMe.Entities.SexualOrientation", b =>
                 {
                     b.Property<int>("Id")
@@ -89,8 +113,8 @@ namespace ChatWithMe.Migrations
                     b.Property<string>("Alcohol")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("BirthDate")
-                        .HasColumnType("datetime2");
+                    b.Property<DateTimeOffset>("BirthDate")
+                        .HasColumnType("datetimeoffset");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -229,6 +253,15 @@ namespace ChatWithMe.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("ChatWithMe.Entities.Match", b =>
+                {
+                    b.HasOne("ChatWithMe.Entities.User", null)
+                        .WithMany("Match")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("ChatWithMe.Entities.User", b =>
                 {
                     b.OwnsOne("ChatWithMe.Models.City", "City", b1 =>
@@ -315,6 +348,8 @@ namespace ChatWithMe.Migrations
                     b.Navigation("Images");
 
                     b.Navigation("Interests");
+
+                    b.Navigation("Match");
 
                     b.Navigation("SexualOrientations");
                 });

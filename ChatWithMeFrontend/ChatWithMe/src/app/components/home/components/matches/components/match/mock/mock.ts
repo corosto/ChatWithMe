@@ -236,6 +236,7 @@ export const MOCKS: Match[] = [
 ];
 
 export interface Match {
+  id?: number,
   name: string,
   age: string,
   city: string,
@@ -260,5 +261,3 @@ export interface Match {
   sex: 'female' | 'male' | 'other',
   sexualOrientations: string[],
 }
-
-export type LikeTypes = 'like' | 'dislike' | 'superLike';

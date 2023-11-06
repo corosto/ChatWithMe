@@ -56,7 +56,10 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
+//builder.Services.AddHostedService<StatisticsUpdateWorkerService>()
+            //.Configure<HostOptions>(hostOptions => hostOptions.BackgroundServiceExceptionBehavior = BackgroundServiceExceptionBehavior.Ignore);
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IMatchService, MatchService>();
 builder.Services.AddScoped<ErrorHandlingMiddleware>();
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
 builder.Services.AddHttpContextAccessor();

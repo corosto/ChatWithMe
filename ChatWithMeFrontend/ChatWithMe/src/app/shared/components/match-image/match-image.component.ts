@@ -1,7 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
-import { LikeTypes, Match } from '@components/home/components/matches/components/match/mock/mock';
+import { Status } from '@components/home/components/matches/api/matches-api.service';
+import { Match } from '@components/home/components/matches/components/match/mock/mock';
 import { MatchesService } from '@components/home/components/matches/service/matches.service';
 import { Observable } from 'rxjs/internal/Observable';
 import { of } from 'rxjs/internal/observable/of';
@@ -17,10 +18,25 @@ import { of } from 'rxjs/internal/observable/of';
 export class MatchImageComponent implements OnInit {
 
   @Input({ required: true }) match: Match;
-  @Input() swipeAction: LikeTypes;
+  @Input() set swipeAction(status: Status) {
+    switch (status) {
+      case Status.Dislike:
+        this.matchClass = 'dislike';
+        break;
+      case Status.SuperLike:
+        this.matchClass = 'superLike';
+        break;
+      case Status.Like:
+        this.matchClass = 'like';
+        break;
+    }
+  }
   @Input() expanded = true;
   @Input() hideInfoButton = false;
   @Input() isChat = false;
+
+  Status = Status;
+  matchClass: string;
 
   currentImageIndex$: Observable<number> = of(0);
 

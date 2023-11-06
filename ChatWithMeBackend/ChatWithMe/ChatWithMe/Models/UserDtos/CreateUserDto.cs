@@ -29,7 +29,7 @@ public class CreateUserDto
     public int Weight { get; set; }
 
     [Required(ErrorMessage = "Pole jest wymagane")]
-    public DateTime BirthDate { get; set; }
+    public string BirthDate { get; set; }
 
     [Required(ErrorMessage = "Pole jest wymagane")]
     public string Sex { get; set; }

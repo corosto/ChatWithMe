@@ -11,6 +11,7 @@ namespace MapacenBackend.Models
         public AutoMapperProfile()
         {
             CreateMap<CreateUserDto, User>()
+                .ForMember(dto => dto.BirthDate, p => p.Ignore())
                 .ForMember(dto => dto.City, p => p.Ignore())
                 .ForMember(dto => dto.Interests, p => p.Ignore())
                 .ForMember(dto => dto.SexualOrientations, p => p.Ignore())
@@ -30,6 +31,12 @@ namespace MapacenBackend.Models
             CreateMap<User, UserBasicDto>();
 
             CreateMap<User, UserSideDto>();
+
+            CreateMap<User, GetMatchDto>()
+                .ForMember(dto => dto.Interests, p => p.Ignore())
+                .ForMember(dto => dto.SexualOrientations, p => p.Ignore())
+                .ForMember(dto => dto.Images, p => p.Ignore())
+                .ForMember(dto => dto.City, p => p.Ignore());
         }
     }
 }

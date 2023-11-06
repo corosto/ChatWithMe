@@ -39,12 +39,12 @@ export class UserInfoComponent<T> implements OnInit {
     this.userBasicData$ = this.refreshDataService.refreshImageListener().pipe(
       tap(() => {
         if (this.urlBefore === this.router.url)
-          this.controllerService.cachedUserInfo = null;
+          this.controllerService.cachedUserBasicInfo = null;
 
         this.urlBefore = this.router.url;
       }),
-      switchMap(() => this.controllerService.cachedUserInfo ? of(this.controllerService.cachedUserInfo) : this.homeService.getUserBasicData()),
-      tap((res) => this.controllerService.cachedUserInfo = res)
+      switchMap(() => this.controllerService.cachedUserBasicInfo ? of(this.controllerService.cachedUserBasicInfo) : this.homeService.getUserBasicData()),
+      tap((res) => this.controllerService.cachedUserBasicInfo = res)
     );
   }
 }

@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterModule } from '@angular/router';
-import { AuthenticationService } from '@components/landing-page/api/authentication.service';
+import { AuthenticationService, USER_0, USER_1, USER_10, USER_2, USER_3, USER_4, USER_5, USER_6, USER_7, USER_8, USER_9 } from '@components/landing-page/api/authentication.service';
 import { Register } from '@components/landing-page/interfaces/authentication-interface';
 import { BasicComponent } from '@components/landing-page/register/components/basic/basic.component';
 import { FirstPageComponent } from '@components/landing-page/register/pages/first-page/first-page.component';
@@ -36,7 +36,7 @@ export class RegisterComponent implements OnDestroy {
 
     height: [null as string, [Validators.required, Validators.min(110), Validators.max(240)]],
     weight: [null as string, [Validators.required, Validators.min(30), Validators.max(180)]],
-    birthDate: [null as string, [Validators.required]],
+    birthDate: [null as Date, [Validators.required]],
     sex: [null as string, [Validators.required]],
 
     description: ['', [Validators.maxLength(500)]],
@@ -87,7 +87,7 @@ export class RegisterComponent implements OnDestroy {
     this.onDestroy$.complete();
   }
 
-  register() {
+  register(): void {
     this.authenticationService.register(this.form.value as Register).pipe(
       filter((res) => !!res),
       tap(() => this.controllerService.userAuthentication = { email: this.form.value.email, password: this.form.value.password }),
@@ -98,5 +98,299 @@ export class RegisterComponent implements OnDestroy {
 
   changePage(pageSide: number): void {
     this.currentPageListener$.next(this.currentPageListener$.value + pageSide);
+  }
+
+  previews$ = new BehaviorSubject<string[]>([]);
+
+  registerMock(accountNumber: number): void {
+    const bmp$ = new BehaviorSubject<string[]>([]);
+
+    switch (accountNumber) {
+      case 0:
+        //1
+        USER_0.images.forEach((image, index) => {
+          const request = new XMLHttpRequest();
+          request.open('GET', image);
+          request.responseType = 'blob';
+          request.onload = () => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              const bmp = e.target.result as string;
+              bmp$.next([...bmp$.value, bmp]);
+
+              const user0: Register = {
+                ...USER_0,
+                images: bmp$.value,
+              };
+
+              if (USER_0.images.length === index + 1)
+                this.authenticationService.register(user0).subscribe();
+            };
+            reader.readAsDataURL(request.response);
+          };
+          request.send();
+        });
+        break;
+
+      case 1:
+        //1
+        USER_1.images.forEach((image, index) => {
+          const request = new XMLHttpRequest();
+          request.open('GET', image);
+          request.responseType = 'blob';
+          request.onload = () => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              const bmp = e.target.result as string;
+              bmp$.next([...bmp$.value, bmp]);
+
+              const user1: Register = {
+                ...USER_1,
+                images: bmp$.value,
+              };
+
+              if (USER_1.images.length === index + 1)
+                this.authenticationService.register(user1).subscribe();
+            };
+            reader.readAsDataURL(request.response);
+          };
+          request.send();
+        });
+        break;
+
+      case 2:
+        //2
+        USER_2.images.forEach((image, index) => {
+          const request = new XMLHttpRequest();
+          request.open('GET', image, true);
+          request.responseType = 'blob';
+          request.onload = () => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              const bmp = e.target.result as string;
+              bmp$.next([...bmp$.value, bmp]);
+
+              const user2: Register = {
+                ...USER_2,
+                images: bmp$.value,
+              };
+
+              if (USER_2.images.length === index + 1)
+                this.authenticationService.register(user2).subscribe();
+            };
+            reader.readAsDataURL(request.response);
+          };
+          request.send();
+        });
+        break;
+
+      case 3:
+        //3
+        USER_3.images.forEach((image, index) => {
+          const request = new XMLHttpRequest();
+          request.open('GET', image, true);
+          request.responseType = 'blob';
+          request.onload = () => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              const bmp = e.target.result as string;
+              bmp$.next([...bmp$.value, bmp]);
+
+              const user3: Register = {
+                ...USER_3,
+                images: bmp$.value,
+              };
+
+              if (USER_3.images.length === index + 1)
+                this.authenticationService.register(user3).subscribe();
+            };
+            reader.readAsDataURL(request.response);
+          };
+          request.send();
+        });
+        break;
+
+      case 4:
+        //4
+        USER_4.images.forEach((image, index) => {
+          const request = new XMLHttpRequest();
+          request.open('GET', image, true);
+          request.responseType = 'blob';
+          request.onload = () => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              const bmp = e.target.result as string;
+              bmp$.next([...bmp$.value, bmp]);
+
+              const user4: Register = {
+                ...USER_4,
+                images: bmp$.value,
+              };
+
+              if (USER_4.images.length === index + 1)
+                this.authenticationService.register(user4).subscribe();
+            };
+            reader.readAsDataURL(request.response);
+          };
+          request.send();
+        });
+        break;
+
+      case 5:
+        //5
+        USER_5.images.forEach((image, index) => {
+          const request = new XMLHttpRequest();
+          request.open('GET', image, true);
+          request.responseType = 'blob';
+          request.onload = () => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              const bmp = e.target.result as string;
+              bmp$.next([...bmp$.value, bmp]);
+
+              const user5: Register = {
+                ...USER_5,
+                images: bmp$.value,
+              };
+
+              if (USER_5.images.length === index + 1)
+                this.authenticationService.register(user5).subscribe();
+            };
+            reader.readAsDataURL(request.response);
+          };
+          request.send();
+        });
+        break;
+
+      case 6:
+        //6
+        USER_6.images.forEach((image, index) => {
+          const request = new XMLHttpRequest();
+          request.open('GET', image, true);
+          request.responseType = 'blob';
+          request.onload = () => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              const bmp = e.target.result as string;
+              bmp$.next([...bmp$.value, bmp]);
+
+              const user6: Register = {
+                ...USER_6,
+                images: bmp$.value,
+              };
+
+              if (USER_6.images.length === index + 1)
+                this.authenticationService.register(user6).subscribe();
+            };
+            reader.readAsDataURL(request.response);
+          };
+          request.send();
+        });
+        break;
+
+      case 7:
+        //7
+        USER_7.images.forEach((image, index) => {
+          const request = new XMLHttpRequest();
+          request.open('GET', image, true);
+          request.responseType = 'blob';
+          request.onload = () => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              const bmp = e.target.result as string;
+              bmp$.next([...bmp$.value, bmp]);
+
+              const user7: Register = {
+                ...USER_7,
+                images: bmp$.value,
+              };
+
+              if (USER_7.images.length === index + 1)
+                this.authenticationService.register(user7).subscribe();
+            };
+            reader.readAsDataURL(request.response);
+          };
+          request.send();
+        });
+        break;
+
+      case 8:
+        //8
+        USER_8.images.forEach((image, index) => {
+          const request = new XMLHttpRequest();
+          request.open('GET', image, true);
+          request.responseType = 'blob';
+          request.onload = () => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              const bmp = e.target.result as string;
+              bmp$.next([...bmp$.value, bmp]);
+
+              const user8: Register = {
+                ...USER_8,
+                images: bmp$.value,
+              };
+
+              if (USER_8.images.length === index + 1)
+                this.authenticationService.register(user8).subscribe();
+            };
+            reader.readAsDataURL(request.response);
+          };
+          request.send();
+        });
+        break;
+
+      case 9:
+        //9
+        USER_9.images.forEach((image, index) => {
+          const request = new XMLHttpRequest();
+          request.open('GET', image, true);
+          request.responseType = 'blob';
+          request.onload = () => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              const bmp = e.target.result as string;
+              bmp$.next([...bmp$.value, bmp]);
+
+              const user9: Register = {
+                ...USER_9,
+                images: bmp$.value,
+              };
+
+              if (USER_9.images.length === index + 1)
+                this.authenticationService.register(user9).subscribe();
+            };
+            reader.readAsDataURL(request.response);
+          };
+          request.send();
+        });
+        break;
+
+      case 10:
+        //10
+        USER_10.images.forEach((image, index) => {
+          const request = new XMLHttpRequest();
+          request.open('GET', image, true);
+          request.responseType = 'blob';
+          request.onload = () => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              const bmp = e.target.result as string;
+              bmp$.next([...bmp$.value, bmp]);
+
+              const user10: Register = {
+                ...USER_10,
+                images: bmp$.value,
+              };
+
+              if (USER_10.images.length === index + 1)
+                this.authenticationService.register(user10).subscribe();
+            };
+            reader.readAsDataURL(request.response);
+          };
+          request.send();
+        });
+        break;
+    }
   }
 }

@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, EventEmitter, HostListener, Output } from '@angular/core';
 import { ACTIONS, action } from '@components/home/components/matches/components/keyboard-actions/constants/actions.const';
+import { MatchService } from '@components/home/services/match.service';
 
 @Component({
   selector: 'keyboard-actions',
@@ -11,8 +12,13 @@ import { ACTIONS, action } from '@components/home/components/matches/components/
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class KeyboardActionsComponent {
+
+  constructor(
+    private matchService: MatchService,
+  ) { }
+
   @HostListener('window:keydown', ['$event']) onKeypress(event: KeyboardEvent) {
-    if (window.innerWidth > 1000)
+    if (window.innerWidth > 1000 && !!this.matchService.getCurrentMatchId())
       switch (event.code) {
         case 'ArrowLeft':
           this.action.emit('left');

@@ -21,7 +21,7 @@ import { InputComponent } from '@shared/components/input/input.component';
 import { MatchImageComponent } from '@shared/components/match-image/match-image.component';
 import { MoreInfoComponent } from '@shared/components/more-info/more-info.component';
 import { SpaceArrayPipe } from '@shared/pipes/space-array.pipe';
-import { isEqual } from 'lodash';
+import { ControllerService } from '@shared/services/controller.service';
 import { BehaviorSubject, Observable, map, of, switchMap } from 'rxjs';
 import { Subject } from 'rxjs/internal/Subject';
 import { filter } from 'rxjs/internal/operators/filter';
@@ -84,18 +84,20 @@ export class UserProfileComponent<T> implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private settingsService: SettingsService,
     private refreshDataService: RefreshDataService,
+    private controllerService: ControllerService,
   ) { }
 
   ngOnInit(): void {
     this.userProfileData$ = this.reloadDataListener$.asObservable().pipe(
-      switchMap(() => this.settingsService.getUserMainData()),
+      switchMap(() => this.controllerService.cachedUserMainInfo ? of(this.controllerService.cachedUserMainInfo) : this.settingsService.getUserMainData()),
       map((res) => ({
         ...res,
         description: res.description ?? '',
-      })),
+      } as Match)),
       tap((res) => {
         this.form.patchValue(res);
         this.matchesService.setImagesCount(res.images.length);
+        this.controllerService.cachedUserMainInfo = res;
       }),
     );
   }
@@ -171,6 +173,7 @@ export class UserProfileComponent<T> implements OnInit, OnDestroy {
       this.inEdit$.next(false);
       this.matchesService.forceSetCurrentImageIndex(0);
       this.refreshDataService.refreshImage();
+      this.controllerService.cachedUserMainInfo = null;
       this.reloadDataListener$.next();
     });
   }

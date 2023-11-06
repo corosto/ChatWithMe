@@ -18,7 +18,7 @@ namespace ChatWithMe.Database
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<UserInterests>()
-            .HasKey(ui => new { ui.InterestId, ui.UserId });
+                .HasKey(ui => new { ui.InterestId, ui.UserId });
 
             modelBuilder.Entity<UserInterests>()
                 .HasOne(uo => uo.User)
@@ -34,7 +34,7 @@ namespace ChatWithMe.Database
 
 
             modelBuilder.Entity<UserSexualOrientations>()
-            .HasKey(ui => new { ui.SexualOrientationId, ui.UserId });
+                .HasKey(ui => new { ui.SexualOrientationId, ui.UserId });
 
             modelBuilder.Entity<UserSexualOrientations>()
                 .HasOne(uo => uo.User)
@@ -58,6 +58,9 @@ namespace ChatWithMe.Database
 
             modelBuilder.Entity<User>()
                 .OwnsOne(u => u.City);
+
+
+            modelBuilder.Entity<Match>();
         }
 
         public DbSet<User> Users { get; set; }
@@ -66,5 +69,6 @@ namespace ChatWithMe.Database
         public DbSet<UserSexualOrientations> UserSexualOrientations { get; set; }
         public DbSet<SexualOrientation> SexualOrientation { get; set; }
         public DbSet<Image> Image { get; set; }
+        public DbSet<Match> Match { get; set; }
     }
 }

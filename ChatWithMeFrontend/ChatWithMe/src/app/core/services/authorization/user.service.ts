@@ -77,7 +77,10 @@ export class UserService {
 
   private clearAll(): void {
     this.localStorageService.clear();
-    void this.router.navigate(['/']);
+    void this.router.navigate(['/'])
+      .then(() => {
+        window.location.reload();
+      });
   }
 
   private setUserStorage(token: UserAuthorization) {

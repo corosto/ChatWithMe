@@ -67,6 +67,8 @@ public class UserService : IUserService
         user.PasswordHash = passwordHash;
         user.PasswordSalt = passwordSalt;
 
+        user.BirthDate = DateTimeOffset.Parse(dto.BirthDate);
+
         user.City = JsonSerializer.Deserialize<City>(dto.City);
 
         foreach (var image in dto.Images)

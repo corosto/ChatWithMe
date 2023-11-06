@@ -11,10 +11,15 @@ import { SettingsService, SideData } from '@components/settings/api/settings.ser
 import { UserService } from '@core/services/authorization/user.service';
 import { City, CityComponent } from '@shared/components/city/city.component';
 import { InputComponent } from '@shared/components/input/input.component';
-import { debounceTime, switchMap } from 'rxjs';
+import { ControllerService } from '@shared/services/controller.service';
+import { isEqual } from 'lodash';
+import { BehaviorSubject, debounceTime, switchMap } from 'rxjs';
 import { Subject } from 'rxjs/internal/Subject';
+import { of } from 'rxjs/internal/observable/of';
+import { skip } from 'rxjs/internal/operators/skip';
 import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 import { tap } from 'rxjs/internal/operators/tap';
+import { filter, take } from 'rxjs/operators';
 
 @Component({
   selector: 'user-settings',
@@ -43,23 +48,33 @@ export class UserSettingsComponent implements OnInit, OnDestroy {
 
   private onDestroy$ = new Subject<void>();
 
+  streamStarter$ = new BehaviorSubject<void>(null);
+
+  initForm: SideData;
+
   constructor(
     private fb: FormBuilder,
     private userService: UserService,
     private authenticationService: AuthenticationService,
     private settingsService: SettingsService,
+    private controllerService: ControllerService,
   ) { }
 
   ngOnInit(): void {
-    this.settingsService.getUserSideData().pipe(
+    this.streamStarter$.asObservable().pipe(
+      switchMap(() => this.controllerService.cachedUserSideInfo ? of(this.controllerService.cachedUserSideInfo) : this.settingsService.getUserSideData()),
       tap((res) => {
         this.form.patchValue(res);
+        this.initForm = this.form.value as SideData;
 
-        this.form.get('cityInput').patchValue(res.city.FullPlaceName);
-        this.form.get('cityChosen').patchValue(res.city);
+        this.controllerService.cachedUserSideInfo = res;
       }),
-      switchMap(() => this.form.valueChanges),
+    ).subscribe();
+
+    this.form.valueChanges.pipe(
       debounceTime(1000),
+      filter((res) => !isEqual(this.initForm, res)),
+      tap((res) => this.controllerService.cachedUserSideInfo = res as SideData),
       switchMap((res) => this.settingsService.updateUserSideData(res as SideData)),
     ).subscribe();
   }

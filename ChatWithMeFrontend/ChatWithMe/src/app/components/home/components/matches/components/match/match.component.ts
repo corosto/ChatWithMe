@@ -4,8 +4,8 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatchesApiService } from '@components/home/components/matches/api/matches-api.service';
-import { LikeTypes, Match } from '@components/home/components/matches/components/match/mock/mock';
+import { MatchesApiService, Status } from '@components/home/components/matches/api/matches-api.service';
+import { Match } from '@components/home/components/matches/components/match/mock/mock';
 import { MouseActionsComponent } from '@components/home/components/matches/components/mouse-actions/mouse-actions.component';
 import { MatchesService } from '@components/home/components/matches/service/matches.service';
 import { MatchImageComponent } from '@shared/components/match-image/match-image.component';
@@ -30,9 +30,9 @@ export class MatchComponent implements OnInit {
 
   currentMatch$: Observable<Match>;
   expanded$: Observable<boolean>;
-  isLoaded$ = new BehaviorSubject<boolean>(false);
 
-  swipeAction$ = new BehaviorSubject<LikeTypes>(null);
+  isLoaded$ = new BehaviorSubject<boolean>(false);
+  swipeAction$ = new BehaviorSubject<Status>(null);
 
   constructor(
     private matchesService: MatchesService,
@@ -42,7 +42,7 @@ export class MatchComponent implements OnInit {
   ngOnInit(): void {
     this.currentMatch$ = this.matchesService.getMatchSwipeListener().pipe(
       debounceTime(1230),
-      switchMap(() => this.matchesApiService.getNewMatch()),
+      switchMap((res) => this.matchesApiService.getNewMatch(res)),
       tap(() => this.matchesService.forceSetCurrentImageIndex(0)),
       tap(() => this.isLoaded$.next(true)),
       tap((res) => res && this.matchesService.setImagesCount(res.images.length))
