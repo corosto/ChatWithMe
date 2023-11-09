@@ -22,6 +22,19 @@ namespace ChatWithMe.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("ChatWithMe.Entities.Conversation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Conversation");
+                });
+
             modelBuilder.Entity("ChatWithMe.Entities.Image", b =>
                 {
                     b.Property<int>("Id")
@@ -85,6 +98,36 @@ namespace ChatWithMe.Migrations
                     b.ToTable("Match");
                 });
 
+            modelBuilder.Entity("ChatWithMe.Entities.Message", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("ConversationId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("Date")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ConversationId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Messages");
+                });
+
             modelBuilder.Entity("ChatWithMe.Entities.SexualOrientation", b =>
                 {
                     b.Property<int>("Id")
@@ -115,6 +158,12 @@ namespace ChatWithMe.Migrations
 
                     b.Property<DateTimeOffset>("BirthDate")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("ConnectionId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("CurrentConversationId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -212,6 +261,27 @@ namespace ChatWithMe.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("ChatWithMe.Entities.UserConversation", b =>
+                {
+                    b.Property<int>("ConversationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsRead")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsSuperLiked")
+                        .HasColumnType("bit");
+
+                    b.HasKey("ConversationId", "UserId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserConversation");
+                });
+
             modelBuilder.Entity("ChatWithMe.Entities.UserInterests", b =>
                 {
                     b.Property<int>("InterestId")
@@ -262,6 +332,25 @@ namespace ChatWithMe.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("ChatWithMe.Entities.Message", b =>
+                {
+                    b.HasOne("ChatWithMe.Entities.Conversation", "Conversation")
+                        .WithMany("Messages")
+                        .HasForeignKey("ConversationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("ChatWithMe.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Conversation");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("ChatWithMe.Entities.User", b =>
                 {
                     b.OwnsOne("ChatWithMe.Models.City", "City", b1 =>
@@ -293,6 +382,25 @@ namespace ChatWithMe.Migrations
 
                     b.Navigation("City")
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("ChatWithMe.Entities.UserConversation", b =>
+                {
+                    b.HasOne("ChatWithMe.Entities.Conversation", "Conversation")
+                        .WithMany("UserConversation")
+                        .HasForeignKey("ConversationId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("ChatWithMe.Entities.User", "User")
+                        .WithMany("UserConversation")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Conversation");
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ChatWithMe.Entities.UserInterests", b =>
@@ -333,6 +441,13 @@ namespace ChatWithMe.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("ChatWithMe.Entities.Conversation", b =>
+                {
+                    b.Navigation("Messages");
+
+                    b.Navigation("UserConversation");
+                });
+
             modelBuilder.Entity("ChatWithMe.Entities.Interest", b =>
                 {
                     b.Navigation("Users");
@@ -352,6 +467,8 @@ namespace ChatWithMe.Migrations
                     b.Navigation("Match");
 
                     b.Navigation("SexualOrientations");
+
+                    b.Navigation("UserConversation");
                 });
 #pragma warning restore 612, 618
         }

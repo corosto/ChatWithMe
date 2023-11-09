@@ -9,6 +9,9 @@ import { pl } from 'date-fns/locale';
 export class MessengerDatePipe implements PipeTransform {
 
   transform(date: Date | string): string {
+    if (!date)
+      return '';
+
     if (typeof date === 'string')
       date = new Date(date);
 

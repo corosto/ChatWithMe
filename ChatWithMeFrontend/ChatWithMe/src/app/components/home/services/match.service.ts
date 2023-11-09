@@ -7,16 +7,29 @@ import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
 })
 export class MatchService {
 
-  private chatId$ = new BehaviorSubject<string>(null);
   private userLocation$ = new BehaviorSubject<Location>(null);
+  private currentChatId$ = new BehaviorSubject<number>(null);
+  private currentChatUserId$ = new BehaviorSubject<number>(null);
   private currentMatchId$ = new BehaviorSubject<number>(null);
 
-  setChatId(value: string): void {
-    this.chatId$.next(value);
+  setCurrentChatUserId(value: number): void {
+    this.currentChatUserId$.next(value);
   }
 
-  getChatId(): Observable<string> {
-    return this.chatId$.asObservable();
+  getCurrentChatUserId(): Observable<number> {
+    return this.currentChatUserId$.asObservable();
+  }
+
+  setCurrentChatId(value: number): void {
+    this.currentChatId$.next(value);
+  }
+
+  getCurrentChatId(): Observable<number> {
+    return this.currentChatId$.asObservable();
+  }
+
+  getCurrentChatIdRaw(): number {
+    return this.currentChatId$.value;
   }
 
   setUserLocation(value: Location): void {
@@ -31,7 +44,11 @@ export class MatchService {
     this.currentMatchId$.next(value);
   }
 
-  getCurrentMatchId(): number {
+  getCurrentMatchId(): Observable<number> {
+    return this.currentMatchId$.asObservable();
+  }
+
+  getCurrentMatchIdRaw(): number {
     return this.currentMatchId$.value;
   }
 }

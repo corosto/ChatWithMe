@@ -5,7 +5,7 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatchesApiService, Status } from '@components/home/components/matches/api/matches-api.service';
-import { Match } from '@components/home/components/matches/components/match/mock/mock';
+import { Match } from '@components/home/components/matches/components/match/interfaces/match-interface';
 import { MouseActionsComponent } from '@components/home/components/matches/components/mouse-actions/mouse-actions.component';
 import { MatchesService } from '@components/home/components/matches/service/matches.service';
 import { MatchImageComponent } from '@shared/components/match-image/match-image.component';

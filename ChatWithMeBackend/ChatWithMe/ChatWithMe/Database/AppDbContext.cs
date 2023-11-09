@@ -49,7 +49,7 @@ namespace ChatWithMe.Database
                 .OnDelete(DeleteBehavior.NoAction);
 
 
-            modelBuilder.Entity<Entities.Image>()
+            modelBuilder.Entity<Image>()
                 .HasOne(o => o.User)
                 .WithMany(p => p.Images)
                 .HasForeignKey(o => o.UserId)
@@ -61,6 +61,22 @@ namespace ChatWithMe.Database
 
 
             modelBuilder.Entity<Match>();
+
+
+            modelBuilder.Entity<UserConversation>()
+                .HasKey(ui => new { ui.ConversationId, ui.UserId });
+
+            modelBuilder.Entity<UserConversation>()
+                .HasOne(uo => uo.User)
+                .WithMany(u => u.UserConversation)
+                .HasForeignKey(uo => uo.UserId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            modelBuilder.Entity<UserConversation>()
+                .HasOne(uo => uo.Conversation)
+                .WithMany(o => o.UserConversation)
+                .HasForeignKey(uo => uo.ConversationId)
+                .OnDelete(DeleteBehavior.NoAction);
         }
 
         public DbSet<User> Users { get; set; }
@@ -70,5 +86,8 @@ namespace ChatWithMe.Database
         public DbSet<SexualOrientation> SexualOrientation { get; set; }
         public DbSet<Image> Image { get; set; }
         public DbSet<Match> Match { get; set; }
+        public DbSet<Conversation> Conversation { get; set; }
+        public DbSet<UserConversation> UserConversation { get; set; }
+        public DbSet<Message> Messages { get; set; }
     }
 }

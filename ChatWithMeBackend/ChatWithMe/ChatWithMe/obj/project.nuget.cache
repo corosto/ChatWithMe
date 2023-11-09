@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "aKYGUtsdnuLiLLpBS5gEY9fPFaqyzIUyC0RU38uWrvVtHQW7FsoEShrY0aCg9kgRnEJJsV9VxreNmoaWvJnQ3Q==",
+  "dgSpecHash": "7rC+vCUHW0zq2WXxM1AitD22WDFuHnjLCsJXrGbeCZOruOdA7Ck4AklbMZm4ekGfcwirlSvpqiQ232KSepZuxw==",
   "success": true,
   "projectFilePath": "C:\\Users\\filip\\Desktop\\Projekty\\ChatWithMe\\ChatWithMeBackend\\ChatWithMe\\ChatWithMe\\ChatWithMe.csproj",
   "expectedPackageFiles": [
@@ -12,7 +12,11 @@
     "C:\\Users\\filip\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
     "C:\\Users\\filip\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\filip\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",
+    "C:\\Users\\filip\\.nuget\\packages\\fluentresults\\3.15.2\\fluentresults.3.15.2.nupkg.sha512",
     "C:\\Users\\filip\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\filip\\.nuget\\packages\\mapster\\7.4.0\\mapster.7.4.0.nupkg.sha512",
+    "C:\\Users\\filip\\.nuget\\packages\\mapster.core\\1.2.1\\mapster.core.1.2.1.nupkg.sha512",
+    "C:\\Users\\filip\\.nuget\\packages\\mapster.dependencyinjection\\1.0.1\\mapster.dependencyinjection.1.0.1.nupkg.sha512",
     "C:\\Users\\filip\\.nuget\\packages\\mediatr\\12.1.1\\mediatr.12.1.1.nupkg.sha512",
     "C:\\Users\\filip\\.nuget\\packages\\mediatr.contracts\\2.0.1\\mediatr.contracts.2.0.1.nupkg.sha512",
     "C:\\Users\\filip\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\7.0.13\\microsoft.aspnetcore.authentication.jwtbearer.7.0.13.nupkg.sha512",

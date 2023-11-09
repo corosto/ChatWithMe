@@ -1,7 +1,7 @@
 /* eslint-disable prefer-const */
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Match } from '@components/home/components/matches/components/match/mock/mock';
+import { Match } from '@components/home/components/matches/components/match/interfaces/match-interface';
 import { Api } from '@core/enums/api.enum';
 import { environment } from '@env/environment';
 import { City } from '@shared/components/city/city.component';

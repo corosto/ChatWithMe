@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatIconModule } from '@angular/material/icon';
-import { Match } from '@components/home/components/matches/components/match/mock/mock';
+import { Match } from '@components/home/components/matches/components/match/interfaces/match-interface';
 import { LookingForBoxComponent } from '@shared/components/looking-for-box/looking-for-box.component';
 import { GenderPipe } from '@shared/pipes/gender.pipe';
 

@@ -8,6 +8,7 @@
     class="message"
     maxlength="256"
     placeholder="Wpisz wiadomość"
+    (keydown.enter)="sendMessage(); $event.preventDefault();"
   ></textarea>
 
   <emoji-picker />

@@ -18,7 +18,7 @@ export class KeyboardActionsComponent {
   ) { }
 
   @HostListener('window:keydown', ['$event']) onKeypress(event: KeyboardEvent) {
-    if (window.innerWidth > 1000 && !!this.matchService.getCurrentMatchId())
+    if (window.innerWidth > 1000 && !!this.matchService.getCurrentMatchIdRaw())
       switch (event.code) {
         case 'ArrowLeft':
           this.action.emit('left');

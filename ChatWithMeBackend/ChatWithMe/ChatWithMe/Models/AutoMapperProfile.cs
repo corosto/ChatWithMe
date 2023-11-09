@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using ChatWithMe.Entities;
 using ChatWithMe.Models;
+using ChatWithMe.Models.MatchDtos;
 using ChatWithMe.Models.UserDtos;
 using System.Text.Json;
 

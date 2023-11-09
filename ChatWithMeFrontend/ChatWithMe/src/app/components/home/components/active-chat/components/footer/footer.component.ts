@@ -3,6 +3,8 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
+import { MessengerService } from '@components/home/components/active-chat/components/content/api/messenger.service';
+import { MatchService } from '@components/home/services/match.service';
 import { EmojiPickerComponent } from '@shared/components/emoji-picker/emoji-picker.component';
 
 @Component({
@@ -21,10 +23,12 @@ export class FooterComponent {
 
   constructor(
     private fb: FormBuilder,
+    private messengerService: MessengerService,
+    private matchService: MatchService,
   ) { }
 
   sendMessage(): void {
-    console.log(this.message.value);
+    this.messengerService.sendMessage(this.message.value as string, this.matchService.getCurrentChatIdRaw());
     this.message.reset();
   }
 

@@ -5,14 +5,15 @@
 </div>
 
 <div class="user">
-  <match-image
-    [match]="match"
-    [isChat]="true"
-    [hideInfoButton]="true"
-  />
+  <ng-container *ngIf="this.match$ | async as match">
+    <match-image
+      [match]="match"
+      [isChat]="true"
+      [hideInfoButton]="true"
+    />
 
-  <more-info [match]="match" />
-
+    <more-info [match]="match" />
+  </ng-container>
   <button
     mat-stroked-button
     class="button"

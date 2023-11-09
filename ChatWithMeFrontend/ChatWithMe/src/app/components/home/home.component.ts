@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActiveChatComponent } from '@components/home/components/active-chat/active-chat.component';
+import { MessengerService } from '@components/home/components/active-chat/components/content/api/messenger.service';
 import { MatchesComponent } from '@components/home/components/matches/matches.component';
 import { SidebarComponent } from '@components/home/components/sidebar/sidebar.component';
 import { MatchService } from '@components/home/services/match.service';
@@ -20,11 +21,15 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private matchService: MatchService,
+    private messengerService: MessengerService,
   ) { }
 
   ngOnInit(): void {
-    this.chatVisible$ = this.matchService.getChatId().pipe(
-      map((res) => !!res),
+    this.chatVisible$ = this.matchService.getCurrentChatId().pipe(
+      map((res) => !!(res !== null && res !== undefined)),
     );
+
+    if (!this.messengerService.isConnectedRaw)
+      this.messengerService.buildConnection();
   }
 }

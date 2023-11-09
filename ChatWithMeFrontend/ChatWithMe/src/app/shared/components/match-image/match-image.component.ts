@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { MatIconModule } from '@angular/material/icon';
 import { Status } from '@components/home/components/matches/api/matches-api.service';
-import { Match } from '@components/home/components/matches/components/match/mock/mock';
+import { Match } from '@components/home/components/matches/components/match/interfaces/match-interface';
 import { MatchesService } from '@components/home/components/matches/service/matches.service';
 import { Observable } from 'rxjs/internal/Observable';
 import { of } from 'rxjs/internal/observable/of';

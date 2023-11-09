@@ -1,11 +1,15 @@
+using ChatWithMe.API.Hubs;
 using ChatWithMe.Database;
 using ChatWithMe.Middleware;
 using ChatWithMe.Services;
 using MapacenBackend.Models;
+using Mapster;
+using MapsterMapper;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using System.Reflection;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -56,18 +60,31 @@ builder.Services.AddAuthentication(options =>
         };
     });
 
+builder.Services.AddSignalR(options => options.EnableDetailedErrors = true);
+
 builder.Services.AddHostedService<ClearDislikesWorkerService>()
             .Configure<HostOptions>(hostOptions => hostOptions.BackgroundServiceExceptionBehavior = BackgroundServiceExceptionBehavior.Ignore);
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IMatchService, MatchService>();
+builder.Services.AddScoped<IChatService, ChatService>();
 builder.Services.AddScoped<ErrorHandlingMiddleware>();
+
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);
+
+var config = TypeAdapterConfig.GlobalSettings;
+config.Scan(Assembly.GetExecutingAssembly());
+
+builder.Services.AddSingleton(config);
+builder.Services.AddScoped<IMapper, ServiceMapper>();
+
+
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddCors(p => p.AddPolicy("corsapp", builder =>
-    builder.AllowAnyMethod()
-    .AllowAnyHeader()
-    .AllowAnyOrigin()));
+    builder.AllowAnyHeader()
+    .AllowAnyMethod()
+    .WithOrigins("http://localhost:4200")
+    .AllowCredentials()));
 
 var app = builder.Build();
 
@@ -84,4 +101,7 @@ app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
+
+app.MapHub<ChatHub>("/chat");
+
 app.Run();

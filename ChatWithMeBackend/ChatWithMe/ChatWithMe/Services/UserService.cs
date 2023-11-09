@@ -513,6 +513,7 @@ public class UserService : IUserService
             claims: new List<Claim>
             {
                 new(type:"userId", user.Id.ToString()),
+                new(type:"name", user.Name),
             },
             expires: DateTime.Now.AddDays(1),
             signingCredentials: new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature)

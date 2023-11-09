@@ -7,7 +7,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSelectModule } from '@angular/material/select';
-import { Match } from '@components/home/components/matches/components/match/mock/mock';
+import { Match } from '@components/home/components/matches/components/match/interfaces/match-interface';
 import { MatchesService } from '@components/home/components/matches/service/matches.service';
 import { InterestsDialogComponent } from '@components/landing-page/register/components/interests-dialog/interests-dialog.component';
 import { LookingForDialogComponent } from '@components/landing-page/register/components/looking-for-dialog/looking-for-dialog.component';

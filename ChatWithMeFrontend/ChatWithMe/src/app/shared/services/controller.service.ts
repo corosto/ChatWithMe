@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { UserBasicData } from '@components/home/api/home.service';
-import { Match } from '@components/home/components/matches/components/match/mock/mock';
+import { Match } from '@components/home/components/matches/components/match/interfaces/match-interface';
 import { SideData } from '@components/settings/api/settings.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 

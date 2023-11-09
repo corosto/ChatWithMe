@@ -133,11 +133,11 @@ export class AuthenticationService {
 
     this.userService.setUserToken(token.accessToken);
 
-    const { exp, userId } = decodedToken;
+    const { exp, userId, name } = decodedToken;
     const refreshToken = token.refreshToken;
 
     this.localStorageService.setItem<TokenData>(KeyStorage.USER, {
-      refreshToken, userId, expires_at: addSeconds(new Date(), exp).toISOString()
+      refreshToken, userId, name, expires_at: addSeconds(new Date(), exp).toISOString()
     });
   }
 }

@@ -86,11 +86,11 @@ export class UserService {
   private setUserStorage(token: UserAuthorization) {
     const decodedToken: TokenData = jwt_decode(token.accessToken);
 
-    const { exp, userId } = decodedToken;
+    const { exp, userId, name } = decodedToken;
     const refreshToken = token.refreshToken;
 
     this.localStorageService.setItem<TokenData>(KeyStorage.USER, {
-      refreshToken, userId, expires_at: addSeconds(new Date(), exp).toISOString()
+      refreshToken, userId, name, expires_at: addSeconds(new Date(), exp).toISOString()
     });
   }
 }

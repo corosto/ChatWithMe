@@ -1,15 +1,26 @@
 <div
-  *ngFor="let chat of LAST_CHATS"
+  *ngFor="let chat of previousChats$ | async"
   class="chat"
-  (click)="matchService.setChatId('test')"
+  (click)="changeCurrentChat(chat)"
+  [class.current-chat]="currentChat$.value === chat.id"
 >
-<!-- TODO przekazywac id chatu do serwisu -->
   <div
     class="image"
-    [ngStyle]="{'background-image': 'url('+chat.image+')'}"
+    [ngStyle]="{'background-image': 'url('+chat.userImage+')'}"
   ></div>
   <div class="center">
-    <span class="title">{{ chat.name }}</span>
-    <span class="message">{{ chat.message }}</span>
+    <span class="title">{{ chat.withUser }}</span>
+    <span
+      *ngIf="chat.content"
+      class="message"
+      [class.bold]="!chat.isRead"
+    >
+      {{ chat.content }}
+    </span>
+    <span
+      class="date"
+    >
+      {{ chat.date | messengerDate }}
+    </span>
   </div>
 </div>

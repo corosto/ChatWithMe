@@ -23,6 +23,9 @@ namespace ChatWithMe.Entities
         public List<UserSexualOrientations> SexualOrientations { get; set; } = new();
         public List<Image> Images { get; set; } = new();
         public List<Match> Match { get; set; } = new();
+        public List<UserConversation> UserConversation { get; set; } = new();
+        public string? ConnectionId { get; set; }
+        public int? CurrentConversationId { get; set; }
 
 
         public int LookingForAgeMin { get; set; }

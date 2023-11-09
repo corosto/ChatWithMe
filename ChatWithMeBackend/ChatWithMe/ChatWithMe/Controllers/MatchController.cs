@@ -1,8 +1,5 @@
-﻿using Azure.Core;
-using ChatWithMe.Common;
-using ChatWithMe.Entities;
-using ChatWithMe.Models;
-using ChatWithMe.Models.UserDtos;
+﻿using ChatWithMe.Common;
+using ChatWithMe.Models.MatchDtos;
 using ChatWithMe.Services;
 using Microsoft.AspNetCore.Mvc;
 

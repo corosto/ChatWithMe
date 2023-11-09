@@ -1,19 +1,9 @@
-﻿using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Security.Cryptography;
-using System.Text;
-using AutoMapper;
+﻿using AutoMapper;
 using ChatWithMe.Database;
 using ChatWithMe.Entities;
 using ChatWithMe.Exceptions;
-using ChatWithMe.Models;
-using ChatWithMe.Models.UserDtos;
-using Microsoft.IdentityModel.Tokens;
-using System.Drawing;
-using System.Text.Json;
 using Microsoft.EntityFrameworkCore;
-using static System.Net.Mime.MediaTypeNames;
-using AutoMapper.QueryableExtensions;
+using ChatWithMe.Models.MatchDtos;
 
 namespace ChatWithMe.Services;
 
@@ -30,13 +20,15 @@ public class MatchService : IMatchService
     private readonly IConfiguration _configuration;
     private readonly ICurrentUserService _currentUserService;
     private readonly IMapper _mapper;
+    private readonly IChatService _chatService;
 
-    public MatchService(AppDbContext dbContext, IConfiguration configuration, ICurrentUserService currentUserService, IMapper mapper)
+    public MatchService(AppDbContext dbContext, IConfiguration configuration, ICurrentUserService currentUserService, IMapper mapper, IChatService chatService)
     {
         _dbContext = dbContext;
         _configuration = configuration;
         _currentUserService = currentUserService;
         _mapper = mapper;
+        _chatService = chatService;
     }
 
     public GetMatchDto GetNewMatch(GetMatchAPIDto dto)
@@ -52,9 +44,6 @@ public class MatchService : IMatchService
             .FirstOrDefault(u => u.Id.ToString() == id)
             ?? throw new NotFoundException("Użytkownik nie istnieje");
 
-
-
-        //jezeli aktualny user i user ktoremu dal like'a maja sie wzajemnie w likach to jest event stworzenia nowego chatu
         if (dto.LikedUserId != null && dto.Status != null)
         {
             user.Match.Add(new Match
@@ -62,11 +51,57 @@ public class MatchService : IMatchService
                 UserId = user.Id,
                 LikedId = dto.LikedUserId.Value,
                 Status = dto.Status.Value,
-
             });
 
             _dbContext.Users.Update(user);
             _dbContext.SaveChanges();
+        }
+
+        if(dto.Status != LikeStatus.Dislike)
+        {
+            var likedUser = _dbContext
+                .Users
+                .Include(u => u.Match)
+                .FirstOrDefault(u => u.Id == dto.LikedUserId);
+
+            if(likedUser != null)
+            {
+                var foundMatch = likedUser
+                    .Match
+                    .Where(m => m.LikedId.ToString() == id)
+                    .FirstOrDefault();
+
+                if (foundMatch != null && foundMatch.Status != LikeStatus.Dislike)
+                {
+                    var conversation = new Conversation();
+
+                    user.UserConversation.Add(new UserConversation
+                    {
+                        UserId = user.Id,
+                        User = user,
+                        Conversation = conversation,
+                        ConversationId = conversation.Id,
+                        IsRead = false,
+                        IsSuperLiked = foundMatch.Status == LikeStatus.SuperLike,
+                    });
+
+                    likedUser.UserConversation.Add(new UserConversation
+                    {
+                        UserId = likedUser.Id,
+                        User = likedUser,
+                        Conversation = conversation,
+                        ConversationId = conversation.Id,
+                        IsRead = false,
+                        IsSuperLiked = dto.Status == LikeStatus.SuperLike,
+                    });
+
+                    _dbContext.Conversation.Update(conversation);
+                    _dbContext.Users.UpdateRange(user, likedUser);
+                    _dbContext.SaveChanges();
+
+                    //_chatService.SendNewMatchNotification(user.Id, likedUser.Id);
+                }
+            }
         }
 
         double currentUserWidth = user.City.Width;

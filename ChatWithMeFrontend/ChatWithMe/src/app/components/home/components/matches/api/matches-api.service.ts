@@ -1,6 +1,6 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Match } from '@components/home/components/matches/components/match/mock/mock';
+import { Match } from '@components/home/components/matches/components/match/interfaces/match-interface';
 import { MatchService } from '@components/home/services/match.service';
 import { Api } from '@core/enums/api.enum';
 import { environment } from '@env/environment';
@@ -18,7 +18,7 @@ export class MatchesApiService {
   ) { }
 
   getNewMatch(status: Status): Observable<Match> {
-    const likedUserId = this.matchService.getCurrentMatchId();
+    const likedUserId = this.matchService.getCurrentMatchIdRaw();
     const location = this.matchService.getUserLocation();
 
     return this.http.post<Match>(`${environment.httpBackend}${Api.MATCH}`, { likedUserId, status, ...location })

@@ -1,15 +1,16 @@
-<div
-  *ngFor="let item of CONVERSATION; let index = index"
-  class="container"
-  [class.move]="item.userId === 'user1'"
-  [class.remove-gap]="CONVERSATION[index+1]?.userId === item.userId"
->
+<div *ngIf="messages$ | async as messages">
   <div
-    class="message"
-    [class.same-user]="CONVERSATION[index-1]?.userId === item.userId"
-    [title]="item.time | messengerDate"
-    [ngClass]="item.userId === 'user1' ? 'sent' : 'received'"
+    *ngFor="let message of messages; let index = index"
+    class="container"
+    [class.move]="message.fromCurrentUser"
+    [class.remove-gap]="messages[index+1]?.authorId === message.authorId"
   >
-    {{ item.message }}
+    <div
+      class="message"
+      [title]="message.date | messengerDate"
+      [ngClass]="message.fromCurrentUser ? 'sent' : 'received'"
+    >
+      {{ message.content }}
+    </div>
   </div>
 </div>

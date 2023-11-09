@@ -1,8 +1,6 @@
-﻿using System.ComponentModel;
-using System.ComponentModel.DataAnnotations;
-using ChatWithMe.Entities;
+﻿using ChatWithMe.Entities;
 
-namespace ChatWithMe.Models.UserDtos;
+namespace ChatWithMe.Models.MatchDtos;
 
 public class GetMatchAPIDto
 {

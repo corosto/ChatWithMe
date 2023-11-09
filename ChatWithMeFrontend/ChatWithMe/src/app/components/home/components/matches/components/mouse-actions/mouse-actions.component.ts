@@ -39,7 +39,7 @@ export class MouseActionsComponent {
   ) { }
 
   action(action: Status): void {
-    if (this.matchService.getCurrentMatchId())
+    if (this.matchService.getCurrentMatchIdRaw())
       switch (action) {
         case Status.Like:
           this.matchesService.setMatchSwipeListener(Status.Like);

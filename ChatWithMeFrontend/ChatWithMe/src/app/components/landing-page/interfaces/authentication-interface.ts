@@ -12,6 +12,7 @@ export interface UserAuthorization {
 
 export interface TokenData {
   userId: string,
+  name: string,
   exp?: number,
   expires_at?: string,
   refreshToken?: string,
