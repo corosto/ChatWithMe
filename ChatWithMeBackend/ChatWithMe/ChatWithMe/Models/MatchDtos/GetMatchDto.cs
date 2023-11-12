@@ -2,6 +2,8 @@
 
 public class GetMatchDto
 {
+    public string? ShowLikesDialog { get; set; }
+
     public int Id { get; set; }
     public string Name { get; set; }
     public int Age { get; set; }

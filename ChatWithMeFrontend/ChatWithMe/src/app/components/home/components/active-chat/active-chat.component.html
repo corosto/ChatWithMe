@@ -1,6 +1,13 @@
 <div class="container">
-  <header class="header"></header>
-  <content class="content"></content>
+  <header
+    class="header"
+    [isSuperLiked]="isSuperLiked"
+    [matchName]="matchName"
+  ></header>
+  <content
+    class="content"
+    (isSuperLiked)="isSuperLiked = $event"
+  ></content>
   <footer class="footer"></footer>
 </div>
 

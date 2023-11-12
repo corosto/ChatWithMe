@@ -26,6 +26,9 @@ export class ActiveChatComponent implements OnInit {
 
   match$: Observable<Match>;
 
+  isSuperLiked: boolean;
+  matchName: string;
+
   constructor(
     private matchesService: MatchesService,
     private matchService: MatchService,
@@ -35,6 +38,7 @@ export class ActiveChatComponent implements OnInit {
   ngOnInit(): void {
     this.match$ = this.matchService.getCurrentChatUserId().pipe(
       switchMap((res) => this.homeService.getUserChatInfo(res)),
+      tap((res) => this.matchName = res.name),
       tap((res) => this.matchesService.setImagesCount(res?.images?.length)),
       tap(() => this.matchesService.forceSetCurrentImageIndex(0)),
     );

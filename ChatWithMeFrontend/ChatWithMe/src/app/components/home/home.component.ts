@@ -5,6 +5,7 @@ import { MessengerService } from '@components/home/components/active-chat/compon
 import { MatchesComponent } from '@components/home/components/matches/matches.component';
 import { SidebarComponent } from '@components/home/components/sidebar/sidebar.component';
 import { MatchService } from '@components/home/services/match.service';
+import { isEmpty } from 'lodash';
 import { Observable, map } from 'rxjs';
 
 @Component({
@@ -25,8 +26,8 @@ export class HomeComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.chatVisible$ = this.matchService.getCurrentChatId().pipe(
-      map((res) => !!(res !== null && res !== undefined)),
+    this.chatVisible$ = this.matchService.getCurrentChatData().pipe(
+      map((res) => !isEmpty(res)),
     );
 
     if (!this.messengerService.isConnectedRaw)

@@ -25,7 +25,7 @@ namespace ChatWithMe.Controllers
         [RoleAuthorize]
         public ActionResult<GetMatchDto> GetMatchInfo(PostUserInfoDto dto)
         {
-            return Ok(_service.GetMatchInfo(dto.UserId));
+            return Ok(_service.GetMatchInfo(dto));
         }
     }
 }

@@ -23,6 +23,16 @@ public sealed class ClearDislikesWorkerService : BackgroundService
                 .Where(u => u.Status == 0)
                 .ToList();
 
+
+            var users = dbContext.Users.ToList();
+
+            foreach (var user in users)
+            {
+                user.LikesLeft = 30;
+                user.SuperLikesLeft = 2;
+            }
+
+
             dbContext.Match.RemoveRange(matches);
             dbContext.SaveChanges();
 

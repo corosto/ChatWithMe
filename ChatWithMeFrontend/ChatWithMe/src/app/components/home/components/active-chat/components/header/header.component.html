@@ -1,6 +1,18 @@
 <div class="header">
+  <div
+    *ngIf="isSuperLiked"
+    class="flex"
+  >
+    {{ matchName }} dał/a Ci Super Like'a
+    <img
+      width="34px"
+      src='assets/images/star-match.svg'
+      class="anim"
+      alt="Super Like"
+    >
+  </div>
   <mat-icon
     class="close"
-    (click)="matchService.setCurrentChatId(null)"
+    (click)="matchService.setCurrentChatData(null)"
   >highlight_off</mat-icon>
 </div>

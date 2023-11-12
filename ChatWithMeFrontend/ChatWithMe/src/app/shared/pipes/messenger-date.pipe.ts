@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { differenceInDays, format } from 'date-fns';
+import { differenceInCalendarDays, format } from 'date-fns';
 import { pl } from 'date-fns/locale';
 
 @Pipe({
@@ -13,22 +13,16 @@ export class MessengerDatePipe implements PipeTransform {
       return '';
 
     if (typeof date === 'string')
-      date = new Date(date);
+    date = new Date(date);
 
     const today = new Date();
-    const differenceDays = differenceInDays(today, date);
+    const differenceDays = differenceInCalendarDays(today, date);
 
-    if (differenceDays === 0) {
+    if (differenceDays === 0)
       return `Dzisiaj, ${format(date, 'HH:mm')}`;
-    } else if (differenceDays === 1) {
+    else if (differenceDays === 1)
       return `Wczoraj, ${format(date, 'HH:mm')}`;
-    }
-    else if (differenceDays < 8) {
+    else
       return format(date, 'dd MMMM, HH:mm', { locale: pl });
-    } else if (differenceDays < 31) {
-      return "Ponad tydzień temu";
-    } else {
-      return "Ponad miesiąc temu";
-    }
   }
 }

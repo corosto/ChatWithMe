@@ -26,9 +26,6 @@ export class AuthenticationService {
   ) { }
 
   register(value: Register): Observable<boolean> {
-
-    console.log(value)
-
     const formData = new FormData();
     formData.append('Name', value.name);
     formData.append('Email', value.email);
@@ -587,6 +584,120 @@ export const USER_10: Register = {
     'assets/images/MockUsersImages/10/2.jpeg',
     'assets/images/MockUsersImages/10/3.jpeg',
     'assets/images/MockUsersImages/10/4.jpeg',
+  ],
+  interests: ['Rozwój społeczny', 'Gimnastyka'],
+  sexualOrientations: ['Biseksualna'],
+};
+
+export const USER_11: Register = {
+  name: 'Jarosława',
+  email: 'user11@mail.pl',
+  password: 'dziendobry1',
+  confirmedPassword: 'dziendobry1',
+  height: '190',
+  weight: '80',
+  birthDate: new Date('1980-12-12T23:00:00.000Z'),
+  sex: 'male',
+  description: 'mam dziecioka ona robi włosy w koka',
+  zodiac: null,
+  education: null,
+  kids: 'Mam dzieci i chcę więcej',
+  pets: 'Żółw',
+  alcohol: null,
+  smoking: null,
+  gym: 'Nigdy',
+  diet: null,
+  school: 'Podstwowka',
+  job: 'gosposia',
+  position: 'misjonarska',
+  cityInput: "Radlin, Powiat opolski",
+  cityChosen: {
+    Name: "Radlin",
+    FullPlaceName: "Radlin, Powiat opolski",
+    Height: 51.0647011178182,
+    Width: 22.197609962563163
+  },
+  showMe: 'male',
+  lookingFor: 'Stałego związku',
+  images: [
+    'assets/images/MockUsersImages/11/1.jpeg',
+    'assets/images/MockUsersImages/11/2.webp',
+  ],
+  interests: ['Gospel', 'Szisza'],
+  sexualOrientations: ['Niezdefiniowana', 'Queer'],
+};
+
+export const USER_12: Register = {
+  name: 'Kasia',
+  email: 'user12@mail.pl',
+  password: 'dziendobry1',
+  confirmedPassword: 'dziendobry1',
+  height: '160',
+  weight: '50',
+  birthDate: new Date('2002-01-10T23:00:00.000Z'),
+  sex: 'female',
+  description: 'lubie foty robic',
+  zodiac: null,
+  education: null,
+  kids: null,
+  pets: null,
+  alcohol: null,
+  smoking: null,
+  gym: null,
+  diet: null,
+  school: '',
+  job: 'fotografka',
+  position: '',
+  cityInput: "Dębe, Powiat legionowski",
+  cityChosen: {
+    Name: "Dębe",
+    FullPlaceName: "Dębe, Powiat legionowski",
+    Height: 52.49698438956806,
+    Width: 20.917981567145162
+  },
+  showMe: 'all',
+  lookingFor: 'Zabawy i czegoś przelotnego',
+  images: [
+    'assets/images/MockUsersImages/12/1.webp',
+    'assets/images/MockUsersImages/12/2.jpeg',
+  ],
+  interests: ['Fortnite', 'Ogrodnictwo', 'Festiwal filmowy'],
+  sexualOrientations: ['Lesbijka'],
+};
+
+export const USER_13: Register = {
+  name: 'Justyna',
+  email: 'user13@mail.pl',
+  password: 'dziendobry1',
+  confirmedPassword: 'dziendobry1',
+  height: '160',
+  weight: '50',
+  birthDate: new Date('1998-07-03T23:00:00.000Z'),
+  sex: 'female',
+  description: null,
+  zodiac: null,
+  education: null,
+  kids: null,
+  pets: 'Królik',
+  alcohol: null,
+  smoking: null,
+  gym: null,
+  diet: 'Wszystkiego po trochu',
+  school: '',
+  job: 'fotografka',
+  position: '',
+  cityInput: "Dębe, Powiat legionowski",
+  cityChosen: {
+    Name: "Dębe",
+    FullPlaceName: "Dębe, Powiat legionowski",
+    Height: 52.49698438956806,
+    Width: 20.917981567145162
+  },
+  showMe: 'female',
+  lookingFor: 'Czegoś stałego lub na krótko',
+  images: [
+    'assets/images/MockUsersImages/13/1.webp',
+    'assets/images/MockUsersImages/13/2.webp',
   ],
   interests: ['Rozwój społeczny', 'Gimnastyka'],
   sexualOrientations: ['Biseksualna'],

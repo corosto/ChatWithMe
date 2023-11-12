@@ -25,4 +25,6 @@ export interface Match {
   interests: string[],
   sex: 'female' | 'male' | 'other',
   sexualOrientations: string[],
+
+  showLikesDialog?: 'Like' | 'SuperLike',
 }

@@ -1,6 +1,12 @@
-:host {
+.header {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+}
+
+.flex {
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .close {
@@ -9,5 +15,22 @@
   height: 40px;
   font-size: 40px;
   color: var(--color-font-secondary);
-  float: right;
+}
+
+.anim {
+  animation: header_pulsate 3s 3 forwards;
+}
+
+@keyframes header_pulsate {
+  0% {
+    transform: scale(0.9);
+  }
+  
+  50% {
+    transform: scale(1.2);
+  }
+  
+  100% {
+    transform: scale(0.9);
+  }
 }

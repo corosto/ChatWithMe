@@ -8,6 +8,7 @@ using ChatWithMe.Models.UserDtos;
 using FluentResults;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 
 namespace ChatWithMe.Services;
 
@@ -22,7 +23,7 @@ public interface IChatService
     public List<MessageDto> GetMessages(int chat);
     public void DecrementNotificationStatus(int userId, int chatId);
     public bool SendMessage(int userId, int conversationId, DateTimeOffset date, string text, bool isConnected);
-    public GetMatchDto GetMatchInfo(int userId);
+    public GetMatchDto GetMatchInfo(PostUserInfoDto dto);
 }
 
 public class ChatService : IChatService
@@ -249,19 +250,29 @@ public class ChatService : IChatService
         return firstMessage;
     }
 
-    public GetMatchDto GetMatchInfo(int userId)
+    public GetMatchDto GetMatchInfo(PostUserInfoDto dto)
     {
         var user = _dbContext
             .Users
             .Include(u => u.Interests)
             .Include(u => u.SexualOrientations)
             .Include(u => u.Images)
-            .FirstOrDefault(u => u.Id == userId)
+            .FirstOrDefault(u => u.Id == dto.UserId)
             ?? throw new NotFoundException("Użytkownik nie istnieje");
 
         var fixedUser = _mapper.Map<GetMatchDto>(user);
 
         fixedUser.City = user.City.Name;
+
+        double currentUserWidth = user.City.Width;
+        double currentUserHeight = user.City.Height;
+
+        if (dto.CurrentWidth != null && dto.CurrentHeight != null)
+        {
+            currentUserWidth = dto.CurrentWidth.Value;
+            currentUserHeight = dto.CurrentHeight.Value;
+        }
+        fixedUser.Distance = (int)CalculateDistance(currentUserWidth, currentUserHeight, user.City.Width, user.City.Height);
 
         var today = DateTime.Today;
         var age = today.Year - user.BirthDate.Year;
@@ -273,12 +284,12 @@ public class ChatService : IChatService
         fixedUser.Age = age;
 
         var interest = _dbContext.UserInterests
-            .Where(u => u.UserId == userId)
+            .Where(u => u.UserId == dto.UserId)
             .Include(u => u.Interest)
             .Select(u => u.Interest.InterestName).ToList();
 
         var sexualOrientation = _dbContext.UserSexualOrientations
-            .Where(u => u.UserId == userId)
+            .Where(u => u.UserId == dto.UserId)
             .Include(u => u.SexualOrientation)
             .Select(u => u.SexualOrientation.SexualOrientationName).ToList();
 
@@ -293,5 +304,28 @@ public class ChatService : IChatService
         }
 
         return fixedUser;
+    }
+
+    private const double EarthRadiusKm = 6371.0;
+
+    private double CalculateDistance(double lat1, double lon1, double lat2, double lon2)
+    {
+        // Konwersja stopni na radiany
+        var dLat = DegreeToRadian(lat2 - lat1);
+        var dLon = DegreeToRadian(lon2 - lon1);
+
+        // Obliczanie odległości za pomocą wzoru Haversine
+        var a = Math.Sin(dLat / 2) * Math.Sin(dLat / 2) +
+                Math.Cos(DegreeToRadian(lat1)) * Math.Cos(DegreeToRadian(lat2)) *
+                Math.Sin(dLon / 2) * Math.Sin(dLon / 2);
+        var c = 2 * Math.Atan2(Math.Sqrt(a), Math.Sqrt(1 - a));
+        var distanceKm = EarthRadiusKm * c;
+
+        return distanceKm;
+    }
+
+    private double DegreeToRadian(double angle)
+    {
+        return Math.PI * angle / 180.0;
     }
 }

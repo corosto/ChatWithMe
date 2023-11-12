@@ -1,10 +1,17 @@
 ﻿using ChatWithMe.Models;
-using System.Diagnostics.Metrics;
 
 namespace ChatWithMe.Entities
 {
     public class User
     {
+        public User()
+        {
+            LikesLeft = 30;
+            SuperLikesLeft = 2;
+        }
+
+        public int LikesLeft { get; set; }
+        public int SuperLikesLeft { get; set; }
         public int Id { get; set; }
         public string Name { get; set; }
         public string Email { get; set; }

@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, OnDestroy } from '@angular/core';
 import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { Router, RouterModule } from '@angular/router';
-import { AuthenticationService, USER_0, USER_1, USER_10, USER_2, USER_3, USER_4, USER_5, USER_6, USER_7, USER_8, USER_9 } from '@components/landing-page/api/authentication.service';
+import { AuthenticationService, USER_0, USER_1, USER_10, USER_11, USER_12, USER_13, USER_2, USER_3, USER_4, USER_5, USER_6, USER_7, USER_8, USER_9 } from '@components/landing-page/api/authentication.service';
 import { Register } from '@components/landing-page/interfaces/authentication-interface';
 import { BasicComponent } from '@components/landing-page/register/components/basic/basic.component';
 import { FirstPageComponent } from '@components/landing-page/register/pages/first-page/first-page.component';
@@ -385,6 +385,84 @@ export class RegisterComponent implements OnDestroy {
 
               if (USER_10.images.length === index + 1)
                 this.authenticationService.register(user10).subscribe();
+            };
+            reader.readAsDataURL(request.response);
+          };
+          request.send();
+        });
+        break;
+
+      case 11:
+        //11
+        USER_11.images.forEach((image, index) => {
+          const request = new XMLHttpRequest();
+          request.open('GET', image, true);
+          request.responseType = 'blob';
+          request.onload = () => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              const bmp = e.target.result as string;
+              bmp$.next([...bmp$.value, bmp]);
+
+              const user11: Register = {
+                ...USER_11,
+                images: bmp$.value,
+              };
+
+              if (USER_11.images.length === index + 1)
+                this.authenticationService.register(user11).subscribe();
+            };
+            reader.readAsDataURL(request.response);
+          };
+          request.send();
+        });
+        break;
+
+      case 12:
+        //12
+        USER_12.images.forEach((image, index) => {
+          const request = new XMLHttpRequest();
+          request.open('GET', image, true);
+          request.responseType = 'blob';
+          request.onload = () => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              const bmp = e.target.result as string;
+              bmp$.next([...bmp$.value, bmp]);
+
+              const user12: Register = {
+                ...USER_12,
+                images: bmp$.value,
+              };
+
+              if (USER_12.images.length === index + 1)
+                this.authenticationService.register(user12).subscribe();
+            };
+            reader.readAsDataURL(request.response);
+          };
+          request.send();
+        });
+        break;
+
+      case 13:
+        //13
+        USER_13.images.forEach((image, index) => {
+          const request = new XMLHttpRequest();
+          request.open('GET', image, true);
+          request.responseType = 'blob';
+          request.onload = () => {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+              const bmp = e.target.result as string;
+              bmp$.next([...bmp$.value, bmp]);
+
+              const user13: Register = {
+                ...USER_13,
+                images: bmp$.value,
+              };
+
+              if (USER_13.images.length === index + 1)
+                this.authenticationService.register(user13).subscribe();
             };
             reader.readAsDataURL(request.response);
           };

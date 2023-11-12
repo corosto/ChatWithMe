@@ -44,6 +44,80 @@ public class MatchService : IMatchService
             .FirstOrDefault(u => u.Id.ToString() == id)
             ?? throw new NotFoundException("Użytkownik nie istnieje");
 
+        double currentUserWidth = user.City.Width;
+        double currentUserHeight = user.City.Height;
+
+        if (dto.CurrentWidth != null && dto.CurrentHeight != null)
+        {
+            currentUserWidth = dto.CurrentWidth.Value;
+            currentUserHeight = dto.CurrentHeight.Value;
+        }
+
+        var match = _dbContext
+            .Users
+            .AsNoTracking()
+            .Where(u => !(user.ShowMe == "male") || u.Sex == "male")
+            .Where(u => !(user.ShowMe == "female") || u.Sex == "female")
+            .Where(u => !user.Match.Select(s => s.LikedId).Contains(u.Id))
+            .Where(u => u.Id.ToString() != id)
+            .Include(u => u.Interests)
+            .Include(u => u.SexualOrientations)
+            .Include(u => u.Images)
+            .ToList()
+            .Where(u => !user.UseDistanceFilter || CalculateDistance(u.City.Width, u.City.Height, currentUserWidth, currentUserHeight) <= user.LookingForDistanceMax)
+            .Where(u => !user.UseAgeFilter || CalculateAgeRange(u.BirthDate, user.LookingForAgeMin, user.LookingForAgeMax))
+            .OrderBy(u => Guid.NewGuid())
+            .FirstOrDefault();
+
+        if (match == null)
+            return null;
+
+        var fixedUser = _mapper.Map<GetMatchDto>(match);
+
+        fixedUser.Age = CalculateAge(match.BirthDate);
+        fixedUser.City = match.City.Name;
+        fixedUser.Distance = (int)CalculateDistance(match.City.Width, match.City.Height, user.City.Width, user.City.Height);
+
+        var interest = _dbContext.UserInterests
+            .Where(u => u.UserId == match.Id)
+            .Include(u => u.Interest)
+            .Select(u => u.Interest.InterestName).ToList();
+
+        var sexualOrientation = _dbContext.UserSexualOrientations
+            .Where(u => u.UserId == match.Id)
+            .Include(u => u.SexualOrientation)
+            .Select(u => u.SexualOrientation.SexualOrientationName).ToList();
+
+        fixedUser.Interests = interest;
+        fixedUser.SexualOrientations = sexualOrientation;
+
+        fixedUser.Images = new();
+
+        foreach (var image in match.Images)
+        {
+            fixedUser.Images.Add(image.Name);
+        }
+
+        if (dto.Status == LikeStatus.Like && user.LikesLeft <= 0)
+        {
+            fixedUser.ShowLikesDialog = "Like";
+            return fixedUser;
+        } 
+        else if(dto.Status == LikeStatus.Like && user.LikesLeft > 0)
+        {
+            user.LikesLeft--;
+        }
+
+        if (dto.Status == LikeStatus.SuperLike && user.SuperLikesLeft <= 0)
+        {
+            fixedUser.ShowLikesDialog = "SuperLike";
+            return fixedUser;
+        }
+        else if (dto.Status == LikeStatus.SuperLike && user.SuperLikesLeft > 0)
+        {
+            user.SuperLikesLeft--;
+        }
+
         if (dto.LikedUserId != null && dto.Status != null)
         {
             user.Match.Add(new Match
@@ -102,60 +176,6 @@ public class MatchService : IMatchService
                     //_chatService.SendNewMatchNotification(user.Id, likedUser.Id);
                 }
             }
-        }
-
-        double currentUserWidth = user.City.Width;
-        double currentUserHeight = user.City.Height;
-
-        if(dto.CurrentWidth != null && dto.CurrentHeight != null)
-        {
-            currentUserWidth = dto.CurrentWidth.Value;
-            currentUserHeight = dto.CurrentHeight.Value;
-        }
-
-        var match = _dbContext
-            .Users
-            .AsNoTracking()
-            .Where(u => !(user.ShowMe == "male") || u.Sex == "male")
-            .Where(u => !(user.ShowMe == "female") || u.Sex == "female")
-            .Where(u => !user.Match.Select(s => s.LikedId).Contains(u.Id))
-            .Where(u => u.Id.ToString() != id)
-            .Include(u => u.Interests)
-            .Include(u => u.SexualOrientations)
-            .Include(u => u.Images)
-            .ToList()
-            .Where(u => !user.UseDistanceFilter || CalculateDistance(u.City.Width, u.City.Height, currentUserWidth, currentUserHeight) <= user.LookingForDistanceMax)
-            .Where(u => !user.UseAgeFilter || CalculateAgeRange(u.BirthDate, user.LookingForAgeMin, user.LookingForAgeMax))
-            .OrderBy(u => Guid.NewGuid())
-            .FirstOrDefault();
-
-        if (match == null)
-            return null;
-
-        var fixedUser = _mapper.Map<GetMatchDto>(match);
-
-        fixedUser.Age = CalculateAge(match.BirthDate);
-        fixedUser.City = match.City.Name;
-        fixedUser.Distance = (int)CalculateDistance(match.City.Width, match.City.Height, user.City.Width, user.City.Height);
-
-        var interest = _dbContext.UserInterests
-            .Where(u => u.UserId == match.Id)
-            .Include(u => u.Interest)
-            .Select(u => u.Interest.InterestName).ToList();
-
-        var sexualOrientation = _dbContext.UserSexualOrientations
-            .Where(u => u.UserId == match.Id)
-            .Include(u => u.SexualOrientation)
-            .Select(u => u.SexualOrientation.SexualOrientationName).ToList();
-
-        fixedUser.Interests = interest;
-        fixedUser.SexualOrientations = sexualOrientation;
-
-        fixedUser.Images = new();
-
-        foreach (var image in match.Images)
-        {
-            fixedUser.Images.Add(image.Name);
         }
 
         return fixedUser;

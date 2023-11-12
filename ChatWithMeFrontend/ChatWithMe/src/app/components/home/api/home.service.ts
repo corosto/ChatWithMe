@@ -1,6 +1,7 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Match } from '@components/home/components/matches/components/match/interfaces/match-interface';
+import { MatchService } from '@components/home/services/match.service';
 import { Api } from '@core/enums/api.enum';
 import { environment } from '@env/environment';
 import { ToastMessageService } from '@shared/components/toast-message/services/toast-message.service';
@@ -12,6 +13,7 @@ export class HomeService {
   constructor(
     private http: HttpClient,
     private toastMessageService: ToastMessageService,
+    private matchService: MatchService,
   ) { }
 
   getUserBasicData(): Observable<UserBasicData> {
@@ -25,7 +27,7 @@ export class HomeService {
   }
 
   getUserChatInfo(userId: number): Observable<Match> {
-    return this.http.post<Match>(`${environment.httpBackend}${Api.CHAT_USER}`, { userId })
+    return this.http.post<Match>(`${environment.httpBackend}${Api.CHAT_USER}`, { userId, ...this.matchService.getUserLocation() })
       .pipe(
         catchError((err: HttpErrorResponse) => {
           this.toastMessageService.notifyOfError(err.statusText);

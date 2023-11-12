@@ -16,28 +16,12 @@ export class AppComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    if (navigator.geolocation) {
+    if (navigator.geolocation)
       navigator.geolocation.getCurrentPosition((position) => {
         const currentWidth = position.coords.longitude;
         const currentHeight = position.coords.latitude;
         this.matchService.setUserLocation({ currentHeight, currentWidth });
       });
-    } // else {
-    // navigator.permissions.query({ name: 'geolocation' }).then((permissionStatus) => {
-    // permissionStatus.onchange = (event) => {
-    // const target = event.currentTarget as PermissionStatus;
-    // if (target.state === 'granted')
-    //   if (navigator.geolocation) {
-    //     navigator.geolocation.getCurrentPosition((position) => {
-    //       const longitude = position.coords.longitude;
-    //       const latitude = position.coords.latitude;
-    //       this.matchService.setUserLocation({ latitude, longitude });
-    //       console.log(latitude, longitude, 'onchange');
-    //     });
-    //   }
-    // };
-    // }).catch(() => console.error('Błąd geolokalizacji'));
-    // }
   }
 
 }

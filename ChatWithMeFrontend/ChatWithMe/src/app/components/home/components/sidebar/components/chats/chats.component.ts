@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, OnDestroy, OnInit, ChangeDetectorRef } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { MessengerService } from '@components/home/components/active-chat/components/content/api/messenger.service';
 import { UserChatService } from '@components/home/components/active-chat/components/content/api/user-chat.service';
 import { ChatsStream } from '@components/home/components/active-chat/components/content/interfaces/chat.interfaces';
@@ -55,7 +55,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
         else
           this.previousChats$.value[itemIndex] = res;
       }),
-      tap(() => this.previousChats$.value.sort((a, b) => compareDesc(new Date(a.date), new Date(b.date)))),
+      tap(() => this.previousChats$.value.sort((a, b) => compareDesc(new Date(a?.date), new Date(b?.date)))),
       tap(() => this.ref.markForCheck()),
       takeUntil(this.onDestroy$),
     ).subscribe();
@@ -69,7 +69,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
   }
 
   changeCurrentChat(chat: ChatsStream) {
-    this.matchService.setCurrentChatId(chat.id);
+    this.matchService.setCurrentChatData({ id: chat.id, isSuperLiked: chat.isSuperLiked });
     this.currentChat$.next(chat.id);
     this.matchService.setCurrentChatUserId(chat.withUserId);
   }

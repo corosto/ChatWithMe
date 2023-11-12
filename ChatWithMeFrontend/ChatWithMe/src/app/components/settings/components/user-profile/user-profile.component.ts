@@ -110,7 +110,7 @@ export class UserProfileComponent<T> implements OnInit, OnDestroy {
   openAdditionalDialog(): void {
     const dialogRef = this.dialog.open(DialogTemplateComponent, {
       data: this.form.value,
-      panelClass: 'changeDialogScrollView',
+      panelClass: ['changeDialogScrollView', 'move-dialog'],
       width: '375px',
       maxHeight: '640px',
       disableClose: true,

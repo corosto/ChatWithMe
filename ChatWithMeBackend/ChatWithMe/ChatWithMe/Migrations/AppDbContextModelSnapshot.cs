@@ -190,6 +190,9 @@ namespace ChatWithMe.Migrations
                     b.Property<string>("Kids")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int>("LikesLeft")
+                        .HasColumnType("int");
+
                     b.Property<string>("LookingFor")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -237,6 +240,9 @@ namespace ChatWithMe.Migrations
 
                     b.Property<string>("Smoking")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("SuperLikesLeft")
+                        .HasColumnType("int");
 
                     b.Property<DateTime?>("TokenCreated")
                         .HasColumnType("datetime2");

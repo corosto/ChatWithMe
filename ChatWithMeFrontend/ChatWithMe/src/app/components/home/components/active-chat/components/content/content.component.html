@@ -6,8 +6,16 @@
     [class.remove-gap]="messages[index+1]?.authorId === message.authorId"
   >
     <div
-      class="message"
-      [title]="message.date | messengerDate"
+      *ngIf="message?.date | showHour: messages[index-1]?.date"
+      class="line"
+    >
+      {{ message?.date | messengerDate }}
+    </div>
+
+    <div
+      class="
+      message"
+      [title]="message?.date | messengerDate"
       [ngClass]="message.fromCurrentUser ? 'sent' : 'received'"
     >
       {{ message.content }}
