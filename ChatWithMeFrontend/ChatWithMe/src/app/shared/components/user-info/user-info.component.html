@@ -4,7 +4,7 @@
     class="chip"
     [title]="link === '/home' ? 'Wstecz' : 'Ustawienia'"
   >
-    <ng-container *ngIf="userBasicData$ | async as userBasicData">
+    <ng-container *ngIf="userBasicData$ | async as userBasicData; else loading">
       <div
         class="img"
         [ngStyle]="{'background-image': 'url('+userBasicData.image+')'}"
@@ -18,3 +18,7 @@
 </div>
 
 <ng-component *ngComponentOutlet="component"></ng-component>
+
+<ng-template #loading>
+  <loading [diameter]="40"/>
+</ng-template>

@@ -7,25 +7,37 @@ namespace ChatWithMe.API.Hubs;
 public class ChatHub: Hub
 {
 	private readonly IChatService _chatService;
+	private readonly IMappingService _mappingService;
 
-	public ChatHub(IChatService chatService)
+	public ChatHub(IChatService chatService, IMappingService mappingService)
 	{
         _chatService = chatService;
+        _mappingService = mappingService;
 	}
 
-	public async Task Join(string userIdString)
+    public override Task OnDisconnectedAsync(Exception? exception)
+    {
+		var userToRemove = _mappingService.Users
+			.Where(u => u.Value == Context.ConnectionId)
+			.FirstOrDefault();
+
+		_mappingService.Users.Remove(userToRemove.Key);
+
+        return base.OnDisconnectedAsync(exception);
+    }
+
+    public async Task Join(string userIdString)
 	{
 		var userId = int.Parse(userIdString);
 		var conversationsIds = _chatService.GetUserConversationsIds(userId);
+        _mappingService.Users.Add(userId, Context.ConnectionId);
 
-		foreach (var Id in conversationsIds)
+        foreach (var Id in conversationsIds)
 		{
 			await Groups.AddToGroupAsync(Context.ConnectionId, Id.ToString());
 		}
 
 		_chatService.AddConnectionId(userId, Context.ConnectionId);
-
-		//await ReadNotificationStatus(userId);
 	}
 
     public async Task RestoreAllConversations(string user)
@@ -42,8 +54,6 @@ public class ChatHub: Hub
 				await RestoreMessage(conversation.LastMessage);
 			}
 		}
-
-		//await ReadNotificationStatus(userId);
 	}
 
 	public async Task RestoreMessages(int chat, string user)
@@ -60,8 +70,6 @@ public class ChatHub: Hub
 		}
 
 		_chatService.SetCurrentChat(userId, chat);
-
-		//await ReadNotificationStatus(userId);
 
 		if (messages.Any())
 		{
@@ -130,22 +138,9 @@ public class ChatHub: Hub
 				var otherUserConversation = GetFullConversation(chat, conversation.WithUserId);
 
 				await UpdateConversation(conversation.WithUserConnectionId, otherUserConversation, date, text, false);
-				//await ReadNotificationStatus(conversation.WithUserConnectionId, conversation.WithUserId);
 			}
 		}
 	}
-
-    //private async Task ReadNotificationStatus(int userId)
-    //{
-    //var status = await _mediator.Send(new ReadNotificationStatusQuery(userId));
-    //await Clients.Caller.SendAsync("ReceiveNotificationStatus", status);
-    //}
-
-    //private async Task ReadNotificationStatus(string connectionId, int userId)
-    //{
-    //var status = await _mediator.Send(new ReadNotificationStatusQuery(userId));
-    //await Clients.Client(connectionId).SendAsync("ReceiveNotificationStatus", status);
-    //}
 
     private async Task RestoreMessage(MessageDto message)
 	{

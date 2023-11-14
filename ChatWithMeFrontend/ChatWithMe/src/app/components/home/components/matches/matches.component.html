@@ -1,6 +1,27 @@
+<div
+  *ngIf="isSmallWindow"
+  class="top"
+>
+  <img
+    width="40px"
+    src="assets/images/logo-icon.svg"
+    alt="Logo"
+  >
+  <span class="purples">
+    Chat With Me
+
+  </span>
+</div>
+
 <match class="match" />
 
 <keyboard-actions
   class="actions"
   (action)="actionEvent($event)"
 />
+<div
+  *ngIf="isSmallWindow"
+  class="bottom"
+>
+  Ustawienia
+</div>

@@ -20,17 +20,20 @@
     />
 
     <more-info [match]="match" />
-  </ng-container>
-  <button
-    mat-stroked-button
-    class="button"
-    (click)="removeMatch()"
-  >Usuń parę</button>
 
-  <button
-    mat-stroked-button
-    class="button"
-    (click)="blockMatch()"
-  >Zablokuj</button>
+    <div class="buttons">
+      <button
+        mat-stroked-button
+        class="button remove"
+        (click)="removeMatch(match.id)"
+      >Usuń parę</button>
+
+      <button
+        mat-stroked-button
+        class="button block"
+        (click)="blockMatch(match.id)"
+      >Zablokuj</button>
+    </div>
+  </ng-container>
 
 </div>

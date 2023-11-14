@@ -17,3 +17,15 @@ export interface ChatsStream {
   content: string
   isRead: boolean,
 }
+
+export interface NewConversationStream {
+  firstUserId: number,
+  firstUserName: string,
+  firstUserImage: string,
+  firstUserSuperLiked: boolean,
+
+  secondUserId: number,
+  secondUserName: string,
+  secondUserImage: string,
+  secondUserSuperLiked: boolean,
+}

@@ -87,14 +87,19 @@ export class MessengerService {
 
 
     //Przywrócenie wszystkich konwersacji pojedynczo
-    this.hubConnection.on("ReceiveConversation", (id: number, withUser: string, withUserId: number, date: Date, content: string, isRead: boolean, userImage: string, isSuperLiked: boolean) => {
+    this.hubConnection.on("ReceiveConversation", (id: number, withUser: string, withUserId: number, date: Date, content: string,
+      isRead: boolean, userImage: string, isSuperLiked: boolean) => {
       this.userChatService.setPreviousChatsStream({ id, withUser, withUserId, date, content, isRead, userImage, isSuperLiked });
     });
 
 
-    //Ilość wiadomości niewyświetlonych
-    // this.hubConnection.on("ReceiveNotificationStatus", (status: number) => {
-    //   this.userChatService.setNotifications(status);
-    // });
+    //Informacja o nowej konwersacji
+    this.hubConnection.on("ConversationCreated", (firstUserId: number, firstUserName: string, firstUserImage: string,
+      firstUserSuperLiked: boolean, secondUserId: number, secondUserName: string, secondUserImage: string, secondUserSuperLiked: boolean) => {
+      this.userChatService.setNewConversationCreated({
+        firstUserId, firstUserName, firstUserImage,
+        firstUserSuperLiked, secondUserId, secondUserName, secondUserImage, secondUserSuperLiked
+      });
+    });
   }
 }

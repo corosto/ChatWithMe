@@ -42,7 +42,22 @@
   }
 }
 
-.button {
-  margin-left: 4%;
-  width: 92%;
+.buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+
+  .button {
+    margin-left: 4%;
+    width: 92%;
+    border-radius: 8px;
+
+    &.remove {
+      background-image: linear-gradient(to top right, var(--color-main), var(--color-font-secondary));
+    }
+
+    &.block {
+      background-image: linear-gradient(to bottom right, var(--color-font-secondary), var(--color-main));
+    }
+  }
 }

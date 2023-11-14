@@ -16,5 +16,4 @@ export class NoMoreLikesDialogComponent {
   constructor(
     @Inject(MAT_DIALOG_DATA) protected data: 'Like' | 'SuperLike',
   ) { }
-
 }

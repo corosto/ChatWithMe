@@ -1,4 +1,5 @@
 ﻿using ChatWithMe.Database;
+using ChatWithMe.Entities;
 
 namespace ChatWithMe.Services;
 
@@ -20,7 +21,7 @@ public sealed class ClearDislikesWorkerService : BackgroundService
 
             var matches = dbContext
                 .Match
-                .Where(u => u.Status == 0)
+                .Where(u => u.Status == LikeStatus.Dislike)
                 .ToList();
 
 

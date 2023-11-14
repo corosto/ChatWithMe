@@ -60,8 +60,6 @@ public class UserService : IUserService
         if (_dbContext.Users.Any(u => u != null && u.Email == dto.Email))
             throw new EmailAlreadyUsedException("Wpisany email jest już zajęty");
 
-        Bitmap[] imageArray = new Bitmap[6];
-
         var user = _mapper.Map<User>(dto);
 
         user.PasswordHash = passwordHash;

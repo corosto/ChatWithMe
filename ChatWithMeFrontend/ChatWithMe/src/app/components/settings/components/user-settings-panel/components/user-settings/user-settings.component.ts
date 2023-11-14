@@ -11,20 +11,20 @@ import { SettingsService, SideData } from '@components/settings/api/settings.ser
 import { UserService } from '@core/services/authorization/user.service';
 import { City, CityComponent } from '@shared/components/city/city.component';
 import { InputComponent } from '@shared/components/input/input.component';
+import { LoadingComponent } from '@shared/components/loading/loading.component';
 import { ControllerService } from '@shared/services/controller.service';
 import { isEqual } from 'lodash';
 import { BehaviorSubject, debounceTime, switchMap } from 'rxjs';
 import { Subject } from 'rxjs/internal/Subject';
 import { of } from 'rxjs/internal/observable/of';
-import { skip } from 'rxjs/internal/operators/skip';
 import { takeUntil } from 'rxjs/internal/operators/takeUntil';
 import { tap } from 'rxjs/internal/operators/tap';
-import { filter, take } from 'rxjs/operators';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'user-settings',
   standalone: true,
-  imports: [CommonModule, MatButtonModule, MatSliderModule, MatSlideToggleModule, InputComponent, ReactiveFormsModule, CityComponent, MatSelectModule],
+  imports: [CommonModule, MatButtonModule, LoadingComponent, MatSliderModule, MatSlideToggleModule, InputComponent, ReactiveFormsModule, CityComponent, MatSelectModule],
   providers: [AuthenticationService],
   templateUrl: './user-settings.component.html',
   styleUrls: ['./user-settings.component.scss'],
@@ -49,6 +49,7 @@ export class UserSettingsComponent implements OnInit, OnDestroy {
   private onDestroy$ = new Subject<void>();
 
   streamStarter$ = new BehaviorSubject<void>(null);
+  loaded$ = new BehaviorSubject<boolean>(false);
 
   initForm: SideData;
 
@@ -63,6 +64,7 @@ export class UserSettingsComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.streamStarter$.asObservable().pipe(
       switchMap(() => this.controllerService.cachedUserSideInfo ? of(this.controllerService.cachedUserSideInfo) : this.settingsService.getUserSideData()),
+      tap(() => this.loaded$.next(true)),
       tap((res) => {
         this.form.patchValue(res);
         this.initForm = this.form.value as SideData;

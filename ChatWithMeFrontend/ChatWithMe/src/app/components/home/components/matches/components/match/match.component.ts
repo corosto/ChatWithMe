@@ -5,12 +5,12 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { MatIconModule } from '@angular/material/icon';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatchesApiService, Status } from '@components/home/components/matches/api/matches-api.service';
 import { NoMoreLikesDialogComponent } from '@components/home/components/matches/components/match/components/no-more-likes-dialog/no-more-likes-dialog.component';
 import { Match } from '@components/home/components/matches/components/match/interfaces/match-interface';
 import { MouseActionsComponent } from '@components/home/components/matches/components/mouse-actions/mouse-actions.component';
 import { MatchesService } from '@components/home/components/matches/service/matches.service';
+import { LoadingComponent } from '@shared/components/loading/loading.component';
 import { MatchImageComponent } from '@shared/components/match-image/match-image.component';
 import { MoreInfoComponent } from '@shared/components/more-info/more-info.component';
 import { OperatorFunction, SchedulerLike, async, concat, publish, take } from 'rxjs';
@@ -24,7 +24,7 @@ import { tap } from 'rxjs/internal/operators/tap';
 @Component({
   selector: 'match',
   standalone: true,
-  imports: [CommonModule, MatIconModule, MatProgressSpinnerModule, MouseActionsComponent, MoreInfoComponent, MatchImageComponent, MatDialogModule],
+  imports: [CommonModule, MatIconModule, LoadingComponent, MouseActionsComponent, MoreInfoComponent, MatchImageComponent, MatDialogModule],
   providers: [MatchesApiService],
   templateUrl: './match.component.html',
   styleUrls: ['./match.component.scss'],
@@ -49,7 +49,7 @@ export class MatchComponent implements OnInit {
       debounceTimeAfterFirst(1230),
       switchMap((res) => this.matchesApiService.getNewMatch(res)),
       tap((res) => {
-        if (res.showLikesDialog)
+        if (res?.showLikesDialog)
           this.dialog.open(NoMoreLikesDialogComponent, {
             data: res.showLikesDialog,
             panelClass: 'move-dialog',

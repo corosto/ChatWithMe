@@ -30,6 +30,26 @@ export class MatchesApiService {
         })
       );
   }
+
+  unmatchUser(userId: number): Observable<unknown> {
+    return this.http.post<unknown>(`${environment.httpBackend}${Api.UNMATCH}`, { userId, chatId: this.matchService.getCurrentChatIdRaw() })
+      .pipe(
+        catchError((err: HttpErrorResponse) => {
+          this.toastMessageService.notifyOfError(err.statusText);
+          return of(null);
+        })
+      );
+  }
+
+  blockUser(userId: number): Observable<unknown> {
+    return this.http.post<unknown>(`${environment.httpBackend}${Api.BLOCK}`, { userId, chatId: this.matchService.getCurrentChatIdRaw() })
+      .pipe(
+        catchError((err: HttpErrorResponse) => {
+          this.toastMessageService.notifyOfError(err.statusText);
+          return of(null);
+        })
+      );
+  }
 }
 
 export enum Status {

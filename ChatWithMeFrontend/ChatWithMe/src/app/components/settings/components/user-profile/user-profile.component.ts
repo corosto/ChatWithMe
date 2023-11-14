@@ -18,11 +18,12 @@ import { RefreshDataService } from '@components/settings/services/refresh-data.s
 import { DialogTemplateComponent } from '@shared/components/dialog-template/dialog-template.component';
 import { ImageDropdownComponent } from '@shared/components/image-dropdown/image-dropdown.component';
 import { InputComponent } from '@shared/components/input/input.component';
+import { LoadingComponent } from '@shared/components/loading/loading.component';
 import { MatchImageComponent } from '@shared/components/match-image/match-image.component';
 import { MoreInfoComponent } from '@shared/components/more-info/more-info.component';
 import { SpaceArrayPipe } from '@shared/pipes/space-array.pipe';
 import { ControllerService } from '@shared/services/controller.service';
-import { BehaviorSubject, Observable, map, of, switchMap } from 'rxjs';
+import { BehaviorSubject, Observable, map, of, shareReplay, switchMap } from 'rxjs';
 import { Subject } from 'rxjs/internal/Subject';
 import { filter } from 'rxjs/internal/operators/filter';
 import { finalize } from 'rxjs/internal/operators/finalize';
@@ -32,7 +33,7 @@ import { tap } from 'rxjs/internal/operators/tap';
 @Component({
   selector: 'user-profile',
   standalone: true,
-  imports: [CommonModule, MatSelectModule, MatIconModule, SpaceArrayPipe, MatchImageComponent, MoreInfoComponent, MatButtonModule, ImageDropdownComponent, ReactiveFormsModule, MatDialogModule, InputComponent],
+  imports: [CommonModule, MatSelectModule, LoadingComponent, MatIconModule, SpaceArrayPipe, MatchImageComponent, MoreInfoComponent, MatButtonModule, ImageDropdownComponent, ReactiveFormsModule, MatDialogModule, InputComponent],
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -90,6 +91,7 @@ export class UserProfileComponent<T> implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.userProfileData$ = this.reloadDataListener$.asObservable().pipe(
       switchMap(() => this.controllerService.cachedUserMainInfo ? of(this.controllerService.cachedUserMainInfo) : this.settingsService.getUserMainData()),
+      shareReplay(1),
       map((res) => ({
         ...res,
         description: res.description ?? '',

@@ -9,3 +9,9 @@ public class GetMatchAPIDto
     public double? CurrentWidth { get; set; }
     public double? CurrentHeight { get; set; }
 }
+
+public class RemoveMatchDto
+{
+    public int UserId { get; set; }
+    public int ChatId { get; set; }
+}

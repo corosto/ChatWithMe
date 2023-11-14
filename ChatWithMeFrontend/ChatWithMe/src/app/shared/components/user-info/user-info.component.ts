@@ -5,6 +5,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterModule } from '@angular/router';
 import { HomeService, UserBasicData } from '@components/home/api/home.service';
 import { RefreshDataService } from '@components/settings/services/refresh-data.service';
+import { LoadingComponent } from '@shared/components/loading/loading.component';
 import { ControllerService } from '@shared/services/controller.service';
 import { Observable, switchMap } from 'rxjs';
 import { of } from 'rxjs/internal/observable/of';
@@ -13,7 +14,7 @@ import { tap } from 'rxjs/internal/operators/tap';
 @Component({
   selector: 'user-info',
   standalone: true,
-  imports: [CommonModule, RouterModule, MatIconModule],
+  imports: [CommonModule, RouterModule, MatIconModule, LoadingComponent],
   providers: [HomeService],
   templateUrl: './user-info.component.html',
   styleUrls: ['./user-info.component.scss'],

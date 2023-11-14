@@ -1,6 +1,6 @@
 <div class="container">
   <ng-container *ngIf="(inEdit$ | async) === false; else edit">
-    <ng-container *ngIf="userProfileData$ | async as userProfileData">
+    <ng-container *ngIf="userProfileData$ | async as userProfileData; else loading">
       <match-image
         [match]="userProfileData"
         [hideInfoButton]="true"
@@ -123,7 +123,7 @@
 </button>
 
 <button
-  *ngIf="(inEdit$ | async) === false"
+  *ngIf="(inEdit$ | async) === false && userProfileData$ | async"
   class="button"
   mat-raised-button
   color="primary"
@@ -136,3 +136,7 @@
 <ng-template #kg>kg</ng-template>
 
 <ng-template #cm>cm</ng-template>
+
+<ng-template #loading>
+  <loading />
+</ng-template>

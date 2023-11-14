@@ -1,26 +1,46 @@
-<div
-  *ngFor="let chat of previousChats$ | async"
-  class="chat"
-  (click)="changeCurrentChat(chat)"
-  [class.current-chat]="currentChat$.value === chat.id"
->
-  <div
-    class="image"
-    [ngStyle]="{'background-image': 'url('+chat.userImage+')'}"
-  ></div>
-  <div class="center">
-    <span class="title">{{ chat.withUser }}</span>
-    <span
-      *ngIf="chat.content"
-      class="message"
-      [class.bold]="!chat.isRead"
+<ng-container *ngIf="loaded$ | async; else loading">
+  <ng-container *ngIf="previousChats$ | async as previousChats">
+    <ng-container *ngIf="previousChats.length; else noChats">
+      <div
+        *ngFor="let chat of previousChats"
+        class="chat"
+        (click)="changeCurrentChat(chat)"
+        [class.current-chat]="currentChat$.value === chat.id"
+      >
+        <div
+          class="image"
+          [ngStyle]="{'background-image': 'url('+chat.userImage+')'}"
+        ></div>
+        <div class="center">
+          <span class="title">{{ chat.withUser }}</span>
+          <span
+            *ngIf="chat.content"
+            class="message"
+            [class.bold]="!chat.isRead"
+          >
+            {{ chat.content }}
+          </span>
+          <span class="date">
+            {{ chat.date | messengerDate }}
+          </span>
+        </div>
+      </div>
+    </ng-container>
+  </ng-container>
+</ng-container>
+
+<ng-template #loading>
+  <loading />
+</ng-template>
+
+<ng-template #noChats>
+  <div class="no-chats">
+    <h2>Przykro nam</h2>
+    <h4>aktualnie nie masz żadnych chatów</h4>
+    <img
+      width="40px"
+      src="assets/images/sad.svg"
+      alt="Logo"
     >
-      {{ chat.content }}
-    </span>
-    <span
-      class="date"
-    >
-      {{ chat.date | messengerDate }}
-    </span>
   </div>
-</div>
+</ng-template>

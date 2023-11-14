@@ -30,6 +30,9 @@ namespace ChatWithMe.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<bool>("IsHidden")
+                        .HasColumnType("bit");
+
                     b.HasKey("Id");
 
                     b.ToTable("Conversation");

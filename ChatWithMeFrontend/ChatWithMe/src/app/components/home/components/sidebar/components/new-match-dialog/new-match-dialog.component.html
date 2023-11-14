@@ -1,0 +1,31 @@
+<mat-icon class="absolute close">close</mat-icon>
+
+<div
+  [ngStyle]="{'background-image': 'url('+conversationInfo.userImage+')'}"
+  class="image photo"
+>
+</div>
+<div class="image fade absolute"></div>
+
+<div
+  *ngIf="conversationInfo.userSuperLiked; else like"
+  class="absolute text"
+>
+  <img
+    width="40px"
+    src='assets/images/star-match.svg'
+    alt="Super Like"
+  >
+  <div>Użytkownik {{ conversationInfo.userName }} dał Ci Super Like!!</div>
+</div>
+
+<ng-template #like>
+  <div class="absolute text">
+    <img
+      width="40px"
+      src='assets/images/heart-match.svg'
+      alt="Like"
+    >
+    <div>Użytkownik {{ conversationInfo.userName }} polubił Cię!</div>
+  </div>
+</ng-template>

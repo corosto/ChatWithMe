@@ -11,6 +11,16 @@ export class MatchService {
   private currentChatData$ = new BehaviorSubject<ChatData>(null);
   private currentChatUserId$ = new BehaviorSubject<number>(null);
   private currentMatchId$ = new BehaviorSubject<number>(null);
+  private clearChatsListener$ = new BehaviorSubject<void>(null);
+
+  setClearChatListener(): void {
+    this.currentChatData$.next(null);
+    this.clearChatsListener$.next();
+  }
+
+  getClearChatListener(): Observable<void> {
+    return this.clearChatsListener$.asObservable();
+  }
 
   setCurrentChatUserId(value: number): void {
     this.currentChatUserId$.next(value);

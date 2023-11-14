@@ -2,74 +2,76 @@
   [formGroup]="form"
   class="form"
 >
-  <my-input
-    class="divider"
-    label="E-mail"
-    controlName="email"
-    [readonly]="true"
-  >
-  </my-input>
-
-  <city
-    class="divider"
-    [skip]="1"
-  />
-
-  <mat-form-field
-    class="divider"
-    hideRequiredMarker
-    appearance="outline"
-  >
-    <mat-label>Pokaż mi</mat-label>
-    <mat-select formControlName="showMe">
-      <mat-option
-        *ngFor="let sex of SHOW_ME_SEX"
-        [value]="sex.value"
-      >
-        {{sex.text}}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
-
-  <div class="box divider">
-    <span>Wiek {{ form.value.lookingForAgeMin }} - {{ form.value.lookingForAgeMax }} lat</span>
-    <mat-slider
-      min="18"
-      max="99"
+  <ng-container *ngIf="loaded$ | async; else loading">
+    <my-input
+      class="divider"
+      label="E-mail"
+      controlName="email"
+      [readonly]="true"
     >
-      <input
-        value="20"
-        matSliderStartThumb
-        formControlName="lookingForAgeMin"
-      >
-      <input
-        value="35"
-        matSliderEndThumb
-        formControlName="lookingForAgeMax"
-      >
-    </mat-slider>
-    <mat-slide-toggle
-      hideIcon
-      formControlName="useAgeFilter"
-    >Pokazuj tylko osoby z tego przedziału</mat-slide-toggle>
-  </div>
+    </my-input>
 
-  <div class="box">
-    <span>Odległość {{ form.value.lookingForDistanceMax }} km</span>
-    <mat-slider
-      min="2"
-      max="160"
+    <city
+      class="divider"
+      [skip]="1"
+    />
+
+    <mat-form-field
+      class="divider"
+      hideRequiredMarker
+      appearance="outline"
     >
-      <input
-        matSliderThumb
-        formControlName="lookingForDistanceMax"
+      <mat-label>Pokaż mi</mat-label>
+      <mat-select formControlName="showMe">
+        <mat-option
+          *ngFor="let sex of SHOW_ME_SEX"
+          [value]="sex.value"
+        >
+          {{sex.text}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <div class="box divider">
+      <span>Wiek {{ form.value.lookingForAgeMin }} - {{ form.value.lookingForAgeMax }} lat</span>
+      <mat-slider
+        min="18"
+        max="99"
       >
-    </mat-slider>
-    <mat-slide-toggle
-      hideIcon
-      formControlName="useDistanceFilter"
-    >Pokazuj tylko osoby z tego przedziału</mat-slide-toggle>
-  </div>
+        <input
+          value="20"
+          matSliderStartThumb
+          formControlName="lookingForAgeMin"
+        >
+        <input
+          value="35"
+          matSliderEndThumb
+          formControlName="lookingForAgeMax"
+        >
+      </mat-slider>
+      <mat-slide-toggle
+        hideIcon
+        formControlName="useAgeFilter"
+      >Pokazuj tylko osoby z tego przedziału</mat-slide-toggle>
+    </div>
+
+    <div class="box">
+      <span>Odległość {{ form.value.lookingForDistanceMax }} km</span>
+      <mat-slider
+        min="2"
+        max="160"
+      >
+        <input
+          matSliderThumb
+          formControlName="lookingForDistanceMax"
+        >
+      </mat-slider>
+      <mat-slide-toggle
+        hideIcon
+        formControlName="useDistanceFilter"
+      >Pokazuj tylko osoby z tego przedziału</mat-slide-toggle>
+    </div>
+  </ng-container>
 
   <button
     mat-stroked-button
@@ -77,3 +79,7 @@
     (click)="logout()"
   >Wyloguj</button>
 </form>
+
+<ng-template #loading>
+  <loading />
+</ng-template>

@@ -67,6 +67,7 @@ builder.Services.AddHostedService<ClearDislikesWorkerService>()
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IMatchService, MatchService>();
 builder.Services.AddScoped<IChatService, ChatService>();
+builder.Services.AddSingleton<IMappingService, MappingService>();
 builder.Services.AddScoped<ErrorHandlingMiddleware>();
 
 builder.Services.AddAutoMapper(typeof(AutoMapperProfile).Assembly);

@@ -88,6 +88,7 @@ public class ChatService : IChatService
             .Include(c => c.UserConversation)
             .Include(c => c.Messages)
             .Where(c => c.UserConversation.Any(uc => uc.UserId == userId))
+            .Where(c => !c.IsHidden)
             .ProjectToType<ConversationDto>()
             .ToList();
 

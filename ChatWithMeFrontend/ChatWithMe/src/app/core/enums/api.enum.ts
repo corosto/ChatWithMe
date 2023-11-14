@@ -7,6 +7,8 @@ export enum Api {
   USER_BASIC = 'api/user/basic',
   
   MATCH = 'api/match',
+  UNMATCH = 'api/match/unmatch',
+  BLOCK = 'api/match/block',
 
   CHAT_USER = 'api/chat/user',
 }

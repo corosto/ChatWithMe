@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ChatsStream, MessageStream } from '@components/home/components/active-chat/components/content/interfaces/chat.interfaces';
+import { ChatsStream, MessageStream, NewConversationStream } from '@components/home/components/active-chat/components/content/interfaces/chat.interfaces';
 import { Observable, Subject } from 'rxjs';
 
 @Injectable({
@@ -9,6 +9,7 @@ export class UserChatService {
 
   private messageStream$ = new Subject<MessageStream>;
   private previousChatsStream$ = new Subject<ChatsStream>;
+  private newConversationStream$ = new Subject<NewConversationStream>;
 
   setMessageStream(chat: MessageStream): void {
     this.messageStream$.next(chat);
@@ -24,5 +25,13 @@ export class UserChatService {
 
   getPreviousChatsStream(): Observable<ChatsStream> {
     return this.previousChatsStream$.asObservable();
+  }
+
+  setNewConversationCreated(newConversation: NewConversationStream): void {
+    this.newConversationStream$.next(newConversation);
+  }
+
+  getNewConversationCreated(): Observable<NewConversationStream> {
+    return this.newConversationStream$.asObservable();
   }
 }

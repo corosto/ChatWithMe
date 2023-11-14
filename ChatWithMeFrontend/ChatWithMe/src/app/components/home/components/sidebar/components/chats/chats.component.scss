@@ -1,3 +1,13 @@
+:host {
+  display: block;
+  overflow-y: auto;
+  max-height: calc(100vh - 84px);
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 .image {
   background-position: 50% 10%;
   background-size: auto 125%;
@@ -53,4 +63,12 @@
 .date {
   font-size: 12px;
   font-style: italic;
+}
+
+.no-chats {
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
 }

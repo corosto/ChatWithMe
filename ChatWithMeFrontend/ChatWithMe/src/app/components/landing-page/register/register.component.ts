@@ -15,7 +15,7 @@ import { InputComponent } from '@shared/components/input/input.component';
 import { EMAIL_PATTERN, PASSWORD_PATTERN } from '@shared/patterns/valid.pattern';
 import { ControllerService } from '@shared/services/controller.service';
 import { mustMatch } from '@shared/utils/must-match';
-import { BehaviorSubject, Subject, filter, takeUntil, tap } from 'rxjs';
+import { BehaviorSubject, Subject, debounceTime, filter, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'register',
@@ -102,12 +102,13 @@ export class RegisterComponent implements OnDestroy {
 
   previews$ = new BehaviorSubject<string[]>([]);
 
-  registerMock(accountNumber: number): void {
+  registerMock(): void {
     const bmp$ = new BehaviorSubject<string[]>([]);
 
-    switch (accountNumber) {
-      case 0:
-        //1
+    const subject = new BehaviorSubject<void>(null);
+
+    subject.asObservable().pipe(
+      tap(() => {
         USER_0.images.forEach((image, index) => {
           const request = new XMLHttpRequest();
           request.open('GET', image);
@@ -130,10 +131,10 @@ export class RegisterComponent implements OnDestroy {
           };
           request.send();
         });
-        break;
-
-      case 1:
-        //1
+        bmp$.next([]);
+      }),
+      debounceTime(2000),
+      tap(() => {
         USER_1.images.forEach((image, index) => {
           const request = new XMLHttpRequest();
           request.open('GET', image);
@@ -156,10 +157,10 @@ export class RegisterComponent implements OnDestroy {
           };
           request.send();
         });
-        break;
-
-      case 2:
-        //2
+        bmp$.next([]);
+      }),
+      debounceTime(2000),
+      tap(() => {
         USER_2.images.forEach((image, index) => {
           const request = new XMLHttpRequest();
           request.open('GET', image, true);
@@ -182,10 +183,10 @@ export class RegisterComponent implements OnDestroy {
           };
           request.send();
         });
-        break;
-
-      case 3:
-        //3
+        bmp$.next([]);
+      }),
+      debounceTime(2000),
+      tap(() => {
         USER_3.images.forEach((image, index) => {
           const request = new XMLHttpRequest();
           request.open('GET', image, true);
@@ -208,10 +209,10 @@ export class RegisterComponent implements OnDestroy {
           };
           request.send();
         });
-        break;
-
-      case 4:
-        //4
+        bmp$.next([]);
+      }),
+      debounceTime(2000),
+      tap(() => {
         USER_4.images.forEach((image, index) => {
           const request = new XMLHttpRequest();
           request.open('GET', image, true);
@@ -234,10 +235,10 @@ export class RegisterComponent implements OnDestroy {
           };
           request.send();
         });
-        break;
-
-      case 5:
-        //5
+        bmp$.next([]);
+      }),
+      debounceTime(2000),
+      tap(() => {
         USER_5.images.forEach((image, index) => {
           const request = new XMLHttpRequest();
           request.open('GET', image, true);
@@ -260,10 +261,10 @@ export class RegisterComponent implements OnDestroy {
           };
           request.send();
         });
-        break;
-
-      case 6:
-        //6
+        bmp$.next([]);
+      }),
+      debounceTime(2000),
+      tap(() => {
         USER_6.images.forEach((image, index) => {
           const request = new XMLHttpRequest();
           request.open('GET', image, true);
@@ -286,10 +287,10 @@ export class RegisterComponent implements OnDestroy {
           };
           request.send();
         });
-        break;
-
-      case 7:
-        //7
+        bmp$.next([]);
+      }),
+      debounceTime(2000),
+      tap(() => {
         USER_7.images.forEach((image, index) => {
           const request = new XMLHttpRequest();
           request.open('GET', image, true);
@@ -312,10 +313,10 @@ export class RegisterComponent implements OnDestroy {
           };
           request.send();
         });
-        break;
-
-      case 8:
-        //8
+        bmp$.next([]);
+      }),
+      debounceTime(2000),
+      tap(() => {
         USER_8.images.forEach((image, index) => {
           const request = new XMLHttpRequest();
           request.open('GET', image, true);
@@ -338,10 +339,10 @@ export class RegisterComponent implements OnDestroy {
           };
           request.send();
         });
-        break;
-
-      case 9:
-        //9
+        bmp$.next([]);
+      }),
+      debounceTime(2000),
+      tap(() => {
         USER_9.images.forEach((image, index) => {
           const request = new XMLHttpRequest();
           request.open('GET', image, true);
@@ -364,10 +365,10 @@ export class RegisterComponent implements OnDestroy {
           };
           request.send();
         });
-        break;
-
-      case 10:
-        //10
+        bmp$.next([]);
+      }),
+      debounceTime(2000),
+      tap(() => {
         USER_10.images.forEach((image, index) => {
           const request = new XMLHttpRequest();
           request.open('GET', image, true);
@@ -390,10 +391,10 @@ export class RegisterComponent implements OnDestroy {
           };
           request.send();
         });
-        break;
-
-      case 11:
-        //11
+        bmp$.next([]);
+      }),
+      debounceTime(2000),
+      tap(() => {
         USER_11.images.forEach((image, index) => {
           const request = new XMLHttpRequest();
           request.open('GET', image, true);
@@ -416,10 +417,10 @@ export class RegisterComponent implements OnDestroy {
           };
           request.send();
         });
-        break;
-
-      case 12:
-        //12
+        bmp$.next([]);
+      }),
+      debounceTime(2000),
+      tap(() => {
         USER_12.images.forEach((image, index) => {
           const request = new XMLHttpRequest();
           request.open('GET', image, true);
@@ -442,10 +443,10 @@ export class RegisterComponent implements OnDestroy {
           };
           request.send();
         });
-        break;
-
-      case 13:
-        //13
+        bmp$.next([]);
+      }),
+      debounceTime(2000),
+      tap(() => {
         USER_13.images.forEach((image, index) => {
           const request = new XMLHttpRequest();
           request.open('GET', image, true);
@@ -468,7 +469,8 @@ export class RegisterComponent implements OnDestroy {
           };
           request.send();
         });
-        break;
-    }
+        bmp$.next([]);
+      }),
+    ).subscribe();
   }
 }
