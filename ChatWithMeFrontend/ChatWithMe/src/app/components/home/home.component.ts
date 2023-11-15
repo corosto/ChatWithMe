@@ -4,7 +4,7 @@ import { ActiveChatComponent } from '@components/home/components/active-chat/act
 import { MessengerService } from '@components/home/components/active-chat/components/content/api/messenger.service';
 import { MatchesComponent } from '@components/home/components/matches/matches.component';
 import { SidebarComponent } from '@components/home/components/sidebar/sidebar.component';
-import { MatchService } from '@components/home/services/match.service';
+import { ControllerService } from '@shared/services/controller.service';
 import { isEmpty } from 'lodash';
 import { Observable, map } from 'rxjs';
 
@@ -21,12 +21,12 @@ export class HomeComponent implements OnInit {
   chatVisible$: Observable<boolean>;
 
   constructor(
-    private matchService: MatchService,
+    private controllerService: ControllerService,
     private messengerService: MessengerService,
   ) { }
 
   ngOnInit(): void {
-    this.chatVisible$ = this.matchService.getCurrentChatData().pipe(
+    this.chatVisible$ = this.controllerService.getCurrentChatDataObservable().pipe(
       map((res) => !isEmpty(res)),
     );
 

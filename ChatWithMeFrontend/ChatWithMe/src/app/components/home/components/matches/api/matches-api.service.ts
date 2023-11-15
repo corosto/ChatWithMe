@@ -1,12 +1,12 @@
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Match } from '@components/home/components/matches/components/match/interfaces/match-interface';
-import { MatchService } from '@components/home/services/match.service';
 import { Api } from '@core/enums/api.enum';
 import { environment } from '@env/environment';
 import { ToastMessageService } from '@shared/components/toast-message/services/toast-message.service';
 import { Observable, catchError, of } from 'rxjs';
 import { tap } from 'rxjs/operators';
+import { ControllerService } from '@shared/services/controller.service';
 
 @Injectable()
 export class MatchesApiService {
@@ -14,16 +14,16 @@ export class MatchesApiService {
   constructor(
     private http: HttpClient,
     private toastMessageService: ToastMessageService,
-    private matchService: MatchService,
+    private controllerService: ControllerService,
   ) { }
 
   getNewMatch(status: Status): Observable<Match> {
-    const likedUserId = this.matchService.getCurrentMatchIdRaw();
-    const location = this.matchService.getUserLocation();
+    const likedUserId = this.controllerService.getCurrentMatchIdRaw();
+    const location = this.controllerService.getUserLocationRaw();
 
     return this.http.post<Match>(`${environment.httpBackend}${Api.MATCH}`, { likedUserId, status, ...location })
       .pipe(
-        tap((res) => this.matchService.setCurrentMatchId(res ? res.id : null)),
+        tap((res) => this.controllerService.setCurrentMatchId(res ? res.id : null)),
         catchError((err: HttpErrorResponse) => {
           this.toastMessageService.notifyOfError(err.statusText);
           return of(null);
@@ -32,7 +32,7 @@ export class MatchesApiService {
   }
 
   unmatchUser(userId: number): Observable<unknown> {
-    return this.http.post<unknown>(`${environment.httpBackend}${Api.UNMATCH}`, { userId, chatId: this.matchService.getCurrentChatIdRaw() })
+    return this.http.post<unknown>(`${environment.httpBackend}${Api.UNMATCH}`, { userId, chatId: this.controllerService.getCurrentChatDataRaw().chatId })
       .pipe(
         catchError((err: HttpErrorResponse) => {
           this.toastMessageService.notifyOfError(err.statusText);
@@ -42,7 +42,7 @@ export class MatchesApiService {
   }
 
   blockUser(userId: number): Observable<unknown> {
-    return this.http.post<unknown>(`${environment.httpBackend}${Api.BLOCK}`, { userId, chatId: this.matchService.getCurrentChatIdRaw() })
+    return this.http.post<unknown>(`${environment.httpBackend}${Api.BLOCK}`, { userId, chatId: this.controllerService.getCurrentChatDataRaw().chatId })
       .pipe(
         catchError((err: HttpErrorResponse) => {
           this.toastMessageService.notifyOfError(err.statusText);

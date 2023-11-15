@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { MatchService } from '@components/home/services/match.service';
+import { ControllerService } from '@shared/services/controller.service';
 
 @Component({
   selector: 'app-root',
@@ -12,7 +12,7 @@ import { MatchService } from '@components/home/services/match.service';
 export class AppComponent implements OnInit {
 
   constructor(
-    private matchService: MatchService,
+    private controllerService: ControllerService,
   ) { }
 
   ngOnInit(): void {
@@ -20,7 +20,7 @@ export class AppComponent implements OnInit {
       navigator.geolocation.getCurrentPosition((position) => {
         const currentWidth = position.coords.longitude;
         const currentHeight = position.coords.latitude;
-        this.matchService.setUserLocation({ currentHeight, currentWidth });
+        this.controllerService.setUserLocation({ currentWidth, currentHeight });
       });
   }
 

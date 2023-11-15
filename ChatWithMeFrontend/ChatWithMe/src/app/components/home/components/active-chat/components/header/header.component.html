@@ -1,4 +1,7 @@
-<div class="header">
+<div
+  class="header"
+  [class.right]="!isSuperLiked"
+>
   <div
     *ngIf="isSuperLiked"
     class="flex"
@@ -13,6 +16,6 @@
   </div>
   <mat-icon
     class="close"
-    (click)="matchService.setCurrentChatData(null)"
+    (click)="controllerService.setCurrentChatData(null)"
   >highlight_off</mat-icon>
 </div>

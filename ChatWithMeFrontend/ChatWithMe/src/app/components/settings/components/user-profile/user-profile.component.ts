@@ -14,7 +14,6 @@ import { LookingForDialogComponent } from '@components/landing-page/register/com
 import { SEX } from '@components/landing-page/register/components/sex-related/constants/sex.const';
 import { SexualOrientationDialogComponent } from '@components/landing-page/register/components/sexual-orientation-dialog/sexual-orientation-dialog.component';
 import { MainData, SettingsService } from '@components/settings/api/settings.service';
-import { RefreshDataService } from '@components/settings/services/refresh-data.service';
 import { DialogTemplateComponent } from '@shared/components/dialog-template/dialog-template.component';
 import { ImageDropdownComponent } from '@shared/components/image-dropdown/image-dropdown.component';
 import { InputComponent } from '@shared/components/input/input.component';
@@ -34,6 +33,7 @@ import { tap } from 'rxjs/internal/operators/tap';
   selector: 'user-profile',
   standalone: true,
   imports: [CommonModule, MatSelectModule, LoadingComponent, MatIconModule, SpaceArrayPipe, MatchImageComponent, MoreInfoComponent, MatButtonModule, ImageDropdownComponent, ReactiveFormsModule, MatDialogModule, InputComponent],
+  providers: [SettingsService],
   templateUrl: './user-profile.component.html',
   styleUrls: ['./user-profile.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -84,7 +84,6 @@ export class UserProfileComponent<T> implements OnInit, OnDestroy {
     private cd: ChangeDetectorRef,
     private dialog: MatDialog,
     private settingsService: SettingsService,
-    private refreshDataService: RefreshDataService,
     private controllerService: ControllerService,
   ) { }
 
@@ -174,7 +173,7 @@ export class UserProfileComponent<T> implements OnInit, OnDestroy {
     ).subscribe(() => {
       this.inEdit$.next(false);
       this.matchesService.forceSetCurrentImageIndex(0);
-      this.refreshDataService.refreshImage();
+      this.controllerService.refreshImage();
       this.controllerService.cachedUserMainInfo = null;
       this.reloadDataListener$.next();
     });

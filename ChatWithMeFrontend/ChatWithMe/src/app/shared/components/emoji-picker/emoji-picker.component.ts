@@ -31,6 +31,9 @@ export class EmojiPickerComponent {
   addEmoji(value: { emoji: any, event: PointerEvent }) {
     const messageForm = this.formGroupDirective.form.get('message');
 
+    if (!messageForm.value)
+      messageForm.patchValue('');
+
     messageForm.patchValue(`${messageForm.value as string}${value.emoji.native}`);
   }
 }

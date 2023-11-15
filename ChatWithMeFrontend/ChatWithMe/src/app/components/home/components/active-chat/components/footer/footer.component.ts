@@ -1,11 +1,12 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { AbstractControl, FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
 import { MessengerService } from '@components/home/components/active-chat/components/content/api/messenger.service';
-import { MatchService } from '@components/home/services/match.service';
 import { EmojiPickerComponent } from '@shared/components/emoji-picker/emoji-picker.component';
+import { ControllerService } from '@shared/services/controller.service';
+import { tap } from 'rxjs/internal/operators/tap';
 
 @Component({
   selector: 'footer',
@@ -15,7 +16,7 @@ import { EmojiPickerComponent } from '@shared/components/emoji-picker/emoji-pick
   styleUrls: ['./footer.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FooterComponent {
+export class FooterComponent implements OnInit {
 
   form = this.fb.group({
     message: ['', [Validators.required, Validators.maxLength(256)]],
@@ -23,12 +24,20 @@ export class FooterComponent {
 
   constructor(
     private fb: FormBuilder,
+    private cd: ChangeDetectorRef,
     private messengerService: MessengerService,
-    private matchService: MatchService,
+    private controllerService: ControllerService,
   ) { }
 
+  ngOnInit(): void {
+    this.controllerService.getClearChatObservable().pipe(
+      tap(() => this.message.reset()),
+      tap(() => this.cd.markForCheck()),
+    ).subscribe();
+  }
+
   sendMessage(): void {
-    this.messengerService.sendMessage(this.message.value as string, this.matchService.getCurrentChatIdRaw());
+    this.messengerService.sendMessage(this.message.value as string, this.controllerService.getCurrentChatDataRaw().chatId);
     this.message.reset();
   }
 

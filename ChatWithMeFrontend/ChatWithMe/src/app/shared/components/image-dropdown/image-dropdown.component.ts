@@ -58,7 +58,7 @@ export class ImageDropdownComponent implements OnInit {
   }
 
   deleteImage(index: number) {
-    this.previews$.next(this.previews$.value.filter((file, i) => i !== index));
+    this.previews$.next(this.previews$.value.filter((_, i) => i !== index));
   }
 
   private handleImage(myFile: File) {

@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { Status } from '@components/home/components/matches/api/matches-api.service';
 import { MatchesService } from '@components/home/components/matches/service/matches.service';
-import { MatchService } from '@components/home/services/match.service';
+import { ControllerService } from '@shared/services/controller.service';
 
 @Component({
   selector: 'mouse-actions',
@@ -35,11 +35,11 @@ export class MouseActionsComponent {
 
   constructor(
     private matchesService: MatchesService,
-    private matchService: MatchService,
+    private controllerService: ControllerService,
   ) { }
 
   action(action: Status): void {
-    if (this.matchService.getCurrentMatchIdRaw())
+    if (this.controllerService.getCurrentMatchIdRaw())
       switch (action) {
         case Status.Like:
           this.matchesService.setMatchSwipeListener(Status.Like);

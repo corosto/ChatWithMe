@@ -25,7 +25,7 @@ import { filter } from 'rxjs/operators';
   selector: 'user-settings',
   standalone: true,
   imports: [CommonModule, MatButtonModule, LoadingComponent, MatSliderModule, MatSlideToggleModule, InputComponent, ReactiveFormsModule, CityComponent, MatSelectModule],
-  providers: [AuthenticationService],
+  providers: [AuthenticationService, SettingsService],
   templateUrl: './user-settings.component.html',
   styleUrls: ['./user-settings.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush

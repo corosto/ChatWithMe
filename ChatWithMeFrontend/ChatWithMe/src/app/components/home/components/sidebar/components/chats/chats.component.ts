@@ -5,9 +5,9 @@ import { MessengerService } from '@components/home/components/active-chat/compon
 import { UserChatService } from '@components/home/components/active-chat/components/content/api/user-chat.service';
 import { ChatsStream } from '@components/home/components/active-chat/components/content/interfaces/chat.interfaces';
 import { NewMatchDialogComponent } from '@components/home/components/sidebar/components/new-match-dialog/new-match-dialog.component';
-import { MatchService } from '@components/home/services/match.service';
 import { LoadingComponent } from '@shared/components/loading/loading.component';
 import { MessengerDatePipe } from '@shared/pipes/messenger-date.pipe';
+import { ControllerService } from '@shared/services/controller.service';
 import { compareDesc } from 'date-fns';
 import { BehaviorSubject, Subject, map, switchMap } from 'rxjs';
 import { filter } from 'rxjs/internal/operators/filter';
@@ -31,16 +31,21 @@ export class ChatsComponent implements OnInit, OnDestroy {
   loaded$ = new BehaviorSubject<boolean>(false);
 
   constructor(
-    protected matchService: MatchService,
-    private userChatService: UserChatService,
+    private controllerService: ControllerService,
     private messengerService: MessengerService,
+    private userChatService: UserChatService,
     private ref: ChangeDetectorRef,
     private dialog: MatDialog,
   ) { }
 
   ngOnInit(): void {
-    this.matchService.getClearChatListener().pipe(
-      tap(() => this.previousChats$.next([])),
+    this.userChatService.getConversationToHide().pipe(
+      filter((res) => !!res),
+      tap((res) => {
+        const previousChats = this.previousChats$.value?.filter((chat) => chat?.id !== res);
+        this.previousChats$.next(previousChats);
+      }),
+      tap(() => this.controllerService.setCurrentChatData(null)),
       tap(() => this.currentChat$.next(null)),
     ).subscribe();
 
@@ -57,7 +62,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
       })),
       map((res) => ({
         ...res,
-        isRead: (this.matchService.getCurrentChatIdRaw() === res.id) ? true : res.isRead,
+        isRead: (this.controllerService.getCurrentChatDataRaw().chatId === res.id) ? true : res.isRead,
       })),
       tap((res) => {
         const itemIndex = this.previousChats$.value.findIndex((result) => result.id === res.id);
@@ -91,8 +96,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
   }
 
   changeCurrentChat(chat: ChatsStream) {
-    this.matchService.setCurrentChatData({ id: chat.id, isSuperLiked: chat.isSuperLiked });
+    this.controllerService.setCurrentChatData({ chatId: chat.id, withUserId: chat.withUserId, isSuperLiked: chat.isSuperLiked });
     this.currentChat$.next(chat.id);
-    this.matchService.setCurrentChatUserId(chat.withUserId);
   }
 }

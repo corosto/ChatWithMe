@@ -4,7 +4,6 @@ import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core
 import { MatIconModule } from '@angular/material/icon';
 import { Router, RouterModule } from '@angular/router';
 import { HomeService, UserBasicData } from '@components/home/api/home.service';
-import { RefreshDataService } from '@components/settings/services/refresh-data.service';
 import { LoadingComponent } from '@shared/components/loading/loading.component';
 import { ControllerService } from '@shared/services/controller.service';
 import { Observable, switchMap } from 'rxjs';
@@ -32,12 +31,11 @@ export class UserInfoComponent<T> implements OnInit {
   constructor(
     private homeService: HomeService,
     private controllerService: ControllerService,
-    private refreshDataService: RefreshDataService,
     private router: Router,
   ) { }
 
   ngOnInit(): void {
-    this.userBasicData$ = this.refreshDataService.refreshImageListener().pipe(
+    this.userBasicData$ = this.controllerService.refreshImageObservable().pipe(
       tap(() => {
         if (this.urlBefore === this.router.url)
           this.controllerService.cachedUserBasicInfo = null;

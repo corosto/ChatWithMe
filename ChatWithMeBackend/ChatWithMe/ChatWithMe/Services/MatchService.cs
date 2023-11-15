@@ -87,112 +87,113 @@ public class MatchService : IMatchService
 
             _dbContext.Users.Update(user);
             _dbContext.SaveChanges();
-        }
 
-        if (dto.Status != LikeStatus.Dislike && error == null)
-        {
-            var likedUser = _dbContext
-                .Users
-                .Include(u => u.Match)
-                .Include(u => u.Images)
-                .FirstOrDefault(u => u.Id == dto.LikedUserId);
-
-            if (likedUser != null)
+            if (dto.Status != LikeStatus.Dislike)
             {
-                var foundMatch = likedUser
-                    .Match
-                    .Where(m => m.LikedId.ToString() == id)
-                    .FirstOrDefault();
+                var likedUser = _dbContext
+                    .Users
+                    .Include(u => u.Match)
+                    .Include(u => u.Images)
+                    .FirstOrDefault(u => u.Id == dto.LikedUserId);
 
-                var user1Conversations = _dbContext
-                    .Conversation
-                    .Include(c => c.UserConversation)
-                    .Where(c => c.UserConversation.Any(uc => uc.UserId.ToString() == id))
-                    .ToList();
-
-                var user2Conversations = _dbContext
-                    .Conversation
-                    .Include(c => c.UserConversation)
-                    .Where(c => c.UserConversation.Any(uc => uc.UserId == dto.LikedUserId))
-                    .ToList();
-
-                var skipConversationAdding = false;
-                var conversation = new Conversation();
-
-                void FindConversation()
+                if (likedUser != null)
                 {
-                    foreach (var conversation1 in user1Conversations)
+                    var foundMatch = likedUser
+                        .Match
+                        .Where(m => m.LikedId.ToString() == id)
+                        .FirstOrDefault();
+
+                    var user1Conversations = _dbContext
+                        .Conversation
+                        .Include(c => c.UserConversation)
+                        .Where(c => c.UserConversation.Any(uc => uc.UserId.ToString() == id))
+                        .ToList();
+
+                    var user2Conversations = _dbContext
+                        .Conversation
+                        .Include(c => c.UserConversation)
+                        .Where(c => c.UserConversation.Any(uc => uc.UserId == dto.LikedUserId))
+                        .ToList();
+
+                    var skipConversationAdding = false;
+                    var conversation = new Conversation();
+
+                    void FindConversation()
                     {
-                        foreach (var conversation2 in user2Conversations)
+                        foreach (var conversation1 in user1Conversations)
                         {
-                            if (conversation1.Id == conversation2.Id)
+                            foreach (var conversation2 in user2Conversations)
                             {
-                                conversation = conversation1;
-                                conversation1.IsHidden = false;
-                                skipConversationAdding = true;
-                                _dbContext.Conversation.Update(conversation1);
-                                _dbContext.SaveChanges();
-                                return;
+                                if (conversation1.Id == conversation2.Id)
+                                {
+                                    conversation = conversation1;
+                                    conversation.IsHidden = false;
+                                    skipConversationAdding = true;
+                                    _dbContext.Conversation.Update(conversation);
+                                    _dbContext.SaveChanges();
+                                    return;
+                                }
                             }
                         }
-                    }
-                };
+                    };
 
-                FindConversation();
+                    FindConversation();
 
-                var sendConversationCreatedEvent = false;
+                    var sendConversationCreatedEvent = false;
 
-                if (foundMatch != null && foundMatch.Status != LikeStatus.Dislike && !skipConversationAdding)
-                {
-                    user.UserConversation.Add(new UserConversation
+                    if (foundMatch != null && foundMatch.Status != LikeStatus.Dislike && !skipConversationAdding)
                     {
-                        UserId = user.Id,
-                        User = user,
-                        Conversation = conversation,
-                        ConversationId = conversation.Id,
-                        IsRead = false,
-                        IsSuperLiked = foundMatch.Status == LikeStatus.SuperLike,
-                    });
+                        user.UserConversation.Add(new UserConversation
+                        {
+                            UserId = user.Id,
+                            User = user,
+                            Conversation = conversation,
+                            ConversationId = conversation.Id,
+                            IsRead = false,
+                            IsSuperLiked = foundMatch.Status == LikeStatus.SuperLike,
+                        });
 
-                    likedUser.UserConversation.Add(new UserConversation
-                    {
-                        UserId = likedUser.Id,
-                        User = likedUser,
-                        Conversation = conversation,
-                        ConversationId = conversation.Id,
-                        IsRead = false,
-                        IsSuperLiked = dto.Status == LikeStatus.SuperLike,
-                    });
+                        likedUser.UserConversation.Add(new UserConversation
+                        {
+                            UserId = likedUser.Id,
+                            User = likedUser,
+                            Conversation = conversation,
+                            ConversationId = conversation.Id,
+                            IsRead = false,
+                            IsSuperLiked = dto.Status == LikeStatus.SuperLike,
+                        });
 
-                    _dbContext.Conversation.Update(conversation);
-                    _dbContext.Users.UpdateRange(user, likedUser);
-                    _dbContext.SaveChanges();
+                        _dbContext.Conversation.Update(conversation);
+                        _dbContext.Users.UpdateRange(user, likedUser);
+                        _dbContext.SaveChanges();
 
-                    sendConversationCreatedEvent = true;
-                }
-
-                //TODO sprawdzic czy sie nie wywoluje 2 razy?
-
-                if((sendConversationCreatedEvent || skipConversationAdding) && conversation != null)
-                {
-                    var connectioId1Exists = _mappingService.Users.TryGetValue(user.Id, out var connectioId1);
-                    var connectioId2Exists = _mappingService.Users.TryGetValue(likedUser.Id, out var connectioId2);
-
-                    if(connectioId1Exists)
-                    {
-                        _hubContext.Groups.AddToGroupAsync(connectioId1, conversation.Id.ToString());
+                        sendConversationCreatedEvent = true;
                     }
 
-                    if(connectioId2Exists)
-                    {
-                        _hubContext.Groups.AddToGroupAsync(connectioId2, conversation.Id.ToString());
-                    }
+                    //TODO sprawdzic czy sie nie wywoluje 2 razy?
 
-                    _hubContext.Clients.Group(conversation.Id.ToString()).SendAsync("ConversationCreated", user.Id,user.Name, user.Images.FirstOrDefault().Name,
-                        dto.Status == LikeStatus.SuperLike, likedUser.Id, likedUser.Name, likedUser.Images.FirstOrDefault().Name, foundMatch.Status == LikeStatus.SuperLike);
+                    if((sendConversationCreatedEvent || skipConversationAdding) && conversation != null)
+                    {
+                        var connectioId1Exists = _mappingService.Users.TryGetValue(user.Id, out var connectioId1);
+                        var connectioId2Exists = _mappingService.Users.TryGetValue(likedUser.Id, out var connectioId2);
+
+                        if(connectioId1Exists)
+                        {
+                            _hubContext.Groups.AddToGroupAsync(connectioId1, conversation.Id.ToString());
+                        }
+
+                        if(connectioId2Exists)
+                        {
+                            _hubContext.Groups.AddToGroupAsync(connectioId2, conversation.Id.ToString());
+                        }
+
+                        _hubContext.Clients.Group(conversation.Id.ToString()).SendAsync("ConversationCreated", user.Id,user.Name, user.Images.FirstOrDefault().Name,
+                            dto.Status == LikeStatus.SuperLike, likedUser.Id, likedUser.Name, likedUser.Images.FirstOrDefault().Name, foundMatch.Status == LikeStatus.SuperLike);
+                    }
                 }
             }
         }
+
         double currentUserWidth = user.City.Width;
         double currentUserHeight = user.City.Height;
 
@@ -276,19 +277,20 @@ public class MatchService : IMatchService
             .Where(u => u.Id == dto.ChatId)
             .FirstOrDefault();
 
-        if(match != null)
+        if (match != null && conversationToHide != null)
         {
             match.Status = LikeStatus.Blocked;
-            _dbContext.Match.Update(match);
-        }
-
-        if(conversationToHide != null)
-        {
             conversationToHide.IsHidden = true;
+            _dbContext.Match.Update(match);
             _dbContext.Conversation.Update(conversationToHide);
-        }
+            _dbContext.SaveChanges();
 
-        _dbContext.SaveChanges();
+            SendRemoveChat(user.Id, dto);
+        }
+        else
+        {
+            throw new NotFoundException("Coś poszło nie tak");
+        }
     }
 
     public void UnmatchUser(RemoveMatchDto dto)
@@ -315,19 +317,39 @@ public class MatchService : IMatchService
             .Where(u => u.Id == dto.ChatId)
             .FirstOrDefault();
 
-        if (match != null)
+        if (match != null && conversationToHide != null)
         {
             match.Status = LikeStatus.Dislike;
-            _dbContext.Match.Update(match);
-        }
-
-        if (conversationToHide != null)
-        {
             conversationToHide.IsHidden = true;
+            _dbContext.Match.Update(match);
             _dbContext.Conversation.Update(conversationToHide);
+            _dbContext.SaveChanges();
+
+            SendRemoveChat(user.Id, dto);
+        } 
+        else
+        {
+            throw new NotFoundException("Coś poszło nie tak");
+        }
+    }
+
+    private void SendRemoveChat(int userId, RemoveMatchDto dto) {
+        var connectioId1Exists = _mappingService.Users.TryGetValue(userId, out var connectioId1);
+        var connectioId2Exists = _mappingService.Users.TryGetValue(dto.UserId, out var connectioId2);
+
+        var connectionName = $"{userId}_{dto.UserId}_{dto.ChatId}";
+
+        if (connectioId1Exists)
+        {
+            _hubContext.Groups.AddToGroupAsync(connectioId1, connectionName);
         }
 
-        _dbContext.SaveChanges();
+        if (connectioId2Exists)
+        {
+            _hubContext.Groups.AddToGroupAsync(connectioId2, connectionName);
+        }
+
+        _hubContext.Clients.Group(connectionName).SendAsync("ConversationToHide", dto.ChatId);
     }
 
     private int CalculateAge(DateTimeOffset BirthDate)

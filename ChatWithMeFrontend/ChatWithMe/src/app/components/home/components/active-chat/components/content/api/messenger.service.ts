@@ -101,5 +101,11 @@ export class MessengerService {
         firstUserSuperLiked, secondUserId, secondUserName, secondUserImage, secondUserSuperLiked
       });
     });
+
+
+    //Unmatch albo zablokowanie
+    this.hubConnection.on("ConversationToHide", (chatId: number) => {
+      this.userChatService.setConversationToHide(chatId);
+    });
   }
 }

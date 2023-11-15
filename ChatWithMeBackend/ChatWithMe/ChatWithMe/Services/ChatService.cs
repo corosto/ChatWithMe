@@ -46,6 +46,8 @@ public class ChatService : IChatService
         var conversationsIds = _dbContext
             .UserConversation
             .Where(u => u.UserId == userId)
+            .Include(u => u.Conversation)
+            .Where(c => !c.Conversation.IsHidden)
             .Select(u => u.ConversationId)
             .ToList()
             ?? throw new NotFoundException("Coś poszło nie tak");

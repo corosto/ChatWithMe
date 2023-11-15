@@ -3,16 +3,15 @@ import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { HomeService } from '@components/home/api/home.service';
-import { MessengerService } from '@components/home/components/active-chat/components/content/api/messenger.service';
 import { ContentComponent } from '@components/home/components/active-chat/components/content/content.component';
 import { FooterComponent } from '@components/home/components/active-chat/components/footer/footer.component';
 import { HeaderComponent } from '@components/home/components/active-chat/components/header/header.component';
 import { MatchesApiService } from '@components/home/components/matches/api/matches-api.service';
 import { Match } from '@components/home/components/matches/components/match/interfaces/match-interface';
 import { MatchesService } from '@components/home/components/matches/service/matches.service';
-import { MatchService } from '@components/home/services/match.service';
 import { MatchImageComponent } from '@shared/components/match-image/match-image.component';
 import { MoreInfoComponent } from '@shared/components/more-info/more-info.component';
+import { ControllerService } from '@shared/services/controller.service';
 import { Observable, switchMap, tap } from 'rxjs';
 
 @Component({
@@ -33,30 +32,26 @@ export class ActiveChatComponent implements OnInit {
 
   constructor(
     private matchesService: MatchesService,
-    private matchService: MatchService,
     private homeService: HomeService,
     private matchesApiService: MatchesApiService,
-    private messengerService: MessengerService,
+    private controllerService: ControllerService,
   ) { }
 
   ngOnInit(): void {
-    this.match$ = this.matchService.getCurrentChatUserId().pipe(
-      switchMap((res) => this.homeService.getUserChatInfo(res)),
+    this.match$ = this.controllerService.getCurrentChatDataObservable().pipe(
+      switchMap((res) => this.homeService.getUserChatInfo(res.withUserId)),
       tap((res) => this.matchName = res.name),
       tap((res) => this.matchesService.setImagesCount(res?.images?.length)),
       tap(() => this.matchesService.forceSetCurrentImageIndex(0)),
+      tap(() => this.controllerService.setClearChat())
     );
   }
 
   removeMatch(id: number): void {
-    this.matchesApiService.unmatchUser(id).pipe(
-      tap(() => this.matchService.setClearChatListener()),
-    ).subscribe();
+    this.matchesApiService.unmatchUser(id).subscribe();
   }
 
   blockMatch(id: number): void {
-    this.matchesApiService.blockUser(id).pipe(
-      tap(() => this.matchService.setClearChatListener()),
-    ).subscribe();
+    this.matchesApiService.blockUser(id).subscribe();
   }
 }

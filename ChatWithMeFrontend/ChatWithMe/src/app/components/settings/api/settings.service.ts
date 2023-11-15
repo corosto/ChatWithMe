@@ -11,7 +11,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { of } from 'rxjs/internal/observable/of';
 import { catchError } from 'rxjs/internal/operators/catchError';
 
-@Injectable({ providedIn: 'root' })
+@Injectable()
 export class SettingsService {
 
   constructor(
