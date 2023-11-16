@@ -1,4 +1,6 @@
 :host {
+  align-self: center;
+
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -7,16 +9,14 @@
   padding-inline: 20px;
 
   @media (max-width: 1100px) {
-    padding-inline: 4px;
-
-    .match {
-      width: 100%;
-      flex: 1;
-    }
-
     .actions {
       display: none;
     }
+  }
+
+  @media (max-width: 900px) {
+    height: 88%;
+    transform: scale(1.12);
   }
 }
 
@@ -33,14 +33,17 @@
 .top {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 12px;
   height: 50px;
   width: 100%;
   padding-inline: 4px;
 }
 
-.bottom {
-  height: 50px;
+.chats {
+  position: fixed;
+  left: 8%;
+  top: 20px;
 }
 
 

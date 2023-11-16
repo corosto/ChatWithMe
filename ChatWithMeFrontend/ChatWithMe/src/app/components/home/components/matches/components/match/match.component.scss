@@ -20,6 +20,10 @@
   position: absolute;
   bottom: 14px;
 
+  @media (max-width: 900px) {
+    width: 100%;
+  }
+
   &-expanded {
     z-index: 1;
     padding-bottom: 14px;
@@ -47,4 +51,3 @@
   align-items: center;
   justify-content: center;
 }
-

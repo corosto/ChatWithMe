@@ -1,17 +1,15 @@
-<div
-  *ngIf="isSmallWindow"
-  class="top"
->
-  <img
-    width="40px"
-    src="assets/images/logo-icon.svg"
-    alt="Logo"
-  >
-  <span class="purples">
-    Chat With Me
-
-  </span>
-</div>
+<ng-container *ngIf="isSmallWindow">
+  <div class="top">
+    <img
+      width="40px"
+      src="assets/images/logo-icon.svg"
+      alt="Logo"
+    >
+    <span class="purples">
+      Chat With Me
+    </span>
+  </div>
+</ng-container>
 
 <match class="match" />
 
@@ -19,9 +17,3 @@
   class="actions"
   (action)="actionEvent($event)"
 />
-<div
-  *ngIf="isSmallWindow"
-  class="bottom"
->
-  Ustawienia
-</div>

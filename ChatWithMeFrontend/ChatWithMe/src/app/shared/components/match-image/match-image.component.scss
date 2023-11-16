@@ -3,15 +3,14 @@
   border-radius: 8px 8px 0 0;
   width: 375px;
   height: 570px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center center;
 
   &.chat {
     width: 100%;
     border-radius: 0;
   }
-
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center center;
 
   .label {
     width: fit-content;
@@ -69,11 +68,6 @@
     animation: animDislike 1.25s forwards;
   }
 
-  @media (max-width: 1100px) {
-    background-position: 50% 25%;
-    background-size: auto 184%;
-  }
-
   &:hover {
     .icon {
       opacity: 1;
@@ -103,6 +97,10 @@
     bottom: 0;
     transform: rotate(180deg);
     background: linear-gradient(180deg, rgba(6, 6, 6, 1) 32%, rgba(6, 6, 6, 0.7539390756302521) 52%, rgba(6, 6, 6, 0.41220238095238093) 75%, rgba(6, 6, 6, 0) 100%);
+
+    @media (max-width: 900px) {
+      transform: scaleY(1.125) scaleX(1.002) rotate(180deg);
+    }
   }
 
   .box {
