@@ -12,6 +12,7 @@ import { MatchesService } from '@components/home/components/matches/service/matc
 import { MatchImageComponent } from '@shared/components/match-image/match-image.component';
 import { MoreInfoComponent } from '@shared/components/more-info/more-info.component';
 import { ControllerService } from '@shared/services/controller.service';
+import { isEmpty } from 'lodash';
 import { Observable, switchMap, tap, filter } from 'rxjs';
 
 @Component({
@@ -39,7 +40,7 @@ export class ActiveChatComponent implements OnInit {
 
   ngOnInit(): void {
     this.match$ = this.controllerService.getCurrentChatDataObservable().pipe(
-      filter((res) => !!res),
+      filter((res) => !isEmpty(res)),
       switchMap((res) => this.homeService.getUserChatInfo(res.withUserId)),
       tap((res) => this.matchName = res.name),
       tap((res) => this.matchesService.setImagesCount(res?.images?.length)),

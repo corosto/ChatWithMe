@@ -9,6 +9,7 @@ import { LoadingComponent } from '@shared/components/loading/loading.component';
 import { MessengerDatePipe } from '@shared/pipes/messenger-date.pipe';
 import { ControllerService } from '@shared/services/controller.service';
 import { compareDesc } from 'date-fns';
+import { isEmpty } from 'lodash';
 import { BehaviorSubject, Subject, map, switchMap } from 'rxjs';
 import { filter } from 'rxjs/internal/operators/filter';
 import { takeUntil } from 'rxjs/internal/operators/takeUntil';
@@ -87,10 +88,17 @@ export class ChatsComponent implements OnInit, OnDestroy {
         disableClose: true,
       })),
     ).subscribe();
+
+    this.controllerService.getCurrentChatDataObservable().pipe(
+      filter((res) => isEmpty(res)),
+      tap(() => this.currentChat$.next(null)),
+      tap(() => this.ref.markForCheck()),
+    ).subscribe();
   }
 
   ngOnDestroy(): void {
     this.userChatService.setPreviousChatsStream(null);
+    this.currentChat$.next(null);
 
     this.onDestroy$.next();
     this.onDestroy$.complete();
