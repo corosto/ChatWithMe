@@ -170,8 +170,6 @@ public class MatchService : IMatchService
                         sendConversationCreatedEvent = true;
                     }
 
-                    //TODO sprawdzic czy sie nie wywoluje 2 razy?
-
                     if((sendConversationCreatedEvent || skipConversationAdding) && conversation != null)
                     {
                         var connectioId1Exists = _mappingService.Users.TryGetValue(user.Id, out var connectioId1);

@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ChatWithMe.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20231112133438_blockers")]
-    partial class blockers
+    [Migration("20231119113542_final")]
+    partial class final
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

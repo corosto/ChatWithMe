@@ -62,7 +62,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
       })),
       map((res) => ({
         ...res,
-        isRead: (this.controllerService.getCurrentChatDataRaw().chatId === res.id) ? true : res.isRead,
+        isRead: (this.controllerService.getCurrentChatDataRaw()?.chatId === res.id) ? true : res.isRead,
       })),
       tap((res) => {
         const itemIndex = this.previousChats$.value.findIndex((result) => result.id === res.id);
@@ -84,6 +84,7 @@ export class ChatsComponent implements OnInit, OnDestroy {
         width: '375px',
         height: '570px',
         autoFocus: false,
+        disableClose: true,
       })),
     ).subscribe();
   }

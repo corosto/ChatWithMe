@@ -152,6 +152,20 @@ emoji-mart.picker {
   }
 }
 
+.dialog-background {
+  &-like {
+    .mat-mdc-dialog-container .mdc-dialog__surface {
+      background-image: linear-gradient(to bottom left, #56f9c3b0, #b9bfc8b0);
+    }
+  }
+
+  &-superLike {
+    .mat-mdc-dialog-container .mdc-dialog__surface {
+      background-image: linear-gradient(to bottom left, #32abfbaf, #b9bfc8b0);
+    }
+  }
+}
+
 .mat-mdc-snack-bar-container {
   &.error-snackbar {
     --mdc-snackbar-container-color: var(--color-error);

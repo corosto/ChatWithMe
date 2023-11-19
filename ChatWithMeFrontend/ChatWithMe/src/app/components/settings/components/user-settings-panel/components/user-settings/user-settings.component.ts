@@ -74,7 +74,7 @@ export class UserSettingsComponent implements OnInit, OnDestroy {
     ).subscribe();
 
     this.form.valueChanges.pipe(
-      debounceTime(1000),
+      debounceTime(250),
       filter((res) => !isEqual(this.initForm, res)),
       tap((res) => this.controllerService.cachedUserSideInfo = res as SideData),
       switchMap((res) => this.settingsService.updateUserSideData(res as SideData)),

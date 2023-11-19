@@ -49,14 +49,16 @@ export class MatchComponent implements OnInit {
       debounceTimeAfterFirst(1230),
       switchMap((res) => this.matchesApiService.getNewMatch(res)),
       tap((res) => {
-        if (res?.showLikesDialog)
+        if (res?.showLikesDialog) {
+          const classToAdd = res.showLikesDialog === 'Like' ? 'dialog-background-like' : 'dialog-background-superLike';
           this.dialog.open(NoMoreLikesDialogComponent, {
             data: res.showLikesDialog,
-            panelClass: 'move-dialog',
+            panelClass: ['move-dialog', classToAdd],
             width: '375px',
             autoFocus: false,
             scrollStrategy: new NoopScrollStrategy(),
           });
+        }
       }),
       tap(() => this.matchesService.forceSetCurrentImageIndex(0)),
       tap(() => this.isLoaded$.next(true)),
