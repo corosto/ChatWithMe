@@ -4,7 +4,7 @@
 Aplikacja internetowa, która umożliwia nawiązywanie nowych znajomości oraz komunikację między użytkownikami. Aplikacja powinna umożliwiać użytkownikowi utworzenie swojego profilu, dodawanie zdjęć i opisu oraz przeglądanie profili innych użytkowników. Dodatkowo, użytkownik powinien mieć możliwość dostosowania preferencji dotyczących odkrywania profili innych użytkowników, takich jak maksymalna odległość oraz zakres wieku.
 
 ## 2. Schemat bazy danych
-![image](https://github.com/corosto/ChatWithMe/assets/72280222/296beee1-90b2-4d80-a924-649f02de487d)
+![drawSQL](https://github.com/corosto/ChatWithMe/assets/72280222/27d1c5a3-b403-4343-829b-57b4535e1489)
 
 ## 3. Realizacja projektu
 
