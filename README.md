@@ -1,12 +1,17 @@
 # ChatWithMe
 
+Link do filmu przedstawiającego działanie aplikacji: https://youtu.be/T6mF8cMnVlc
+
 ## 1. Założenia projektu
 Aplikacja internetowa, która umożliwia nawiązywanie nowych znajomości oraz komunikację między użytkownikami. Aplikacja powinna umożliwiać użytkownikowi utworzenie swojego profilu, dodawanie zdjęć i opisu oraz przeglądanie profili innych użytkowników. Dodatkowo, użytkownik powinien mieć możliwość dostosowania preferencji dotyczących odkrywania profili innych użytkowników, takich jak maksymalna odległość oraz zakres wieku.
 
 ## 2. Schemat bazy danych
-![drawSQL](https://github.com/corosto/ChatWithMe/assets/72280222/27d1c5a3-b403-4343-829b-57b4535e1489)
+![drawSQL](https://github.com/corosto/ChatWithMe/assets/72280222/ac9902ab-b316-4774-9374-13a5d4884467)
 
-## 3. Realizacja projektu
+## 3. Schemat przypadków użycia
+![use-case](https://github.com/corosto/ChatWithMe/assets/72280222/270d0501-1878-44b0-bb97-66cb70bcdce4)
+
+## 4. Realizacja projektu
 
 ### Lokalizacja użytkownika
 Jest wyciągana z HTML'owego navigator'a, tylko za zgodą użytkownika. W inny wypadku pobierana jest z miejscowości wybranej przez niego przy rejestracji.
